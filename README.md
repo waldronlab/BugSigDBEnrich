@@ -7,6 +7,6 @@ This repo/package contains a function that runs a shinyApp for BugSigDB.
 
 Install with:
 
-```
+```r
 BiocManager::install("waldronlab/BugSigDBEnrich")
 ```
