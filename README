@@ -1,0 +1,12 @@
+
+# BugSigDBShiny
+
+This repo/package contains a function that runs a shinyApp for BugSigDB.
+
+## Installation
+
+Install with:
+
+```r
+devtools::install_github("sdgamboa/BugSigDBShiny"
+```
