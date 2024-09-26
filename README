@@ -7,6 +7,6 @@ This repo/package contains a function that runs a shinyApp for BugSigDB.
 
 Install with:
 
-```r
-devtools::install_github("sdgamboa/BugSigDBShiny"
+```
+BiocManager::install("waldronlab/BugSigDBEnrich")
 ```
