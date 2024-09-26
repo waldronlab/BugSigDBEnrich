@@ -1,5 +1,5 @@
 
-# BugSigDBShiny
+# BugSigDBEnrich
 
 This repo/package contains a function that runs a shinyApp for BugSigDB.
 
