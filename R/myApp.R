@@ -1,3 +1,9 @@
+
+#' Run my app
+#'
+#' @return A shinyApp
+#' @export
+#'
 myApp <- function() {
     ui <- .createUI()
     shiny::shinyApp(ui = ui, server = .server)
