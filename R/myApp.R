@@ -36,7 +36,7 @@ myApp <- function() {
     output$sig <- shiny::renderText({
         paste0(
             "Your first six taxa out of ", length(signature()), " are: ",
-            paste(head(signature()), collapse = ", " ),
+            paste(utils::head(signature()), collapse = ", " ),
             "..."
         )
     })

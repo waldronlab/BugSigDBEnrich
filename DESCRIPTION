@@ -1,11 +1,20 @@
 Package: BugSigDBEnrich
 Type: Package
-Title: A shinyApp for BugSigDB
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: This package contains code for a shinyApp for BugSigDB.
-License: What license is it under?
+Title: A shiny app for BugSigDB
+Version: 0.1.00
+Authors@R:
+    c(
+        person(
+            given = "Samuel", family = "Gamboa", role = c("aut", "cre"),
+            email = "samuel.gamboa.tuz@gmail.com",
+            comment = c(ORCID = "0000-0002-6863-7943")
+        )
+    )
+Description: This package contains code for launching a shiny app for
+    BugSigDB. This app allows the user to input a list of taxa and perform
+    enirhcment and similiarity-like analysis aginst the signatures in
+    BugSigDB.
+License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -16,5 +25,8 @@ Imports:
     shiny,
     stringr,
     tools,
+    utils,
     vroom
 RoxygenNote: 7.3.2
+URL: https://github.com/waldronlab/BugSigDBEnrich
+BugReports: https://github.com/waldronlab/BugSigDBEnrich/issues
