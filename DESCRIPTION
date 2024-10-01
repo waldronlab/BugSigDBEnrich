@@ -9,7 +9,12 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    clusterProfiler,
+    dplyr,
+    DT,
+    purrr,
     shiny,
+    stringr,
     tools,
     vroom
 RoxygenNote: 7.3.2

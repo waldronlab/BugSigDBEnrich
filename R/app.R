@@ -12,7 +12,8 @@ myApp <- function() {
         ),
         shiny::textOutput("sig"),
         shiny::actionButton("button", "Run Jaccard similarity"),
-        shiny::tableOutput("jaccard")
+        # shiny::tableOutput("jaccard")
+        DT::DTOutput("jaccard")
     )
     return(ui)
 }
@@ -42,8 +43,21 @@ myApp <- function() {
         )
         inputSig <- signature()
         df <- jacSim(inputSig, sigs)
-        output$jaccard <- shiny::renderTable({
-            df
-        })
+        bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
+        df <- dplyr::left_join(df, bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
+            dplyr::mutate(
+                Study = stringr::str_replace(Study, " ", "_"),
+                study_link = stringr::str_c(
+                    '<a href="https://bugsigdb.org/', Study,
+                    '" target="_blank">', Study, '</a>'
+                )
+            ) |>
+            dplyr::select(-.data$bsdb_id, -.data$Study)
+        # output$jaccard <- shiny::renderTable({
+        #     df
+        # })
+        output$jaccard <- DT::renderDT(
+            DT::datatable(df, escape = FALSE, rownames = FALSE)
+        )
     })
 }
