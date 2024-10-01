@@ -1,4 +1,4 @@
-Package: BugSigDBSEnrich
+Package: BugSigDBEnrich
 Type: Package
 Title: A shinyApp for BugSigDB
 Version: 0.1.0
