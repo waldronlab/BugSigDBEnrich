@@ -25,7 +25,7 @@ myApp <- function() {
 }
 
 .server <- function(input, output) {
-    signature <- reactive({
+    signature <- shiny::reactive({
         shiny::req(input$upload)
         ext <- tools::file_ext(input$upload$name)
         switch(ext,
@@ -40,7 +40,7 @@ myApp <- function() {
             "..."
         )
     })
-    observeEvent(input$button, {
+    shiny::observeEvent(input$button, {
         bsdb <- bugsigdbr::importBugSigDB()
         sigs <- bugsigdbr::getSignatures(
             bsdb,
