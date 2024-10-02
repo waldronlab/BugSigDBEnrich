@@ -24,6 +24,15 @@ myApp <- function() {
     return(ui)
 }
 
+#' Title
+#'
+#' @param input Input shiny.
+#' @param output Output shiny.
+#' 
+#' @importFrom rlang .data 
+#'
+#' @return A shinyApp
+#'
 .server <- function(input, output) {
     signature <- shiny::reactive({
         shiny::req(input$upload)
@@ -52,10 +61,10 @@ myApp <- function() {
         bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
         df <- dplyr::left_join(df, bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
             dplyr::mutate(
-                Study = stringr::str_replace(Study, " ", "_"),
+                Study = stringr::str_replace(.data$Study, " ", "_"),
                 study_link = stringr::str_c(
-                    '<a href="https://bugsigdb.org/', Study,
-                    '" target="_blank">', Study, '</a>'
+                    '<a href="https://bugsigdb.org/', .data$Study,
+                    '" target="_blank">', .data$Study, '</a>'
                 )
             ) |>
             dplyr::select(-.data$bsdb_id, -.data$Study)

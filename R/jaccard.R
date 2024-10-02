@@ -1,3 +1,10 @@
+#' Calculate jaccard similarity
+#' @importFrom rlang .data 
+#' @param sig Input signature.
+#' @param sigL  List of BugSigDB signatures
+#'
+#' @return A data.frame
+#'
 jacSim <- function(sig, sigL) {
     res <- purrr::map_dbl(sigL,  ~ {
         round(.jaccard_similarity(.x, sig), 2)
@@ -7,12 +14,12 @@ jacSim <- function(sig, sigL) {
         signature = names(res),
         jaccard = unname(res)
     ) |>
-        dplyr::arrange(-.data$jaccard)
+        dplyr::arrange(-.data[["jaccard"]])
 }
 
 ## Helper function for jacSim
 .jaccard_similarity <- function(x, y) {
     intersection <- length(intersect(x, y))
     union <- length(union(x, y))
-    return(intersection / union)
+    intersection / union
 }
