@@ -2,7 +2,7 @@
 % Please edit documentation in R/myApp.R
 \name{myApp}
 \alias{myApp}
-\title{Run my app}
+\title{Launch my app}
 \usage{
 myApp()
 }
@@ -10,5 +10,5 @@ myApp()
 A shinyApp
 }
 \description{
-Run my app
+Launch my app
 }

@@ -25,6 +25,7 @@ Imports:
     purrr,
     rlang,
     shiny,
+    shinythemes,
     stringr,
     tools,
     utils

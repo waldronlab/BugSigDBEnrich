@@ -1,30 +1,66 @@
 
-#' Run my app
+#' Launch my app
 #'
 #' @return A shinyApp
 #' @export
 #'
-myApp <- function() {
-    ui <- .createUI()
-    shiny::shinyApp(ui = ui, server = .server)
-}
+myApp <- function() shiny::shinyApp(ui = createUI(), server = server)
 
-.createUI <- function() {
+## Create user interface
+createUI <- function() {
     ui <- shiny::fluidPage(
+        theme = shinythemes::shinytheme("cerulean"),
+        shiny::titlePanel("BugSigDBEnrich"),
+        shiny::h4(stringr::str_c(
+            "Run enrichment and similarity analyses against BugSigDB signatures"
+        )),
+        
+        shiny::h3("Input"),
+        
+        ## Input options
+        shiny::textAreaInput(
+            inputId = "text_input",
+            label = stringr::str_c(
+                "Paste valid taxon identifiers ",
+                "(one element per line):"
+            ),
+            height = '200px',
+            width = "500px"
+        ),
         shiny::fileInput(
-            inputId = "upload",
-            label = "Upload list of taxa.",
+            inputId = "file_input",
+            label = "OR upload a file:",
             accept = c(".gmt")
         ),
-        shiny::textOutput("sig"),
-        shiny::actionButton("button", "Run Jaccard similarity"),
-        # shiny::tableOutput("jaccard")
+        
+        tags$hr(),
+        
+        ## Buttons
+        shiny::actionButton(
+            inputId = "resetInputButton", 
+            label = "Reset",
+            icon = shiny::icon("refresh")
+        ),
+        shiny::actionButton(
+            inputId = "analyzeButton", 
+            label = "Analyze",
+            icon = shiny::icon("table")
+        ),
+        shiny::actionButton(
+            inputId = "downloadButton", 
+            label = "Download",
+            icon = shiny::icon("download")
+        ),
+        
+        tags$hr(),
+        
+        ## Output
+        shiny::uiOutput("result_header"),
         DT::DTOutput("jaccard")
     )
-    return(ui)
 }
 
-#' Title
+#' Create server
 #'
 #' @param input Input shiny.
 #' @param output Output shiny.
@@ -33,24 +69,22 @@ myApp <- function() {
 #'
 #' @return A shinyApp
 #'
-.server <- function(input, output) {
+server <- function(input, output) {
+    
+    ## Load bugsigdbr when the app starts.
+    bsdb <- bugsigdbr::importBugSigDB()
+    
     signature <- shiny::reactive({
-        shiny::req(input$upload)
-        ext <- tools::file_ext(input$upload$name)
+        shiny::req(input$file_input)
+        ext <- tools::file_ext(input$file_input$name)
         switch(ext,
-               gmt = readGMT(input$upload$datapath),
+               gmt = readGMT(input$file_input$datapath),
                shiny::validate("Invalid file; Please upload a GMT file")
         )
     })
-    output$sig <- shiny::renderText({
-        paste0(
-            "Your first six taxa out of ", length(signature()), " are: ",
-            paste(utils::head(signature()), collapse = ", " ),
-            "..."
-        )
-    })
-    shiny::observeEvent(input$button, {
-        bsdb <- bugsigdbr::importBugSigDB()
+    
+    ## Generating the output
+    shiny::observeEvent(input$analyzeButton, {
         sigs <- bugsigdbr::getSignatures(
             bsdb,
             tax.id.type = "ncbi", tax.level = "genus", exact.tax.level = TRUE,
@@ -68,9 +102,10 @@ myApp <- function() {
                 )
             ) |>
             dplyr::select(-.data$bsdb_id, -.data$Study)
-        # output$jaccard <- shiny::renderTable({
-        #     df
-        # })
+        
+        output$result_header <- shiny::renderUI({
+            h3("Result")
+        })
         output$jaccard <- DT::renderDT(
             DT::datatable(df, escape = FALSE, rownames = FALSE)
         )
