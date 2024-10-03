@@ -10,6 +10,8 @@ server(input, output, session)
 \item{input}{Input shiny.}
 
 \item{output}{Output shiny.}
+
+\item{session}{Session shiny.}
 }
 \value{
 A shinyApp

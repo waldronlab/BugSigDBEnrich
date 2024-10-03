@@ -61,7 +61,10 @@ createUI <- function() {
         ),
         
         ## This chunk is for the "top button" (maybe remove it)
-        shiny::actionButton("top_button", "↑", onclick = "scrollToTop()"),
+        shiny::actionButton(
+            inputId = "top_button",
+            label = "\u2191",
+            onclick = "scrollToTop()"),
         
         shiny::tags$hr(),
         
@@ -75,6 +78,7 @@ createUI <- function() {
 #'
 #' @param input Input shiny.
 #' @param output Output shiny.
+#' @param session Session shiny.
 #' 
 #' @importFrom rlang .data 
 #'
@@ -125,7 +129,7 @@ server <- function(input, output, session) {
                 )  
             )
         
-        ## Handling outputs
+        ## Handling outputs after analyzing
         output$result_header <- shiny::renderUI({
             htmltools::h3("Result")
         })
