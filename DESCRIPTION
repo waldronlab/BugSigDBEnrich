@@ -22,6 +22,7 @@ Imports:
     clusterProfiler,
     dplyr,
     DT,
+    htmltools,
     purrr,
     rlang,
     shiny,

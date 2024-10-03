@@ -11,10 +11,10 @@ jacSim <- function(sig, sigL) {
     })
     dat <- data.frame(
         bsdb_id = .getID(names(res)),
-        signature = names(res),
-        jaccard = unname(res)
+        Signature = names(res),
+        JI = unname(res)
     ) |>
-        dplyr::arrange(-.data[["jaccard"]])
+        dplyr::arrange(-.data[["JI"]])
 }
 
 ## Helper function for jacSim

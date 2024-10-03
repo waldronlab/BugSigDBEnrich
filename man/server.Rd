@@ -4,7 +4,7 @@
 \alias{server}
 \title{Create server}
 \usage{
-server(input, output)
+server(input, output, session)
 }
 \arguments{
 \item{input}{Input shiny.}
