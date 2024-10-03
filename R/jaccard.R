@@ -10,7 +10,7 @@ jacSim <- function(sig, sigL) {
         round(.jaccard_similarity(.x, sig), 2)
     })
     dat <- data.frame(
-        bsdb_id = .getID(names(res)),
+        bsdb_id = .getBsdbId(names(res)),
         Signature = names(res),
         JI = unname(res)
     ) |>

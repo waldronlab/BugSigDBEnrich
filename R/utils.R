@@ -1,5 +1,5 @@
 
-.getID <- function(signame)  {
+.getBsdbId <- function(signame)  {
     stringr::str_extract(signame, "^bsdb:\\d+/\\d+/\\d+")
 }
 
@@ -27,18 +27,27 @@ topButtonShape <- function() {
         padding: 0; /* Remove padding to ensure perfect centering */
       }
     "
-    # box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      # top_button:hover {
-      #   background-color: #0056b3;
-      # }
 }
 
 ## Button for going to the top
 topButtonAction <- function() {
     "
-          // Function to scroll to the top
-          function scrollToTop() {
-          window.scrollTo({top: 0, behavior: 'smooth'});
-          }
+        // Function to scroll to the top
+        function scrollToTop() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
     "
+}
+
+labelTextBox <- function() {
+    stringr::str_c(
+        "Enter list of NCBI taxids, taxon names, or metaphlan names:"
+    )
+}
+
+rankOptions <- function() {
+    c(
+        "kingdom", "phylum", "class", "order",
+        "family", "genus", "species", "strain"
+    )
 }

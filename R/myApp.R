@@ -9,8 +9,9 @@ myApp <- function() shiny::shinyApp(ui = createUI(), server = server)
 ## Create user interface
 createUI <- function() {
     ui <- shiny::fluidPage(
+        
+        ## This chunk is for the "top button" (maybe remove it)
         shiny::tags$head(
-          ## This chunk is for the "top button" (maybe remove it)
             shiny::tags$style(htmltools::HTML(topButtonShape())),
             shiny::tags$script(htmltools::HTML(topButtonAction()))
         ),
@@ -23,28 +24,72 @@ createUI <- function() {
             '<a href="https://bugsigdb.org" target="_blank">BugSigDB</a>',
             " signatures"
         ))),
-        htmltools::h3("Input"),
         
-        ## Input options
+        htmltools::h3("Input signature"),
+        
+        ## Input
         shiny::textAreaInput(
             inputId = "text_input",
-            label = stringr::str_c(
-                "Paste valid taxon identifiers ",
-                "(one element per line):"
-            ),
+            label = labelTextBox(),
             height = '200px',
-            width = "500px"
+            width = "500px", 
+            placeholder = c("562\n561")
         ),
         shiny::fileInput(
             inputId = "file_input",
-            label = "OR upload a file:",
+            label = "Or upload a file:",
             accept = c(".gmt"),
             buttonLabel = "Choose file..."
         ),
         
         shiny::tags$hr(),
         
-        ## Buttons
+        ## Options
+        htmltools::h3("Target signature options"),
+        shiny::radioButtons(
+            inputId = "type_selection", 
+            label = "Select identifier type:",
+            choices = c("ncbi", "taxname", "metaphlan"),
+            selected = "ncbi",
+            inline = TRUE
+        ),
+        
+        shiny::checkboxGroupInput(
+            inputId = "rank_selection", 
+            label = "Select identifier rank(s):",
+            choices = rankOptions(),
+            inline = TRUE
+            # selected = c("species")
+        ),  # Default selection
+        
+        shiny::checkboxInput(
+            inputId = "mixed_selection",
+            label = "(De)Select all",
+            value = TRUE 
+        ),
+        
+        shiny::radioButtons(
+            inputId = "exact_selection", 
+            label = "Use exact taxonomic level:",
+            choices = c("Yes", "No"),
+            selected = "Yes",
+            inline = TRUE
+        ),
+        
+        numericInput(
+            inputId = "min_selection", 
+            label = "Minimum signature size:", 
+            value = 5,
+            min = 1,
+            max = 100,
+            step = 1
+        ),
+       
+        shiny::tags$hr(),
+        
+        htmltools::h3("Actions"),
+        
+        ## Actions
         shiny::actionButton(
             inputId = "analyzeButton", 
             label = "Analyze",
@@ -88,8 +133,13 @@ server <- function(input, output, session) {
     
     ## Load bugsigdbr when the app starts.
     bsdb <- bugsigdbr::importBugSigDB()
+    bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
     
     signature <- shiny::reactive({
+        # shiny::req(input$text_input)
+        # readBox(input$text_input)
+        # 
+        
         shiny::req(input$file_input)
         ext <- tools::file_ext(input$file_input$name)
         switch(ext,
@@ -97,13 +147,15 @@ server <- function(input, output, session) {
                shiny::validate("Invalid file; Please upload a GMT file")
         )
     })
-    
+
+    ## Observations 1 - Reset app
     shiny::observeEvent(input$resetButton, {
         session$reload()
     })
     
-    ## What happens when analyze is used
+    ## Observation 2 - Analysis
     shiny::observeEvent(input$analyzeButton, {
+        ## Create a result table to display
         sigs <- bugsigdbr::getSignatures(
             bsdb,
             tax.id.type = "ncbi", tax.level = "genus", exact.tax.level = TRUE,
@@ -111,7 +163,6 @@ server <- function(input, output, session) {
         )
         inputSig <- signature()
         df <- jacSim(inputSig, sigs)
-        bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
         df <- dplyr::left_join(df, bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
             dplyr::mutate(
                 Study = stringr::str_remove(.data$Study, "^Study "),
@@ -121,6 +172,8 @@ server <- function(input, output, session) {
                 )
             ) |>
             dplyr::select(-.data$bsdb_id)
+        
+        ## Create a result table to download 
         dfDownload <- df |> 
             dplyr::mutate(
                 Study = sub(
@@ -152,3 +205,9 @@ server <- function(input, output, session) {
         
     })
 }
+
+# TODO list ---------------------------------------------------------------
+
+## In the output add signature size
+## Maybe include a commented header with the results
+## Just download a zip file
