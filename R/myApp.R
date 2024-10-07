@@ -6,111 +6,34 @@
 #'
 myApp <- function() shiny::shinyApp(ui = createUI(), server = server)
 
-## Create user interface
 createUI <- function() {
     ui <- shiny::fluidPage(
         
-        ## This chunk is for the "top button" (maybe remove it)
-        shiny::tags$head(
-            shiny::tags$style(htmltools::HTML(topButtonShape())),
-            shiny::tags$script(htmltools::HTML(topButtonAction()))
-        ),
+        topButton(),
+        topButtonAction(),
         
-        ## Header
         theme = shinythemes::shinytheme("united"),
+        
         shiny::titlePanel("BugSigDBEnrich"),
-        htmltools::h4(htmltools::HTML(stringr::str_c(
-            "Run enrichment and similarity analyses against ",
-            '<a href="https://bugsigdb.org" target="_blank">BugSigDB</a>',
-            " signatures"
-        ))),
+        htmltools::h4(appSubtitle()),
         
-        htmltools::h3("Input signature"),
-        
-        ## Input
-        shiny::textAreaInput(
-            inputId = "text_input",
-            label = labelTextBox(),
-            height = '200px',
-            width = "500px", 
-            placeholder = c("562\n561")
-        ),
-        shiny::fileInput(
-            inputId = "file_input",
-            label = "Or upload a file:",
-            accept = c(".gmt"),
-            buttonLabel = "Choose file..."
-        ),
-        
+        htmltools::h3("Input"), #####################################
+        textInputBox(),
+        fileInputBox(),
         shiny::tags$hr(),
         
-        ## Options
-        htmltools::h3("Target signature options"),
-        shiny::radioButtons(
-            inputId = "type_selection", 
-            label = "Select identifier type:",
-            choices = c("ncbi", "taxname", "metaphlan"),
-            selected = "ncbi",
-            inline = TRUE
-        ),
-        
-        shiny::checkboxGroupInput(
-            inputId = "rank_selection", 
-            label = "Select identifier rank(s):",
-            choices = rankOptions(),
-            inline = TRUE
-            # selected = c("species")
-        ),  # Default selection
-        
-        shiny::checkboxInput(
-            inputId = "mixed_selection",
-            label = "(De)Select all",
-            value = TRUE 
-        ),
-        
-        shiny::radioButtons(
-            inputId = "exact_selection", 
-            label = "Use exact taxonomic level:",
-            choices = c("Yes", "No"),
-            selected = "Yes",
-            inline = TRUE
-        ),
-        
-        numericInput(
-            inputId = "min_selection", 
-            label = "Minimum signature size:", 
-            value = 5,
-            min = 1,
-            max = 100,
-            step = 1
-        ),
-       
+        htmltools::h3("Target options"), ############################
+        idTypeRadioButtons(),
+        selectRankCheckBox(),
+        selectAllRanksCheckBox(),
+        exactRankButton(),
+        minSigSize(),
         shiny::tags$hr(),
         
-        htmltools::h3("Actions"),
-        
-        ## Actions
-        shiny::actionButton(
-            inputId = "analyzeButton", 
-            label = "Analyze",
-            icon = shiny::icon("table")
-        ),
-        shiny::downloadButton(
-            outputId = "downloadData",
-            label = "Download result"
-        ),
-        shiny::actionButton(
-            inputId = "resetButton", 
-            label = "Reset app",
-            icon = shiny::icon("refresh")
-        ),
-        
-        ## This chunk is for the "top button" (maybe remove it)
-        shiny::actionButton(
-            inputId = "top_button",
-            label = "\u2191",
-            onclick = "scrollToTop()"),
-        
+        htmltools::h3("Actions"), #############################################
+        analyzeButton(),
+        downloadResultButton(),
+        resetButton(),
         shiny::tags$hr(),
         
         ## Output
