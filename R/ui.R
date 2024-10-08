@@ -25,7 +25,7 @@ createUI <- function() {
         htmltools::h3("Actions"), #############################################
         analyzeButton(),
         downloadResultButton(),
-        resetButton(),
+        resetButtonRedCSS(), resetButton(),
         shiny::tags$hr(),
         
         ## Output
