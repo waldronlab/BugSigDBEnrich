@@ -23,6 +23,7 @@ Imports:
     dplyr,
     DT,
     htmltools,
+    markdown,
     purrr,
     rlang,
     shiny,

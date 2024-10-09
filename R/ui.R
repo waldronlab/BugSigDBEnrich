@@ -38,32 +38,22 @@ analysisPanel <- function() {
 
 helpPanel <- function() {
     shiny::tabPanel(
-        title = "Help"
+        title = "Help",
+        shiny::includeMarkdown(
+            system.file("www", "help.md", package = "BugSigDBEnrich")
+        ) 
     )
 }
 aboutPanel <- function() {
     shiny::tabPanel(
         title = "About",
-        htmltools::h2("BugSigDBEnrich"),
-        htmltools::h4(appSubtitle()),
+        shiny::includeMarkdown(
+            system.file("www", "about.md", package = "BugSigDBEnrich")
+        ) 
+        # htmltools::h2("BugSigDBEnrich"),
+        # htmltools::h4(appSubtitle()),
     )
 }
-
-# waldronlabShinyServerPanel <- function() {
-#     shiny::tabPanel(
-#         title =
-#         htmltools::tags$a(
-#             "Go to Google",
-#             href = "https://www.google.com",
-#             target = "_blank",
-#             style = "text-decoration:none; color: inherit;"
-#         )
-#     )
-# }
-
-
-
-
 
 # createUI <- function() {
 #     ui <- shiny::fluidPage(
