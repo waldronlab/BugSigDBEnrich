@@ -12,6 +12,27 @@ createUI <- function() {
         htmltools::h3("Input"), #####################################
         textInputBox(),
         fileInputBox(),
+        
+        htmltools::div(
+            style = "display: flex; align-items: center;",
+            htmltools::div(
+                style = "margin-right: 10px;",
+                # style = "margin-right: 10px; font-weight: bold;",
+                "Download example files:"
+            ),
+            htmltools::div(
+                style = "display: inline-block; margin-right: 10px;",
+                shiny::uiOutput("downloadExampleNCBI")
+            ),
+            htmltools::div(
+                style = "display: inline-block; margin-right: 10px;",
+                shiny::uiOutput("downloadExampleTaxname")
+            ),
+            htmltools::div(
+                style = "display: inline-block; margin-right: 10px;",
+                shiny::uiOutput("downloadExampleMetaphlan")
+            )
+        ),
         shiny::tags$hr(),
         
         htmltools::h3("Options"), ############################

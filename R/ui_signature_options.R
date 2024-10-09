@@ -31,8 +31,11 @@ exactRankButton <- function() {
     shiny::radioButtons(
         inputId = "exact_selection", 
         label = "Use exact taxonomic level:",
-        choices = c("Yes", "No"),
-        selected = "Yes",
+        # choices = c("Yes", "No"),
+        choiceNames = c("Yes", "No"),
+        choiceValues = c(TRUE, FALSE),
+        # selected = "Yes",
+        selected = TRUE,
         inline = TRUE
     )
 }

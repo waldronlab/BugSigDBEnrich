@@ -14,6 +14,31 @@ server <- function(input, output, session) {
     bsdb <- bugsigdbr::importBugSigDB()
     bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
     
+    examplePaths <- getExamplePaths()
+    
+    ## Download example files section
+    output$downloadExampleNCBI <- shiny::renderUI({
+        shiny::downloadLink("ncbiDownload", "ncbi")
+    })
+    output$downloadExampleTaxname <- shiny::renderUI({
+        shiny::downloadLink("taxnameDownload", "taxname")
+    })
+    output$downloadExampleMetaphlan <- shiny::renderUI({
+        shiny::downloadLink("metaphlanDownload", "metaphlan")
+    })
+    output$ncbiDownload <- shiny::downloadHandler(
+        filename = function() "ncbi.txt",
+        content = function(file) file.copy(examplePaths$ncbi, file)
+    )
+    output$taxnameDownload <- shiny::downloadHandler(
+        filename = function() "taxname.txt",
+        content = function(file) file.copy(examplePaths$taxname, file)
+    )
+    output$metaphlanDownload <- shiny::downloadHandler(
+        filename = function() "metaphlan.txt",
+        content = function(file) file.copy(examplePaths$metaphlan, file)
+    )
+    
     resetApp(input, session)
     signature <- inputSignature(input)
     selectAllRanks(input, session)
@@ -28,22 +53,14 @@ server <- function(input, output, session) {
             )
         } else {
             
-            if (input$exact_selection == "Yes") {
-                exactVar <- TRUE
-            } else if (input$exact_selection == "No") {
-                exactVar <- FALSE
-            }
-            
             inputSig <- signature()
-            
             sigs <- bugsigdbr::getSignatures(
                 df = bsdb,
                 tax.id.type = input$type_selection,
                 tax.level = input$rank_selection,
-                exact.tax.level = exactVar ,
+                exact.tax.level = as.logical(input$exact_selection),
                 min.size = input$min_selection
             )
-            
             df <- jacSim(inputSig, sigs)
             df <- dplyr::left_join(df, bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
                 dplyr::mutate(

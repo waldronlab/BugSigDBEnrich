@@ -7,8 +7,9 @@ inputSignature <- function(input) {
         shiny::req(input$file_input)
         ext <- tools::file_ext(input$file_input$name)
         switch(ext,
-               gmt = readGMT(input$file_input$datapath),
-               shiny::validate("Invalid file; Please upload a GMT file")
+               # txt = readGMT(input$file_input$datapath),
+               txt = readLines(con = input$file_input$datapath),
+               shiny::validate("Invalid file; Please upload a .txt file")
         )
     })
 }

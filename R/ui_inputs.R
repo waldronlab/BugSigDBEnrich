@@ -15,7 +15,7 @@ fileInputBox <- function() {
     shiny::fileInput(
         inputId = "file_input",
         label = "Or upload a file:",
-        accept = c(".gmt"),
+        accept = c(".txt"),
         buttonLabel = "Choose file..."
     )
 }
