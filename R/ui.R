@@ -1,52 +1,33 @@
 createUI <- function() {
-    ui <- shiny::fluidPage(
-        
-        topButton(),
-        topButtonAction(),
-        
-        theme = shinythemes::shinytheme("united"),
-        
-        shiny::titlePanel("BugSigDBEnrich"),
-        htmltools::h4(appSubtitle()),
-        
+    ui <- shiny::navbarPage(
+        title = "BugSigDBEnrich",
+        theme = shinythemes::shinytheme("spacelab"),
+        analysisPanel(),
+        helpPanel(),
+        aboutPanel(),
+    )
+}
+
+analysisPanel <- function() {
+    shiny::tabPanel(
+        title = "Analyze",
+        # topButton(), topButtonAction(),
         htmltools::h3("Input"), #####################################
-        textInputBox(),
-        fileInputBox(),
-        
-        htmltools::div(
-            style = "display: flex; align-items: center;",
-            htmltools::div(
-                style = "margin-right: 10px;",
-                # style = "margin-right: 10px; font-weight: bold;",
-                "Download example files:"
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::uiOutput("downloadExampleNCBI")
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::uiOutput("downloadExampleTaxname")
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::uiOutput("downloadExampleMetaphlan")
-            )
-        ),
+        textInputBox(), textBoxExamples(), 
+        htmltools::br(),
+        fileInputBox(), fileExamples(),
         shiny::tags$hr(),
         
         htmltools::h3("Options"), ############################
         idTypeRadioButtons(),
-        selectRankCheckBox(),
-        selectAllRanksCheckBox(),
+        selectRankCheckBox(), selectAllRanksCheckBox(),
         exactRankButton(),
         minSigSize(),
         shiny::tags$hr(),
         
         htmltools::h3("Actions"), #############################################
-        analyzeButton(),
-        downloadResultButton(),
-        resetButtonRedCSS(), resetButton(),
+        analyzeButton(), downloadResultButton(),
+        resetButton(), # resetButtonRedCSS(),
         shiny::tags$hr(),
         
         ## Output
@@ -54,3 +35,66 @@ createUI <- function() {
         DT::DTOutput("jaccard")
     )
 }
+
+helpPanel <- function() {
+    shiny::tabPanel(
+        title = "Help"
+    )
+}
+aboutPanel <- function() {
+    shiny::tabPanel(
+        title = "About",
+        htmltools::h2("BugSigDBEnrich"),
+        htmltools::h4(appSubtitle()),
+    )
+}
+
+# waldronlabShinyServerPanel <- function() {
+#     shiny::tabPanel(
+#         title =
+#         htmltools::tags$a(
+#             "Go to Google",
+#             href = "https://www.google.com",
+#             target = "_blank",
+#             style = "text-decoration:none; color: inherit;"
+#         )
+#     )
+# }
+
+
+
+
+
+# createUI <- function() {
+#     ui <- shiny::fluidPage(
+#         
+#         theme = shinythemes::shinytheme("simplex"),
+#         
+#         shiny::titlePanel("BugSigDBEnrich"),
+#         htmltools::h4(appSubtitle()),
+#         
+#         topButton(), topButtonAction(),
+#         
+#         htmltools::h3("Input"), #####################################
+#         textInputBox(), textBoxExamples(), 
+#         htmltools::br(),
+#         fileInputBox(), fileExamples(),
+#         shiny::tags$hr(),
+#         
+#         htmltools::h3("Options"), ############################
+#         idTypeRadioButtons(),
+#         selectRankCheckBox(), selectAllRanksCheckBox(),
+#         exactRankButton(),
+#         minSigSize(),
+#         shiny::tags$hr(),
+#         
+#         htmltools::h3("Actions"), #############################################
+#         analyzeButton(), downloadResultButton(),
+#         resetButton(), # resetButtonRedCSS(),
+#         shiny::tags$hr(),
+#         
+#         ## Output
+#         shiny::uiOutput("result_header"),
+#         DT::DTOutput("jaccard")
+#     )
+# }

@@ -50,11 +50,10 @@ minSigSize <- function() {
         step = 1
     )
 }
-        
+
 rankOptions <- function() {
     c(
         "kingdom", "phylum", "class", "order",
         "family", "genus", "species", "strain"
     )
 }
-       

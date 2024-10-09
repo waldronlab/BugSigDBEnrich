@@ -14,9 +14,28 @@ server <- function(input, output, session) {
     bsdb <- bugsigdbr::importBugSigDB()
     bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
     
-    examplePaths <- getExamplePaths()
+    
+    
+    # Observing clicks on Example 1 and filling the text box with the output of a function
+    shiny::observeEvent(input$ncbi_box, {
+        shiny::updateTextInput(session, "text_input", value = generateExampleText("ncbi"))
+    })
+    
+    # Observing clicks on Example 2 and filling the text box with the output of a function
+    shiny::observeEvent(input$taxname_box, {
+        shiny::updateTextInput(session, "text_input", value = generateExampleText("taxname"))
+    })
+    
+    # Observing clicks on Example 3 and filling the text box with the output of a function
+    shiny::observeEvent(input$metaphlan_box, {
+        shiny::updateTextInput(session, "text_input", value = generateExampleText("metaphlan"))
+    }) 
+    
+    
+    
     
     ## Download example files section
+    examplePaths <- getExamplePaths()
     output$downloadExampleNCBI <- shiny::renderUI({
         shiny::downloadLink("ncbiDownload", "ncbi")
     })
@@ -38,6 +57,7 @@ server <- function(input, output, session) {
         filename = function() "metaphlan.txt",
         content = function(file) file.copy(examplePaths$metaphlan, file)
     )
+    
     
     resetApp(input, session)
     signature <- inputSignature(input)
