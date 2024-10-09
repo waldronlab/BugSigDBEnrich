@@ -14,25 +14,15 @@ server <- function(input, output, session) {
     bsdb <- bugsigdbr::importBugSigDB()
     bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
     
-    
-    
-    # Observing clicks on Example 1 and filling the text box with the output of a function
     shiny::observeEvent(input$ncbi_box, {
         shiny::updateTextInput(session, "text_input", value = generateExampleText("ncbi"))
     })
-    
-    # Observing clicks on Example 2 and filling the text box with the output of a function
     shiny::observeEvent(input$taxname_box, {
         shiny::updateTextInput(session, "text_input", value = generateExampleText("taxname"))
     })
-    
-    # Observing clicks on Example 3 and filling the text box with the output of a function
     shiny::observeEvent(input$metaphlan_box, {
         shiny::updateTextInput(session, "text_input", value = generateExampleText("metaphlan"))
     }) 
-    
-    
-    
     
     ## Download example files section
     examplePaths <- getExamplePaths()
