@@ -13,19 +13,29 @@ server <- function(input, output, session) {
     
     bsdb <- bugsigdbr::importBugSigDB()
     bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
-    
+   
+    ## Examples section 
     shiny::observeEvent(input$ncbi_box, {
-        shiny::updateTextInput(session, "text_input", value = generateExampleText("ncbi"))
+        shiny::updateTextInput(
+            session = session,
+            inputId = "text_input",
+            value = generateExampleText("ncbi")
+        )
     })
     shiny::observeEvent(input$taxname_box, {
-        shiny::updateTextInput(session, "text_input", value = generateExampleText("taxname"))
+        shiny::updateTextInput(
+            session = session, 
+            inputId = "text_input",
+            value = generateExampleText("taxname")
+        )
     })
     shiny::observeEvent(input$metaphlan_box, {
-        shiny::updateTextInput(session, "text_input", value = generateExampleText("metaphlan"))
+        shiny::updateTextInput(
+            session = session,
+            inputId =  "text_input",
+            value = generateExampleText("metaphlan")
+        )
     }) 
-    
-    ## Download example files section
-    examplePaths <- getExamplePaths()
     output$downloadExampleNCBI <- shiny::renderUI({
         shiny::downloadLink("ncbiDownload", "ncbi")
     })
@@ -37,33 +47,30 @@ server <- function(input, output, session) {
     })
     output$ncbiDownload <- shiny::downloadHandler(
         filename = function() "ncbi.txt",
-        content = function(file) file.copy(examplePaths$ncbi, file)
+        content = function(file) file.copy(getExamplePaths()$ncbi, file)
     )
     output$taxnameDownload <- shiny::downloadHandler(
         filename = function() "taxname.txt",
-        content = function(file) file.copy(examplePaths$taxname, file)
+        content = function(file) file.copy(getExamplePaths()$taxname, file)
     )
     output$metaphlanDownload <- shiny::downloadHandler(
         filename = function() "metaphlan.txt",
-        content = function(file) file.copy(examplePaths$metaphlan, file)
+        content = function(file) file.copy(getExamplePaths()$metaphlan, file)
     )
     
-    
     resetApp(input, session)
-    signature <- inputSignature(input)
+    inputSigFun <- inputSignature(input) # inputSigFun is a function
     selectAllRanks(input, session)
     
-    ## Observation 3 - Analysis
+    ## Analysis
     shiny::observeEvent(input$analyzeButton, {
-        
         if (!length(input$rank_selection)) {
             shiny::showNotification(
                 "Please select at least one rank option.", 
                 type = "error"
             )
         } else {
-            
-            inputSig <- signature()
+            inputSig <- inputSigFun()
             sigs <- bugsigdbr::getSignatures(
                 df = bsdb,
                 tax.id.type = input$type_selection,
@@ -71,7 +78,8 @@ server <- function(input, output, session) {
                 exact.tax.level = as.logical(input$exact_selection),
                 min.size = input$min_selection
             )
-            df <- jacSim(inputSig, sigs)
+            sigPool <- unlist(sigs, use.names = FALSE)
+            df <- simFun(inputSig, sigs)
             df <- dplyr::left_join(df, bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
                 dplyr::mutate(
                     Study = stringr::str_remove(.data$Study, "^Study "),
@@ -96,8 +104,11 @@ server <- function(input, output, session) {
                 htmltools::h3("Result")
             })
             
-            output$jaccard <- DT::renderDT(
-                DT::datatable(df, escape = FALSE, rownames = FALSE)
+            output$result_table <- DT::renderDT(
+                DT::datatable(
+                    data = df, escape = FALSE, rownames = FALSE,
+                    selection = "none"
+                )
             )
             
             output$downloadData <- shiny::downloadHandler(
