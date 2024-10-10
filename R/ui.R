@@ -1,6 +1,9 @@
 createUI <- function() {
     ui <- shiny::navbarPage(
-        title = "BugSigDBEnrich",
+        title = paste0(
+            "BugSigDBEnrich ",
+            utils::packageDescription("BugSigDBEnrich")$Version
+        ),
         theme = shinythemes::shinytheme("spacelab"),
         analysisPanel(),
         helpPanel(),
