@@ -7,13 +7,7 @@ textInputBox <- function() {
         label = label_text_box,
         height = '200px',
         width = "500px"
-        # placeholder = generateExampleText("ncbi")
-        # placeholder = c("562\n561")
     )
-}
-
-generateExampleText <- function(x) {
-    paste(exampleSigs[[x]], collapse = "\n")
 }
 
 textBoxExamples <- function() {
