@@ -4,6 +4,12 @@ createUI <- function() {
             "BugSigDBEnrich ",
             utils::packageDescription("BugSigDBEnrich")$Version
         ),
+        header = htmltools::tags$head(
+            htmltools::tags$link(
+                rel = "shortcut icon",
+                href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
+            )
+        ),
         theme = shinythemes::shinytheme("spacelab"),
         analysisPanel(),
         helpPanel(),
