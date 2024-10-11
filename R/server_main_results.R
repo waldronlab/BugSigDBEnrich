@@ -2,6 +2,17 @@
 mainResult <- function(input, output, inputSigFun, bsdb) {
     ## Analysis #######################################################
     inputSig <- inputSigFun()
+    
+    vct_lgl <- isType(inputSig, input$type_selection)
+    
+    if (isFALSE(all(vct_lgl))) {
+        shiny::showNotification(
+            stringr::str_c(sum(vct_lgl == FALSE), " inconsistent identifiers"),
+            type = "warning"
+            
+        )
+    }
+    
     bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
     sigs <- bugsigdbr::getSignatures(
         df = bsdb,
