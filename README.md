@@ -1,7 +1,7 @@
 
 # BugSigDBEnrich
 
-This repo/package contains a function that runs a shinyApp for BugSigDB.
+This repo/package contains a function that runs a shinyApp for comparing a list of identifiers against the BugSigDB signatures.
 
 ## App in the CUNY SPH server
 
