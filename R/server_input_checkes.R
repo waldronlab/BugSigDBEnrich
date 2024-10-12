@@ -1,4 +1,5 @@
 
+## These are used in the server_main_results file
 whichType <- function(x) {
     dplyr::case_when(
         stringr::str_detect(x, "^\\d+$") ~ "ncbi",
@@ -8,6 +9,6 @@ whichType <- function(x) {
     )
 }
 
-isType <- function(x, y) {
-    whichType(x) == y
+isType <- function(input_sig, input_type) {
+    whichType(input_sig) == input_type
 }
