@@ -4,4 +4,4 @@
 #' @return A shinyApp
 #' @export
 #'
-myApp <- function() shiny::shinyApp(ui = createUI, server = server)
+myApp <- function() shiny::shinyApp(ui = createUI(), server = server)
