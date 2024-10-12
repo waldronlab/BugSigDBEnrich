@@ -7,7 +7,10 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
     
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
-            stringr::str_c(sum(vct_lgl == FALSE), " inconsistent identifiers"),
+            stringr::str_c(
+                sum(vct_lgl == FALSE), " of ", length(vct_lgl),
+                " identifiers are inconsistent. Please review their format."
+            ),
             type = "warning"
             
         )

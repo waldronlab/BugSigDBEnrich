@@ -14,6 +14,13 @@ exampleSigs <- lapply(idTypes,  function(x) {
     sigs[exampleSig][[1]]
 })
 
+exampleSigs[["badsig"]] <- c(
+    exampleSigs$ncbi[1:3],
+    exampleSigs$taxname[1:3],
+    exampleSigs$metaphlan[1:3]
+)
+
+
 for (i in seq_along(exampleSigs)) {
     fname <- paste0(names(exampleSigs)[i], ".txt")
     fpath <- file.path("inst", "extdata", fname)

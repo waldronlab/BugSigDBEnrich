@@ -28,6 +28,10 @@ textBoxExamples <- function() {
         htmltools::div(
             style = "display: inline-block; margin-right: 10px;",
             shiny::actionLink("metaphlan_box", "metaphlan")
+        ),
+        htmltools::div(
+            style = "display: inline-block; margin-right: 10px;",
+            shiny::actionLink("badsig_box", "badsig")
         )
     )
     

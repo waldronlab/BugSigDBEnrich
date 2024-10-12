@@ -1,0 +1,9 @@
+12916
+469
+642
+Acidovorax
+Acinetobacter
+Aeromonas
+k__Bacteria|p__Pseudomonadota|c__Betaproteobacteria|o__Burkholderiales|f__Comamonadaceae|g__Acidovorax
+k__Bacteria|p__Pseudomonadota|c__Gammaproteobacteria|o__Moraxellales|f__Moraxellaceae|g__Acinetobacter
+k__Bacteria|p__Pseudomonadota|c__Gammaproteobacteria|o__Aeromonadales|f__Aeromonadaceae|g__Aeromonas

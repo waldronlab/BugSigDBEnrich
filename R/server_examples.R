@@ -26,6 +26,13 @@ textBoxExamplesServer <- function(input, session) {
             value = generateExampleText("metaphlan")
         )
     }) 
+    shiny::observeEvent(input$badsig_box, {
+        shiny::updateTextInput(
+            session = session, 
+            inputId = "text_input",
+            value = generateExampleText("badsig")
+        )
+    })
 }
 
 # Files -------------------------------------------------------------------
