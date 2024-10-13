@@ -17,6 +17,18 @@ server <- function(input, output, session) {
     textBoxExamplesServer(input, session)
     fileInputExamplesServer(output)
     
+    ## Handle query
+    shiny::observe({
+        query <- shiny::parseQueryString(session$clientData$url_search)
+        if (!is.null(query$vector)) {
+            prefill_vector <- strsplit(query$vector, ",")[[1]]
+            shiny::updateTextInput(
+                session, "text_input",
+                value = paste(prefill_vector, collapse = "\n")
+            )
+        }
+    })
+    
     inputSigFun <- inputSignature(input) # Create reactive (called in mainResult)
     
     ## (De)select all button
