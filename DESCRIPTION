@@ -1,7 +1,7 @@
 Package: BugSigDBEnrich
 Type: Package
 Title: A shiny app for BugSigDB
-Version: 0.1.10
+Version: 0.1.11
 Authors@R:
     c(
         person(

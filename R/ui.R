@@ -14,6 +14,7 @@ createUI <- function() {
         analysisPanel(),
         helpPanel(),
         aboutPanel(),
+        bugPanel()
     )
 }
 
@@ -54,6 +55,15 @@ helpPanel <- function() {
     )
 }
 
+bugPanel <- function() {
+    shiny::tabPanel(
+        title = "Report a bug",
+        shiny::includeMarkdown(
+            system.file("www", "bug.md", package = "BugSigDBEnrich")
+        ) 
+    )
+}
+
 aboutPanel <- function() {
     shiny::tabPanel(
         title = "About",
@@ -62,3 +72,4 @@ aboutPanel <- function() {
         ) 
     )
 }
+

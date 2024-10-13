@@ -50,34 +50,35 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
     paragraphs <- c(
         p1 = paste0("BugSigDB version: ", formals(bugsigdbr::importBugSigDB)$version),
         p2 = paste0("Unique taxa in the BugSigDB signature pool: ", format(length(sigPool), big.mark = ",", scientific = FALSE)),
+        p3 = paste0("bugsigdbr version: ", packageVersion("bugsigdbr")),
         
-        p3 = paste0("Number of input taxa: ", length(vct_lgl)),
-        p4 = paste0("Number of inconsistent input identifiers: ", sum(!vct_lgl)),
-        p5 = paste0("Number of indentifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool)),
+        p4 = paste0("Number of input taxa: ", length(vct_lgl)),
+        p5 = paste0("Number of inconsistent input identifiers: ", sum(!vct_lgl)),
+        p6 = paste0("Number of indentifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool)),
         
-        p6 = paste0("Identifier type: ", input$type_selection),
-        p7 = paste0("Rank(s): ", paste(input$rank_selection, collapse = ", ")),
-        p8 = paste0("Exact: ", input_exact_selection),
-        p9 = paste0("Minimum signature size: ", input$min_selection)
+        p7 = paste0("Identifier type: ", input$type_selection),
+        p8 = paste0("Rank(s): ", paste(input$rank_selection, collapse = ", ")),
+        p9 = paste0("Exact: ", input_exact_selection),
+        p10 = paste0("Minimum signature size: ", input$min_selection)
     )
     
     ## Handling outputs after analyzing #################################
     output$result_header <- shiny::renderUI({
-        # htmltools::h3("Result")
         htmltools::tagList(
             htmltools::h3("Result"),
             htmltools::tags$br(),
             htmltools::p(paragraphs[["p1"]]),
             htmltools::p(paragraphs[["p2"]]),
-            htmltools::tags$br(),
             htmltools::p(paragraphs[["p3"]]),
+            htmltools::tags$br(),
             htmltools::p(paragraphs[["p4"]]),
             htmltools::p(paragraphs[["p5"]]),
-            htmltools::tags$br(),
             htmltools::p(paragraphs[["p6"]]),
+            htmltools::tags$br(),
             htmltools::p(paragraphs[["p7"]]),
             htmltools::p(paragraphs[["p8"]]),
             htmltools::p(paragraphs[["p9"]]),
+            htmltools::p(paragraphs[["p10"]]),
             htmltools::tags$br()
         )
     })
