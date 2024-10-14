@@ -17,7 +17,6 @@ server <- function(input, output, session) {
     textBoxExamplesServer(input, session)
     fileInputExamplesServer(output)
     
-    ## Handle query
     shiny::observe({
         query <- shiny::parseQueryString(session$clientData$url_search)
         if (!is.null(query$vector)) {
@@ -29,9 +28,15 @@ server <- function(input, output, session) {
         }
     })
     
-    inputSigFun <- inputSignature(input) # Create reactive (called in mainResult)
+    shiny::observe({
+        if (length(input$rank_selection) > 1)
+            shiny::updateRadioButtons(
+                session, "exact_selection", selected = TRUE
+            )
+    })
     
-    ## (De)select all button
+    inputSigFun <- inputSignature(input)
+    
     selectAllRanks(input, session)
     
     resetApp(input, session)

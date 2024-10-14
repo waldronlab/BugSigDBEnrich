@@ -1,5 +1,6 @@
 createUI <- function() {
     ui <- shiny::navbarPage(
+        
         title = paste0(
             "BugSigDBEnrich v",
             utils::packageDescription("BugSigDBEnrich")$Version
@@ -32,6 +33,7 @@ analysisPanel <- function() {
         idTypeRadioButtons(),
         selectRankCheckBox(), selectAllRanksCheckBox(),
         exactRankButton(),
+        deactivateExactNo(),
         minSigSize(),
         shiny::tags$hr(),
         
@@ -72,4 +74,3 @@ aboutPanel <- function() {
         ) 
     )
 }
-

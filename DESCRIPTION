@@ -1,7 +1,7 @@
 Package: BugSigDBEnrich
 Type: Package
 Title: A shiny app for BugSigDB
-Version: 0.1.12
+Version: 0.1.13
 Authors@R:
     c(
         person(
@@ -19,11 +19,9 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     bugsigdbr,
-    clusterProfiler,
     dplyr,
     DT,
     htmltools,
-    markdown,
     purrr,
     rlang,
     shiny,

@@ -57,3 +57,24 @@ rankOptions <- function() {
         "family", "genus", "species", "strain"
     )
 }
+
+
+## Disable the use of false when two or more ranks are selected
+
+deactivateExactNo <- function() {
+    htmltools::tags$head(
+        htmltools::tags$script(htmltools::HTML("
+            $(document).on('shiny:inputchanged', function(event) {
+                if (event.name === 'rank_selection') {
+                    const checkedCount = $('input[name=\"rank_selection\"]:checked').length; 
+                    if (checkedCount > 1) {
+                        $('input[name=\"exact_selection\"][value=\"FALSE\"]').prop('disabled', true);
+                        $('input[name=\"exact_selection\"][value=\"TRUE\"]').prop('checked', true);
+                    } else {
+                        $('input[name=\"exact_selection\"][value=\"FALSE\"]').prop('disabled', false);
+                    }
+                }
+            });
+        "))
+    )
+}
