@@ -1,3 +1,5 @@
+baseURL <- "http://127.0.0.1:4817/" 
+
 x <- BugSigDBEnrich:::generateExampleText("ncbi") |> 
     strsplit("\n") |> 
     unlist() |> 
@@ -10,16 +12,12 @@ z <- BugSigDBEnrich:::generateExampleText("metaphlan") |>
     strsplit("\n") |> 
     unlist() |> 
     head()
-openInShiny <- function(vct_chr) {
+openInShiny <- function(vct_chr, baseUrl) {
     vct_chr_str <- paste(vct_chr, collapse = ",")
     encoded_vct_chr_str <- utils::URLencode(vct_chr_str)
-    shiny_url <- paste0(
-        "https://shiny.sph.cuny.edu/BugSigDBEnrich/?vector=",
-        encoded_vct_chr_str
-    )
-    # return(shiny_url)
+    shiny_url <- paste0(baseURL, "?vector=", encoded_vct_chr_str)
     utils::browseURL(shiny_url)
 }
-openInShiny(x)
-openInShiny(y)
-openInShiny(z)
+openInShiny(x, baseURL)
+openInShiny(y, baseURL)
+openInShiny(z, baseURL)

@@ -31,3 +31,14 @@ resetButtonRedCSS <- function() {
     }
   "))
 }
+
+cleanURLWhenResetApp <- function() {
+    htmltools::tags$script(
+        "
+    Shiny.addCustomMessageHandler('resetURL', function(message) {
+      window.history.replaceState({}, document.title, '/');
+    });
+    "
+    )
+}
+

@@ -11,3 +11,12 @@ selectAllRanks <- function(input, session) {
         }
     })
 }
+
+setExact2TrueWhenMultipleRanks <- function(input, session) {
+    shiny::observe({
+        if (length(input$rank_selection) > 1)
+            shiny::updateRadioButtons(
+                session, "exact_selection", selected = TRUE
+            )
+    })
+}

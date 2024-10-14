@@ -23,6 +23,7 @@ analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analyze",
         # topButton(), topButtonAction(),
+        
         htmltools::h3("Input"), #####################################
         textInputBox(), textBoxExamples(), 
         htmltools::br(),
@@ -39,7 +40,7 @@ analysisPanel <- function() {
         
         htmltools::h3("Actions"), #############################################
         analyzeButton(), downloadResultButton(),
-        resetButton(), # resetButtonRedCSS(),
+        resetButton(), cleanURLWhenResetApp(), # resetButtonRedCSS(),
         shiny::tags$hr(),
         
         ## Output
