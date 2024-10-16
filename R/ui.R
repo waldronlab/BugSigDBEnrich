@@ -21,7 +21,7 @@ createUI <- function() {
 
 analysisPanel <- function() {
     shiny::tabPanel(
-        title = "Analyze",
+        title = "BugSigDB",
         # topButton(), topButtonAction(),
     
         urlHandler(), # For internal links to documentation
