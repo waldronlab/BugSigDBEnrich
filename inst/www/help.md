@@ -2,13 +2,23 @@
 
 **Table of contents**
 
-[Input](#input)<br>
-[Options](#options)
+[1. Input](#input)<br>
+[2. Options](#options)<br>
+[3. Results](#results)<br>
+[4. HTTP GET](#httpget)<br>
 
-## Input <a name="input"></a>
+## 1. Input <a name="input"></a>
+
+Twxt
+
+## 2. Options <a name="options"></a>
 
 Text.
 
-## Options <a name="options"></a>
+## 3. Results <a name="results"></a>
+
+Text.
+
+## 4. HTTP GET <a name="httpget"></a>
 
 Text.
