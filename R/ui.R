@@ -1,6 +1,5 @@
 createUI <- function() {
     ui <- shiny::navbarPage(
-        
         title = paste0(
             "BugSigDBEnrich v",
             utils::packageDescription("BugSigDBEnrich")$Version
@@ -23,7 +22,15 @@ analysisPanel <- function() {
     shiny::tabPanel(
         title = "BugSigDB",
         # topButton(), topButtonAction(),
-    
+        
+        # tags$script(HTML(
+        #     "$(document).on('click', '.column-help', function(e) {
+        #     e.preventDefault();
+        #     var column = $(this).data('column');
+        #     Shiny.setInputValue('help_clicked', column, {priority: 'event'});
+        # });"
+        # )),
+        
         urlHandler(), # For internal links to documentation
         
         htmltools::h3("Input"), #####################################
@@ -46,6 +53,7 @@ analysisPanel <- function() {
         shiny::tags$hr(),
         
         ## Output
+        columnHelpHandler(),
         shiny::uiOutput("result_header"),
         DT::DTOutput("result_table")
     )
@@ -122,3 +130,16 @@ urlHandler <- function() {
     "))
     )
 }
+
+columnHelpHandler <- function() {
+    htmltools::tags$script(htmltools::HTML(
+        "$(document).on('click', '.column-help', function(e) {
+            e.preventDefault();
+            var column = $(this).data('column');
+            Shiny.setInputValue('help_clicked', column, {priority: 'event'});
+        });"
+    ))
+}
+
+
+

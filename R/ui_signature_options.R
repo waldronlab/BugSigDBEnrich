@@ -2,7 +2,7 @@
 idTypeRadioButtons <- function() {
     shiny::radioButtons(
         inputId = "type_selection",
-        label = shiny::tagList(
+        label = htmltools::tagList(
             "Select identifier type:",
             htmltools::tags$span(
                 shiny::actionLink("type_help_link", label = "?"),

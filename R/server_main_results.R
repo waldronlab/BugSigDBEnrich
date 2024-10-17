@@ -25,10 +25,12 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
         min.size = input$min_selection
     )
     sigPool <- unique(unlist(sigs, use.names = FALSE))
-    df <- simFun(inputSig, sigs)
-    df <- dplyr::left_join(df, bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
+    df <- simFun(inputSig, sigs) |> 
+        dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
+        dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
+    
+    dfDisplay <- df |> 
         dplyr::mutate(
-            Study = stringr::str_remove(.data$Study, "^Study "),
             Study = stringr::str_c(
                 '<a href="https://bugsigdb.org/Study_', .data$Study,
                 '" target="_blank">', .data$Study, '</a>'
@@ -36,14 +38,8 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
         ) |>
         dplyr::select(-.data$bsdb_id)
     
-    ## Create downloable table (remove hyperlinks)
-    dfDownload <- df |> 
-        dplyr::mutate(
-            Study = sub(
-                "^.*https://bugsigdb.org/Study_(\\d+).*$", "\\1",
-                .data$Study
-            )  
-        )
+    custom_colnames <- purrr::map(colnames(dfDisplay), appendHelp)
+    
     input_exact_selection <- ifelse(input$exact_selection == TRUE, "Yes", "No")
     
     ## For the report
@@ -82,19 +78,50 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
             htmltools::tags$br()
         )
     })
-    output$result_table <- DT::renderDT(
+    output$result_table <- DT::renderDataTable(
         DT::datatable(
-            data = df, escape = FALSE, rownames = FALSE,
-            selection = "none"
-        )
+            data = dfDisplay,
+            escape = FALSE,
+            rownames = FALSE,
+            selection = "none",
+            # container = htmltools::tags$table(
+            #     class = 'display',
+            #     htmltools::tags$thead(
+            #         htmltools::tags$tr(
+            #             lapply(custom_colnames, htmltools::tags$th)
+            #         )
+            #     )
+            # ),
+            # options = list(ordering = TRUE)
+            container = htmltools::tags$table(
+                class = 'display',
+                htmltools::tags$thead(
+                    htmltools::tags$tr(
+                        lapply(custom_colnames, function(col) {
+                            htmltools::tags$th(
+                                class = "no-sort",
+                                col
+                            )
+                        })
+                    )
+                )
+            ),
+            options = list(
+                columnDefs = list(
+                    list(orderable = FALSE, targets = "_all")
+                ),
+                ordering = FALSE
+            )
+        ) 
     )
+    
     output$downloadData <- shiny::downloadHandler(
         filename = function() {
             paste("BugSigDBEnrich-", Sys.Date(), ".tsv", sep = "")
         },
         content = function(file) {
             utils::write.table(
-                x = dfDownload, file, row.names = FALSE,
+                x = df, file, row.names = FALSE,
                 sep = "\t"
             )
         }

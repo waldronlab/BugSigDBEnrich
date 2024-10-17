@@ -43,18 +43,13 @@ server <- function(input, output, session) {
     minsizeHelp(input)
     inputTextHelp(input)
     inputFileHelp(input)
-
-    # Add this observer to close the modal (pop up help boxes)
-    observeEvent(input$close_modal, {
-        removeModal()
-    })
+    tableHelp(input)
     
     ## HTT GET
     httpGetHandler(query, session, input, output, inputSigFun, bsdb)
     
     ## Analysis
     shiny::observeEvent(input$analyzeButton, {
-        
         if (!length(input$rank_selection)) {
             shiny::showNotification(
                 "Please select at least one rank option.", 
