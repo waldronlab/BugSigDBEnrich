@@ -2,7 +2,7 @@ textInputBox <- function() {
     shiny::textAreaInput(
         inputId = "text_input",
         label = htmltools::tagList(
-            "Eneter list of NCBI taxids, taxon names, or metaphlan names:",
+            "Enter list of NCBI taxids, taxon names, or metaphlan names:",
             htmltools::tags$span(
                 shiny::actionLink("inputtext_help_link", label = "?"),
                 style = "cursor: pointer; color:blue; text-decoration: underline;"

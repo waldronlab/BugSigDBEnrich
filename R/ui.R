@@ -10,7 +10,8 @@ createUI <- function() {
                 href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
             )
         ),
-        theme = shinythemes::shinytheme("spacelab"),
+        theme = shinythemes::shinytheme("flatly"),
+        # theme = shinythemes::shinytheme("spacelab"),
         analysisPanel(),
         helpPanel(),
         aboutPanel(),
@@ -22,14 +23,6 @@ analysisPanel <- function() {
     shiny::tabPanel(
         title = "BugSigDB",
         # topButton(), topButtonAction(),
-        
-        # tags$script(HTML(
-        #     "$(document).on('click', '.column-help', function(e) {
-        #     e.preventDefault();
-        #     var column = $(this).data('column');
-        #     Shiny.setInputValue('help_clicked', column, {priority: 'event'});
-        # });"
-        # )),
         
         urlHandler(), # For internal links to documentation
         
@@ -140,6 +133,3 @@ columnHelpHandler <- function() {
         });"
     ))
 }
-
-
-

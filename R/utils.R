@@ -1,14 +1,12 @@
-appendHelp <- function(x) {
-    linkName <- paste0("col_", x, "_help_link")
+appendHelp <- function(colName) {
     htmltools::tagList(
-        x,
+        colName,
         htmltools::tags$a(
             href = "#",
             class = "column-help",
-            `data-column` = x,
+            `data-column` = colName,
             "?",
             style = "margin-left: 5px; color: blue; text-decoration: none; font-weight: bold;"
         )
     )
 }
-

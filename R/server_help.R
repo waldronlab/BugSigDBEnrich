@@ -5,8 +5,10 @@ inputTextHelp <- function(input) {
             title = "Enter list of NCBI taxids, taxon names, or metaphlan names",
             htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=input' target='_blank'>More...</a>"
+                    "Enter a list of IDs; one per line.",
+                    " The IDs can be in 'ncbi', 'taxname', or 'metaphlan' format.",
+                    " Cick on the examples below to fill the text box with sample IDs.",
+                    "<a href='?tab=help&anchor=input' target='_blank'> More...</a>"
                 )
             ),
             easyClose = TRUE
@@ -17,11 +19,12 @@ inputTextHelp <- function(input) {
 inputFileHelp <- function(input) {
     shiny::observeEvent(input$inputfile_help_link, {
         shiny::showModal(shiny::modalDialog(
-            title = "Or upload a file:",
+            title = "Upload a file:",
             htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=input' target='_blank'>More...</a>"
+                    "A text file with '.txt' extension containing one ID per line.",
+                    " Click on the examples below to download a sample file.",
+                    "<a href='?tab=help&anchor=input' target='_blank'> More...</a>"
                 )
             ),
             easyClose = TRUE
@@ -34,8 +37,9 @@ typeHelp <- function(input) {
             title = "Identifier type",
             htmltools::HTML(
                 stringr::str_c(
-                    "placeholder. ",
-                    "<a href='?tab=help&anchor=options' target='_blank'>More...</a>"
+                    "Type of the target signatures in BugSigDB.",
+                    " The type must match the input IDs.",
+                    "<a href='?tab=help&anchor=options' target='_blank'> More...</a>"
                 )
             ),
             easyClose = TRUE
@@ -49,8 +53,9 @@ rankHelp <- function(input) {
             title = "Select taxonomic rank(s)",
             htmltools::HTML(
                 stringr::str_c(
-                    "placeholder. ",
-                    "<a href='?tab=help&anchor=options' target='_blank'>More...</a>"
+                    "Select the rank(s) of the taxa included in the target BugSigDB signature.",
+                    " Use the '(De)select all' check box to select or deselect all ranks at once.",
+                    "<a href='?tab=help&anchor=options' target='_blank'> More...</a>"
                 )
             ),
             easyClose = TRUE
@@ -64,8 +69,10 @@ exactHelp <- function(input) {
             title = "Use exact taxonomic level",
             htmltools::HTML(
                 stringr::str_c(
-                    "placeholder. ",
-                    "<a href='?tab=help&anchor=options' target='_blank'>More...</a>"
+                    "If 'Yes', only ranks manually curated will be included.",
+                    " If 'No', the taxonomic tree will be cut at the specified rank (above).",
+                    " Only one rank (above) can be selected when the 'No' options is used.",
+                    "<a href='?tab=help&anchor=options' target='_blank'> More...</a>"
                 )
             ),
             easyClose = TRUE
@@ -79,8 +86,8 @@ minsizeHelp <- function(input) {
             title = "Minimum signature size",
             htmltools::HTML(
                 stringr::str_c(
-                    "placeholder. ",
-                    "<a href='?tab=help&anchor=options' target='_blank'>More...</a>"
+                    "Minimum number of IDs to filter the target BugSigDB signatures.",
+                    "<a href='?tab=help&anchor=options' target='_blank'> More...</a>"
                 )
             ),
             easyClose = TRUE
@@ -94,8 +101,8 @@ tableHelp <- function(input) {
             title = "Signature",
             content = htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=results' target='_blank'>More...</a>"
+                    "Name of the BugSigDB signature.",
+                    "<a href='?tab=help&anchor=results' target='_blank'> More...</a>"
                 )
             )
         ),
@@ -103,8 +110,9 @@ tableHelp <- function(input) {
             title = "Jaccard Index (JI)",
             content = htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=results' target='_blank'>More...</a>"
+                    "The Jaccard Index shows how similar two signatures are by",
+                    " comparing shared elements to total elements.",
+                    "<a href='?tab=help&anchor=results' target='_blank'> More...</a>"
                 )
             )
         ),
@@ -112,8 +120,8 @@ tableHelp <- function(input) {
             title = "Overlap coefficient (OC)",
             content = htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=results' target='_blank'>More...</a>"
+                    "The Overlap Coefficient measures how much one signature fits within the other",
+                    "<a href='?tab=help&anchor=results' target='_blank'> More...</a>"
                 )
             )
         ),
@@ -121,8 +129,8 @@ tableHelp <- function(input) {
             title = "Size",
             content = htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=results' target='_blank'>More...</a>"
+                    "Number of taxa in the target BugSigDB signature.",
+                    "<a href='?tab=help&anchor=results' target='_blank'> More...</a>"
                 )
             )
         ),
@@ -130,8 +138,9 @@ tableHelp <- function(input) {
             title = "Study",
             content = htmltools::HTML(
                 stringr::str_c(
-                    "Placeholder. ",
-                    "<a href='?tab=help&anchor=results' target='_blank'>More...</a>"
+                    "The source Study of the signature.", 
+                    " Click on it to be re-directed to the study's curation page in BugSigDB.",
+                    "<a href='?tab=help&anchor=results' target='_blank'> More...</a>"
                 )
             )
         )

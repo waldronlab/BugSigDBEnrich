@@ -36,13 +36,9 @@ server <- function(input, output, session) {
         }
     })
     
-    ## Help boxes
-    typeHelp(input)
-    rankHelp(input)
-    exactHelp(input)
-    minsizeHelp(input)
-    inputTextHelp(input)
-    inputFileHelp(input)
+    ## Help boxes (BugSigDB)
+    inputTextHelp(input); inputFileHelp(input)
+    typeHelp(input); rankHelp(input); exactHelp(input); minsizeHelp(input)
     tableHelp(input)
     
     ## HTT GET
