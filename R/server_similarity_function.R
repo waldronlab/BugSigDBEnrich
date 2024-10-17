@@ -19,7 +19,7 @@ simFun <- function(sig, sigL) {
         OC = unname(oc),
         Size = purrr::map_int(sigL, length)
     ) |>
-        dplyr::arrange(-.data[["JI"]], -.data[["OC"]])
+        dplyr::arrange(-.data[["OC"]], -.data[["JI"]])
 }
 
 ## Helper function for jacSim
