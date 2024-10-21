@@ -66,7 +66,7 @@ minSigSize <- function() {
                 style = "cursor: pointer; color:blue; text-decoration: underline;"
             )
         ),
-        value = 5,
+        value = 1,
         min = 1,
         max = 100,
         step = 1
