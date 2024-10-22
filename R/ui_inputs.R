@@ -1,15 +1,16 @@
 textInputBox <- function() {
     shiny::textAreaInput(
         inputId = "text_input",
-        label = htmltools::tagList(
+        label = list(
             "Enter list of NCBI taxids, taxon names, or metaphlan names:",
-            htmltools::tags$span(
-                shiny::actionLink("inputtext_help_link", label = "?"),
-                style = "cursor: pointer; color:blue; text-decoration: underline;"
+            shiny::actionLink(
+                "inputtext_help_link",
+                label = bsicons::bs_icon("question-circle")
             )
         ),
         height = '200px',
-        width = "500px"
+        width = "500px",
+        resize = "both"
     )
 }
 
@@ -42,11 +43,11 @@ textBoxExamples <- function() {
 fileInputBox <- function() {
     shiny::fileInput(
         inputId = "file_input",
-        label = htmltools::tagList(
+        label = list(
             "Or upload a file:",
-            htmltools::tags$span(
-                shiny::actionLink("inputfile_help_link", label = "?"),
-                style = "cursor: pointer; color:blue; text-decoration: underline;"
+            shiny::actionLink(
+                "inputfile_help_link",
+                label = bsicons::bs_icon("question-circle")
             )
         ),
         accept = c(".txt"),

@@ -20,8 +20,7 @@ createUI <- function() {
 
 analysisPanel <- function() {
     shiny::tabPanel(
-        title = "BugSigDB",
-        # topButton(), topButtonAction(),
+        title = "Analysis",
         
         urlHandler(), # For internal links to documentation
         
@@ -41,7 +40,7 @@ analysisPanel <- function() {
         
         htmltools::h3("Actions"), #############################################
         analyzeButton(), downloadResultButton(),
-        resetButton(), cleanURLWhenResetApp(), # resetButtonRedCSS(),
+        resetButton(), cleanURLWhenResetApp(),
         shiny::tags$hr(),
         
         ## Output
@@ -58,9 +57,6 @@ helpPanel <- function() {
         shiny::includeMarkdown(
             system.file("www", "help.md", package = "BugSigDBEnrich")
         )
-        # shiny::includeHTML(
-        #     system.file("www", "help.html", package = "BugSigDBEnrich")
-        # ) 
     )
 }
 
@@ -125,11 +121,6 @@ aboutPanel <- function() {
 #     "))
 #     )
 # }
-
-
-
-
-
 
 urlHandler <- function() {
     htmltools::tags$head(
