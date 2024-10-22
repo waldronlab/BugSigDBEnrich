@@ -3,7 +3,7 @@ idTypeRadioButtons <- function() {
     shiny::radioButtons(
         inputId = "type_selection",
         label = htmltools::tagList(
-            "Select identifier type:",
+            "Identifier type:",
             htmltools::tags$span(
                 shiny::actionLink("type_help_link", label = "?"),
                 style = "cursor: pointer; color: blue; text-decoration: underline;"
@@ -19,7 +19,7 @@ selectRankCheckBox <- function() {
     shiny::checkboxGroupInput(
         inputId = "rank_selection", 
         label = htmltools::tagList(
-            "Select taxonomic ranks(s):",
+            "Taxonomic ranks(s):",
             htmltools::tags$span(
                 shiny::actionLink("rank_help_link", label = "?"),
                 style = "cursor: pointer; color:blue; text-decoration: underline;"
@@ -41,9 +41,9 @@ selectAllRanksCheckBox <- function() {
 exactRankButton <- function() {
     shiny::radioButtons(
         inputId = "exact_selection", 
-        # label = "Use exact taxonomic level:",
+        # label = "Exact taxonomic level:",
         label = htmltools::tagList(
-            "Use exact taxonomic level:",
+            "Exact taxonomic level:",
             htmltools::tags$span(
                 shiny::actionLink("exact_help_link", label = "?"),
                 style = "cursor: pointer; color:blue; text-decoration: underline;"
@@ -60,7 +60,7 @@ minSigSize <- function() {
     shiny::numericInput(
         inputId = "min_selection", 
         label = htmltools::tagList(
-            "Minimum signature size:",
+            "Minimum size:",
             htmltools::tags$span(
                 shiny::actionLink("minsize_help_link", label = "?"),
                 style = "cursor: pointer; color:blue; text-decoration: underline;"
