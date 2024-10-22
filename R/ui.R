@@ -31,11 +31,22 @@ analysisPanel <- function() {
         shiny::tags$hr(),
         
         htmltools::h3("Options"), ############################
-        idTypeRadioButtons(),
-        selectRankCheckBox(), selectAllRanksCheckBox(),
-        exactRankButton(),
-        deactivateExactNo(),
-        minSigSize(),
+        bslib::navset_underline(
+            bslib::nav_panel(
+                "BugSigDB",
+                htmltools::br(),
+                idTypeRadioButtons(),
+                selectRankCheckBox(), selectAllRanksCheckBox(),
+                exactRankButton(),
+                deactivateExactNo(),
+                minSigSize()
+            ),
+            bslib::nav_panel(
+                "bugphyzz",
+                htmltools::br(),
+                "Placeholder."
+            )
+        ),
         shiny::tags$hr(),
         
         htmltools::h3("Actions"), #############################################
@@ -49,6 +60,10 @@ analysisPanel <- function() {
         DT::DTOutput("result_table")
     )
 }
+
+bugsigdbTab <- 
+
+
 
 helpPanel <- function() {
     shiny::tabPanel(
