@@ -10,9 +10,7 @@ createUI <- function() {
                 href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
             )
         ),
-        theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
-        # theme = shinythemes::shinytheme("flatly"),
-        # theme = shinythemes::shinytheme("spacelab"),
+        theme = bslib::bs_theme(version = 5, bootswatch = "spacelab"),
         analysisPanel(),
         helpPanel(),
         aboutPanel(),
