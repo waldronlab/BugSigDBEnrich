@@ -61,10 +61,6 @@ analysisPanel <- function() {
     )
 }
 
-bugsigdbTab <- 
-
-
-
 helpPanel <- function() {
     shiny::tabPanel(
         title = "Help",
@@ -137,6 +133,7 @@ aboutPanel <- function() {
 #     )
 # }
 
+# handling scrolling and tabs
 urlHandler <- function() {
     htmltools::tags$head(
         htmltools::tags$script(htmltools::HTML("

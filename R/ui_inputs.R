@@ -3,10 +3,7 @@ textInputBox <- function() {
         inputId = "text_input",
         label = list(
             "Enter list of NCBI taxids, taxon names, or metaphlan names:",
-            shiny::actionLink(
-                "inputtext_help_link",
-                label = bsicons::bs_icon("question-circle")
-            )
+            helpIcon("inputtext_help_link")
         ),
         height = '200px',
         width = "500px",
@@ -43,13 +40,7 @@ textBoxExamples <- function() {
 fileInputBox <- function() {
     shiny::fileInput(
         inputId = "file_input",
-        label = list(
-            "Or upload a file:",
-            shiny::actionLink(
-                "inputfile_help_link",
-                label = bsicons::bs_icon("question-circle")
-            )
-        ),
+        label = list("Or upload a file:", helpIcon("inputfile_help_link")),
         accept = c(".txt"),
         buttonLabel = "Browse...",
         placeholder = "No .txt file selected"

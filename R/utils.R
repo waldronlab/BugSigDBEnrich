@@ -10,3 +10,10 @@ appendHelp <- function(colName) {
         )
     )
 }
+
+helpIcon <- function(inputId) {
+   shiny::actionLink(
+       inputId = inputId,
+       label = bsicons::bs_icon("question-circle")
+   ) 
+}

@@ -15,10 +15,12 @@
 
 The input is a list of taxa using one of the following identifier types:
 
-+ **ncbi**. An NCBI taxonomy ID (or taxid). For example, 562. 
++ **ncbi**. An NCBI taxonomy ID (or taxid). For example, 562.
+Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.
 
 + **taxname**. A scientific name from the NCBI taxonomy.
 For example, _Escherichia coli_.
+Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.
 
 + **metaphlan**. A taxonomy name in the metaphlan format.
 This format contains the full taxonomy of the taxon separated by 
@@ -32,7 +34,8 @@ box. Alternatively, you may upload a text file (*.txt) containing one identifier
 per line by using the "Browse..." button.
 
 > ⚠️ All identifiers must be from the same
-type. A warning will be displayed if not, but the analysis will still run.
+type. A warning will be displayed if they are not,
+but the analysis will still run.
 
 For detailed examples, please refer to the examples below the text box or
 download one of the sample files provided under the "Browse..." button.
@@ -41,8 +44,10 @@ download one of the sample files provided under the "Browse..." button.
 
 ## 2. Options <a name="options"></a>
 
+### BugSigDB
+
 These options refer to the way the target signatures are obtained from the
-BugSigDB database,
+BugSigDB database.
 
 **Identifier type**. The selection must match the format used in the input
 list of signatures.
@@ -54,7 +59,8 @@ with "**Exact taxonomic level**" (described below).
 
 Let’s use the signature [bsdb:1\/2\/1](https://bugsigdb.org/Study_1) as an
 example. This signature contains only two elements manually annotated in
-BugSigDB: Anaerostipes (genus) and Lacticaseibacillus zeae (species).
+BugSigDB: Anaerostipes (genus) and Lacticaseibacillus zeae (species). The
+following examples assume that "Exact taxonomic rank" has been set to "Yes".
 
 If "genus" is checked, only Anaerostipes will be included.<br>
 If "species" is checked, only _Lacticaseibacillus zeae_ will be included.<br>
@@ -63,12 +69,12 @@ If "mixed" is checked, both elements will be included, and nothing else,
 as no other taxa were manually annotated for this signature.
 
 **Exact taxonomic level**. If "Yes" is selected, only manually curated taxa in
-BugSigDB will be considered. This is the defaukt value and the resulting
+BugSigDB will be considered. This is the default value and the resulting
 BugSigDB signatures will be created as described above.
 If "No" is selected, the taxonomic tree will be
 truncated at the specified rank (selected above), allowing the inclusion of a
 parent taxon of the manually annotated taxa in the signature, even if the 
-parent was not manyally curated. The "No" option can only be used when a single
+parent was not manually annotated. The "No" option can only be used when a single
 taxonomic rank is selected.
 
 Continuing with the [bsdb:1\/2\/1](https://bugsigdb.org/Study_1) signature as an
@@ -145,7 +151,7 @@ HTTP method is used, the app will:
 1. Fill in the text box area with the parameters from the URL.
 2. Automatically select the identifiers type
 (based on the first identifier in the list).
-3. Run the analysis with default values.
+3. Run the analysis (BugSigDB option) with default values.
 
 After this, users can choose different paratemeters and re-run the app using
 the same input.

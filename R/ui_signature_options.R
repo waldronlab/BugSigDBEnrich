@@ -2,13 +2,7 @@
 idTypeRadioButtons <- function() {
     shiny::radioButtons(
         inputId = "type_selection",
-        label = htmltools::tagList(
-            "Identifier type:",
-            htmltools::tags$span(
-                shiny::actionLink("type_help_link", label = "?"),
-                style = "cursor: pointer; color: blue; text-decoration: underline;"
-            )
-        ),
+        label = list("Identifier type:", helpIcon("type_help_link")),
         choices = c("ncbi", "taxname", "metaphlan"),
         selected = "ncbi",
         inline = TRUE
@@ -18,13 +12,7 @@ idTypeRadioButtons <- function() {
 selectRankCheckBox <- function() {
     shiny::checkboxGroupInput(
         inputId = "rank_selection", 
-        label = htmltools::tagList(
-            "Taxonomic ranks(s):",
-            htmltools::tags$span(
-                shiny::actionLink("rank_help_link", label = "?"),
-                style = "cursor: pointer; color:blue; text-decoration: underline;"
-            )
-        ),
+        label = list("Taxonomic ranks(s):", helpIcon("rank_help_link")),
         choices = rankOptions(),
         inline = TRUE
     )
@@ -41,14 +29,7 @@ selectAllRanksCheckBox <- function() {
 exactRankButton <- function() {
     shiny::radioButtons(
         inputId = "exact_selection", 
-        # label = "Exact taxonomic level:",
-        label = htmltools::tagList(
-            "Exact taxonomic level:",
-            htmltools::tags$span(
-                shiny::actionLink("exact_help_link", label = "?"),
-                style = "cursor: pointer; color:blue; text-decoration: underline;"
-            )
-        ),
+        label = list("Exact taxonomic level:", helpIcon("exact_help_link")),
         choiceNames = c("Yes", "No"),
         choiceValues = c(TRUE, FALSE),
         selected = TRUE,
@@ -59,13 +40,7 @@ exactRankButton <- function() {
 minSigSize <- function() {
     shiny::numericInput(
         inputId = "min_selection", 
-        label = htmltools::tagList(
-            "Minimum size:",
-            htmltools::tags$span(
-                shiny::actionLink("minsize_help_link", label = "?"),
-                style = "cursor: pointer; color:blue; text-decoration: underline;"
-            )
-        ),
+        label = list("Minimum size:", helpIcon("minsize_help_link")),
         value = 1,
         min = 1,
         max = 100,
