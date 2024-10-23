@@ -38,7 +38,7 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
         ) |>
         dplyr::select(-.data$bsdb_id)
     
-    custom_colnames <- purrr::map(colnames(dfDisplay), appendHelp)
+    # custom_colnames <- purrr::map(colnames(dfDisplay), appendHelp)
     
     input_exact_selection <- ifelse(input$exact_selection == TRUE, "Yes", "No")
     
@@ -78,42 +78,32 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
             htmltools::tags$br()
         )
     })
-    output$result_table <- DT::renderDataTable(
-        DT::datatable(
-            data = dfDisplay,
-            escape = FALSE,
+    
+    output$result_table <- DT::renderDT({
+        tag_list <- getColNameTags(dfDisplay)
+        dt <- DT::datatable(
+            dfDisplay,
             rownames = FALSE,
+            escape = FALSE,
             selection = "none",
-            # container = htmltools::tags$table(
-            #     class = 'display',
-            #     htmltools::tags$thead(
-            #         htmltools::tags$tr(
-            #             lapply(custom_colnames, htmltools::tags$th)
-            #         )
-            #     )
-            # ),
-            # options = list(ordering = TRUE)
-            container = htmltools::tags$table(
-                class = 'display',
-                htmltools::tags$thead(
-                    htmltools::tags$tr(
-                        lapply(custom_colnames, function(col) {
-                            htmltools::tags$th(
-                                class = "no-sort",
-                                col
-                            )
-                        })
-                    )
+            container = htmltools::withTags(
+                htmltools::tags$table(
+                    class = 'display',
+                    htmltools::tags$thead(htmltools::tags$tr(tag_list))
                 )
             ),
             options = list(
-                columnDefs = list(
-                    list(orderable = FALSE, targets = "_all")
-                ),
-                ordering = FALSE
+                # columnDefs = list(
+                #     list(targets = '_all', className = 'dt-center') # Center all cells initially (can be adjusted later)
+                # ),
+                headerCallback = DT::JS("function(thead, data, start, end, display) {
+                $(thead).find('th').css('text-align', 'center'); // Center header text
+            }")
             )
-        ) 
-    )
+        )
+        dt$dependencies <- appendDTDeps(dt)
+        dt
+    })
     
     output$downloadData <- shiny::downloadHandler(
         filename = function() {

@@ -39,7 +39,7 @@ server <- function(input, output, session) {
     ## Help boxes (BugSigDB)
     inputTextHelp(input); inputFileHelp(input)
     typeHelp(input); rankHelp(input); exactHelp(input); minsizeHelp(input)
-    tableHelp(input)
+    # tableHelp(input)
     
     ## HTT GET
     httpGetHandler(query, session, input, output, inputSigFun, bsdb)

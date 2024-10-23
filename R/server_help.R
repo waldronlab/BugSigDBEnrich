@@ -95,73 +95,73 @@ minsizeHelp <- function(input) {
     })
 }
 
-tableHelp <- function(input) {
-    help_info <- list(
-        Signature = list(
-            title = "Signature",
-            content = htmltools::HTML(
-                stringr::str_c(
-                    "Name of the BugSigDB signature.",
-                    "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
-                )
-            )
-        ),
-        JI = list(
-            title = "Jaccard Index (JI)",
-            content = htmltools::HTML(
-                stringr::str_c(
-                    "The Jaccard Index shows how similar two signatures are by",
-                    " comparing shared elements to total elements.",
-                    "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
-                )
-            )
-        ),
-        OC = list(
-            title = "Overlap coefficient (OC)",
-            content = htmltools::HTML(
-                stringr::str_c(
-                    "The Overlap Coefficient measures how much one signature fits within the other",
-                    "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
-                )
-            )
-        ),
-        Size = list(
-            title = "Size",
-            content = htmltools::HTML(
-                stringr::str_c(
-                    "Number of taxa in the target BugSigDB signature.",
-                    "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
-                )
-            )
-        ),
-        Study = list(
-            title = "Study",
-            content = htmltools::HTML(
-                stringr::str_c(
-                    "The source Study of the signature.", 
-                    " Click on it to be re-directed to the study's curation page in BugSigDB.",
-                    "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
-                )
-            )
-        )
-    )
-    
-    observeEvent(input$help_clicked, {
-        col <- input$help_clicked
-        info <- help_info[[col]]
-        if (is.null(info)) {
-            info <- list(
-                title = paste("Help for column:", col),
-                content = paste(
-                    "This is where you would put help information for the column", col
-                )
-            )
-        }
-        
-        showModal(modalDialog(
-            title = info$title,
-            info$content,
-            easyClose = TRUE
-        ))
-    })
-}
+# tableHelp <- function(input) {
+#     help_info <- list(
+#         Signature = list(
+#             title = "Signature",
+#             content = htmltools::HTML(
+#                 stringr::str_c(
+#                     "Name of the BugSigDB signature.",
+#                     "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+#                 )
+#             )
+#         ),
+#         JI = list(
+#             title = "Jaccard Index (JI)",
+#             content = htmltools::HTML(
+#                 stringr::str_c(
+#                     "The Jaccard Index shows how similar two signatures are by",
+#                     " comparing shared elements to total elements.",
+#                     "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+#                 )
+#             )
+#         ),
+#         OC = list(
+#             title = "Overlap coefficient (OC)",
+#             content = htmltools::HTML(
+#                 stringr::str_c(
+#                     "The Overlap Coefficient measures how much one signature fits within the other",
+#                     "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+#                 )
+#             )
+#         ),
+#         Size = list(
+#             title = "Size",
+#             content = htmltools::HTML(
+#                 stringr::str_c(
+#                     "Number of taxa in the target BugSigDB signature.",
+#                     "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+#                 )
+#             )
+#         ),
+#         Study = list(
+#             title = "Study",
+#             content = htmltools::HTML(
+#                 stringr::str_c(
+#                     "The source Study of the signature.", 
+#                     " Click on it to be re-directed to the study's curation page in BugSigDB.",
+#                     "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+#                 )
+#             )
+#         )
+#     )
+#     
+#     observeEvent(input$help_clicked, {
+#         col <- input$help_clicked
+#         info <- help_info[[col]]
+#         if (is.null(info)) {
+#             info <- list(
+#                 title = paste("Help for column:", col),
+#                 content = paste(
+#                     "This is where you would put help information for the column", col
+#                 )
+#             )
+#         }
+#         
+#         showModal(modalDialog(
+#             title = info$title,
+#             info$content,
+#             easyClose = TRUE
+#         ))
+#     })
+# }

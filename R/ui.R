@@ -57,7 +57,10 @@ analysisPanel <- function() {
         ## Output
         columnHelpHandler(),
         shiny::uiOutput("result_header"),
-        DT::DTOutput("result_table")
+        htmltools::div(
+            id = "table-container",
+            DT::DTOutput("result_table")
+        )
     )
 }
 
