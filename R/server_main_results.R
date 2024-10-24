@@ -1,6 +1,6 @@
 
 mainResult <- function(input, output, inputSigFun, bsdb) {
-    ## Analysis #######################################################
+    
     inputSig <- inputSigFun()
     
     vct_lgl <- isType(inputSig, input$type_selection)
@@ -37,8 +37,6 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
             )
         ) |>
         dplyr::select(-.data$bsdb_id)
-    
-    # custom_colnames <- purrr::map(colnames(dfDisplay), appendHelp)
     
     input_exact_selection <- ifelse(input$exact_selection == TRUE, "Yes", "No")
     
@@ -93,9 +91,6 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
                 )
             ),
             options = list(
-                # columnDefs = list(
-                #     list(targets = '_all', className = 'dt-center') # Center all cells initially (can be adjusted later)
-                # ),
                 headerCallback = DT::JS("function(thead, data, start, end, display) {
                 $(thead).find('th').css('text-align', 'center'); // Center header text
             }")
