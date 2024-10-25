@@ -51,8 +51,7 @@ analysisPanel <- function() {
         shiny::tags$hr(),
         
         htmltools::h3("Actions"), #############################################
-        analyzeButton(), downloadResultButton(),
-        resetButton(), cleanURLWhenResetApp(),
+        actionButtons(),
         shiny::tags$hr(),
         
         ## Output
