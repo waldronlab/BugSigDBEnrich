@@ -10,9 +10,18 @@
 #' @return A shinyApp
 #'
 server <- function(input, output, session) {
+    ## Show a waiter before BugSigDB is loaded
+    w <- waiter::Waiter$new(
+        html = span(
+            div(class = "h3", "Loading BugSigDBEnrich..."),
+            div(class = "h4", "Please wait...")
+        ),
+        color = "white"
+    )
     
-    ## Load bsdb first
+    w$show()
     bsdb <- bugsigdbr::importBugSigDB()
+    w$hide() 
     
     ## Reactive for input signature
     inputSigFun <- inputSignature(input)

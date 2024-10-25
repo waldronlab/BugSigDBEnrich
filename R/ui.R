@@ -1,21 +1,28 @@
 createUI <- function() {
-    ui <- shiny::navbarPage(
-        title = paste0(
-            "BugSigDBEnrich v",
-            utils::packageDescription("BugSigDBEnrich")$Version
-        ),
-        header = htmltools::tags$head(
-            htmltools::tags$link(
-                rel = "shortcut icon",
-                href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
-            )
-        ),
-        theme = bslib::bs_theme(version = 5, bootswatch = "spacelab"),
-        analysisPanel(),
-        helpPanel(),
-        aboutPanel(),
-        bugReportPanel()
+    ui <- htmltools::tagList(
+        # Add waiter dependencies
+        waiter::use_waiter(),
+        
+        # Your original UI
+        shiny::navbarPage(
+            title = paste0(
+                "BugSigDBEnrich v",
+                utils::packageDescription("BugSigDBEnrich")$Version
+            ),
+            header = htmltools::tags$head(
+                htmltools::tags$link(
+                    rel = "shortcut icon",
+                    href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
+                )
+            ),
+            theme = bslib::bs_theme(version = 5, bootswatch = "spacelab"),
+            analysisPanel(),
+            helpPanel(),
+            aboutPanel(),
+            bugReportPanel()
+        )
     )
+    return(ui)
 }
 
 analysisPanel <- function() {
