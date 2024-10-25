@@ -1,9 +1,6 @@
 createUI <- function() {
     ui <- htmltools::tagList(
-        # Add waiter dependencies
         waiter::use_waiter(),
-        
-        # Your original UI
         shiny::navbarPage(
             title = paste0(
                 "BugSigDBEnrich v",

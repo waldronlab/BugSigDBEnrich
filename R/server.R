@@ -14,12 +14,14 @@ server <- function(input, output, session) {
     waiter::waiter_show(
         html = htmltools::tagList(
             waiter::spin_pulsar(),
+            htmltools::tags$br(),
+            htmltools::tags$br(),
             htmltools::div(
-                class = "h3", "Loading BugSigDBEnrich...",
+                class = "h4", "Loading BugSigDBEnrich...",
                 style = "color: black;"
             ),
             htmltools::div(
-                class = "h4", "Please wait...",
+                class = "h5", "Please wait...",
                 style = "color: black;"
             )
         ),

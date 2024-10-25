@@ -3,7 +3,7 @@ analyzeButton <- function() {
     shiny::actionButton(
         inputId = "analyzeButton", 
         label = "Analyze",
-        icon = shiny::icon("table")
+        icon = shiny::icon("magnifying-glass-chart")
     )
 }
 
@@ -21,15 +21,6 @@ resetButton <- function() {
         icon = shiny::icon("refresh"),
         class = "btn-red" 
     )
-}
-
-resetButtonRedCSS <- function() {
-    htmltools::tags$style(htmltools::HTML("
-    .btn-red {
-      background-color: red;
-      color: white;
-    }
-  "))
 }
 
 cleanURLWhenResetApp <- function() {
