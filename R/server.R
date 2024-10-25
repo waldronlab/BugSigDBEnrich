@@ -11,17 +11,22 @@
 #'
 server <- function(input, output, session) {
     ## Show a waiter before BugSigDB is loaded
-    w <- waiter::Waiter$new(
-        html = span(
-            div(class = "h3", "Loading BugSigDBEnrich..."),
-            div(class = "h4", "Please wait...")
+    waiter::waiter_show(
+        html = htmltools::tagList(
+            waiter::spin_pulsar(),
+            htmltools::div(
+                class = "h3", "Loading BugSigDBEnrich...",
+                style = "color: black;"
+            ),
+            htmltools::div(
+                class = "h4", "Please wait...",
+                style = "color: black;"
+            )
         ),
         color = "white"
     )
-    
-    w$show()
     bsdb <- bugsigdbr::importBugSigDB()
-    w$hide() 
+    waiter::waiter_hide()
     
     ## Reactive for input signature
     inputSigFun <- inputSignature(input)
