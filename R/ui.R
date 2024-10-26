@@ -25,13 +25,12 @@ createUI <- function() {
 analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
-        
         urlHandler(), # For internal links to documentation
         
         htmltools::h3("Input"), #####################################
-        textInputBox(), textBoxExamples(), 
+        textInputBox(),
         htmltools::br(),
-        fileInputBox(), fileExamples(),
+        fileInputBox(),
         shiny::tags$hr(),
         
         htmltools::h3("Options"), ############################

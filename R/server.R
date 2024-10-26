@@ -10,7 +10,6 @@
 #' @return A shinyApp
 #'
 server <- function(input, output, session) {
-    ## Show a waiter before BugSigDB is loaded
     waiter::waiter_show(
         html = htmltools::tagList(
             waiter::spin_pulsar(),
