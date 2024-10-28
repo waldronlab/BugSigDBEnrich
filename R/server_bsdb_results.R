@@ -1,9 +1,15 @@
 
-mainResult <- function(input, output, inputSigFun, bsdb) {
+bsdbResult <- function(input, output, inputSigFun, bsdb) {
+    if (!length(input$bsdb_rank)) {
+        shiny::showNotification(
+            "Please select at least one rank option.", 
+            type = "error"
+        )
+    }
     
     inputSig <- inputSigFun()
     
-    vct_lgl <- isType(inputSig, input$type_selection)
+    vct_lgl <- isType(inputSig, input$bsdb_type)
     
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
@@ -19,10 +25,10 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
     bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
     sigs <- bugsigdbr::getSignatures(
         df = bsdb,
-        tax.id.type = input$type_selection,
-        tax.level = input$rank_selection,
-        exact.tax.level = as.logical(input$exact_selection),
-        min.size = input$min_selection
+        tax.id.type = input$bsdb_type,
+        tax.level = input$bsdb_rank,
+        exact.tax.level = as.logical(input$bsdb_exact),
+        min.size = input$bsdb_min
     )
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     df <- simFun(inputSig, sigs) |> 
@@ -38,7 +44,7 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
         ) |>
         dplyr::select(-.data$bsdb_id)
     
-    input_exact_selection <- ifelse(input$exact_selection == TRUE, "Yes", "No")
+    input_exact_selection <- ifelse(input$bsdb_exact == TRUE, "Yes", "No")
     
     ## For the report
     paragraphs <- c(
@@ -50,16 +56,16 @@ mainResult <- function(input, output, inputSigFun, bsdb) {
         p5 = paste0("Number of inconsistent input identifiers: ", sum(!vct_lgl)),
         p6 = paste0("Number of indentifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool)),
         
-        p7 = paste0("Identifier type: ", input$type_selection),
-        p8 = paste0("Rank(s): ", paste(input$rank_selection, collapse = ", ")),
+        p7 = paste0("Identifier type: ", input$bsdb_type),
+        p8 = paste0("Rank(s): ", paste(input$bsdb_rank, collapse = ", ")),
         p9 = paste0("Exact: ", input_exact_selection),
-        p10 = paste0("Minimum signature size: ", input$min_selection)
+        p10 = paste0("Minimum signature size: ", input$bsdb_min)
     )
     
     ## Handling outputs after analyzing #################################
     output$result_header <- shiny::renderUI({
         htmltools::tagList(
-            htmltools::h3("Result"),
+            htmltools::h3("BugSigDB results"),
             htmltools::tags$br(),
             htmltools::p(paragraphs[["p1"]]),
             htmltools::p(paragraphs[["p2"]]),

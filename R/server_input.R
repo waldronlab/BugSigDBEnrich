@@ -1,7 +1,3 @@
-readBox <- function(text_input) {
-    char_vec <- unlist(strsplit(text_input, "\n"))
-    char_vec <- char_vec[char_vec != ""]
-}
 
 inputSignature <- function(input) {
     shiny::reactive({
@@ -25,3 +21,9 @@ inputSignature <- function(input) {
         }
     })
 }
+
+readBox <- function(text_input) {
+    char_vec <- unlist(strsplit(text_input, "\n"))
+    char_vec <- char_vec[char_vec != ""]
+}
+
