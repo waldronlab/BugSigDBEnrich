@@ -27,33 +27,15 @@ analysisPanel <- function() {
         title = "Analysis",
         urlHandler(), # For internal links to documentation
         
-        htmltools::h3("Input"), #####################################
-        textInputBox(),
-        htmltools::br(),
-        fileInputBox(),
-        shiny::tags$hr(),
+        htmltools::h3("Input"),
+        textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
         
-        htmltools::h3("Options"), ############################
-        bslib::navset_underline(
-            bslib::nav_panel(
-                "BugSigDB",
-                htmltools::br(),
-                bsdbSigOptions(),
-                deactivateExactNo()
-            ),
-            bslib::nav_panel(
-                "bugphyzz",
-                htmltools::br(),
-                "Placeholder."
-            )
-        ),
-        shiny::tags$hr(),
+        htmltools::h3("Options"),
+        optionsNavSet(), shiny::tags$hr(),
         
-        htmltools::h3("Actions"), #############################################
-        actionButtons(),
-        shiny::tags$hr(),
+        htmltools::h3("Actions"),
+        actionButtons(), shiny::tags$hr(),
         
-        ## Output
         shiny::uiOutput("result_header"),
         htmltools::div(
             id = "table-container",
@@ -87,5 +69,13 @@ aboutPanel <- function() {
         shiny::includeMarkdown(
             system.file("www", "about.md", package = "BugSigDBEnrich")
         ) 
+    )
+}
+
+optionsNavSet <- function() {
+    bslib::navset_underline(
+        id = "options_tab",
+        bsdbNavPanel(),
+        bugphyzzNavPanel()
     )
 }

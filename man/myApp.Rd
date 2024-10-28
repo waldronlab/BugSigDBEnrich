@@ -7,7 +7,7 @@
 myApp()
 }
 \value{
-A shinyApp
+A shinyApp.
 }
 \description{
 Launch my app

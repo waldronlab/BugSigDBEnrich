@@ -1,10 +1,59 @@
-helpIcon <- function(inputId) {
-    shiny::actionLink(
-        inputId = inputId,
-        label = bsicons::bs_icon("question-circle")
-    ) 
+
+urlHandlerServer <- function(session) {
+    shiny::observe({
+        query <- shiny::parseQueryString(session$clientData$url_search)
+        if (!is.null(query$tab)) {
+            shiny::updateNavbarPage(session, "navbar", selected = query$tab)
+        }
+    }) 
 }
 
+httpGetHandler <- function(query, session, input, output, inputSigFun, bsdb) {
+    hasRun <- shiny::reactiveVal(FALSE)
+    shiny::observe({
+        query <- shiny::parseQueryString(session$clientData$url_search)
+        if (!is.null(query$vector)) {
+            prefill_vector <- strsplit(query$vector, ",")[[1]]
+            shiny::updateTextInput(
+                session, "text_input",
+                value = paste(prefill_vector, collapse = "\n")
+            )
+            detectedType <- unique(whichType(prefill_vector))[1]
+            shiny::updateRadioButtons(
+                session = session, inputId = "bsdb_type",
+                selected = detectedType
+            )
+            if (!hasRun()) {
+                shiny::req(input$text_input)  # Ensure input is provided
+                bsdbResult(input, output, inputSigFun, bsdb)
+                hasRun(TRUE)  # Set the flag to indicate the analysis has run
+            }
+        }
+    })
+    shiny::observeEvent(input$run_analysis, {
+        shiny::req(input$text_input)  # Ensure input is provided
+        # bsdbResult(input, output, inputSigFun, bsdb)
+        output$result_header <- renderUI({ NULL })
+        output$result_table <- DT::renderDT({ data.frame() })
+        
+        if (input$options_tab == "bugsigdb_panel") {
+            bsdbResult(input, output, inputSigFun, bsdb)
+        } else if (input$options_tab == "bugphyzz_panel") {
+            output$result_header <- shiny::renderUI({
+                htmltools::div("Placeholder.")
+            })
+        }
+    })
+}
+
+helpModal <- function(title, message)  {
+    shiny::showModal(shiny::modalDialog(
+        title = title,
+        message,
+        footer = shiny::modalButton("Close", shiny::icon("times")),
+        easyClose = TRUE
+    ))
+}
 
 getColNameTags <- function(dat) {
     cols <- list(
@@ -101,49 +150,4 @@ appendDTDeps <- function(dt) {
           </script>"
         )
     ))
-}
-
-# handling scrolling and tabs
-urlHandler <- function() {
-    htmltools::tags$head(
-        htmltools::tags$script(htmltools::HTML("
-      $(document).ready(function() {
-        var urlParams = new URLSearchParams(window.location.search);
-        var tabName = urlParams.get('tab');
-        var anchor = urlParams.get('anchor');
-
-        if (tabName) {
-          $('a[data-value=\"' + tabName + '\"]').tab('show');
-          if (anchor) {
-            setTimeout(function() {
-              var element = $('#' + anchor);
-              if (element.length) {
-                $('html, body').animate({
-                  scrollTop: element.offset().top
-                }, 500);
-              }
-            }, 300);
-          }
-        }
-
-        // Update URL when changing tabs
-        $('a[data-toggle=\"tab\"]').on('shown.bs.tab', function (e) {
-          var tabName = $(e.target).attr('data-value');
-          var newUrl = updateUrlParameter(window.location.href, 'tab', tabName);
-          newUrl = updateUrlParameter(newUrl, 'anchor', null);
-          history.pushState(null, '', newUrl);
-        });
-      });
-
-      function updateUrlParameter(url, param, value) {
-        var regex = new RegExp('([?&])' + param + '=.*?(&|$)', 'i');
-        var separator = url.indexOf('?') !== -1 ? '&' : '?';
-        if (url.match(regex)) {
-          return value ? url.replace(regex, '$1' + param + '=' + value + '$2') : url.replace(regex, '$1').replace(/&$/, '');
-        } else {
-          return value ? url + separator + param + '=' + value : url;
-        }
-      }
-    "))
-    )
 }
