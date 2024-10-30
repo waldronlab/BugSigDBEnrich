@@ -20,6 +20,7 @@ LazyData: true
 Imports: 
     bsicons,
     bslib,
+    bugphyzz,
     bugsigdbr,
     dplyr,
     DT,

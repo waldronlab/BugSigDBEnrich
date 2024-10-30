@@ -18,20 +18,17 @@ bsdbSigOptions <- function() {
             selected = "ncbi",
             inline = TRUE
         ),
-        
         shiny::checkboxGroupInput(
             inputId = "bsdb_rank", 
             label = list("Taxonomic ranks(s):", helpIcon("bsdb_rank_help")),
             choices = rankOptions(),
             inline = TRUE
         ),
-        
         shiny::checkboxInput(
             inputId = "bsdb_rank_mixed",
             label = "(De)Select all",
             value = TRUE
         ),
-        
         shiny::radioButtons(
             inputId = "bsdb_exact", 
             label = list("Exact taxonomic level:", helpIcon("bsdb_exact_help")),
@@ -40,7 +37,6 @@ bsdbSigOptions <- function() {
             selected = TRUE,
             inline = TRUE
         ),
-        
         shiny::numericInput(
             inputId = "bsdb_min", 
             label = list("Minimum size:", helpIcon("bsdb_min_help")),
@@ -71,9 +67,16 @@ bsdbDeactivateExactNo <- function() {
     )
 }
 
-rankOptions <- function() {
-    c(
+rankOptions <- function(x = "bsdb") {
+    y <- list(
+        bsdb = c(
             "kingdom", "phylum", "class", "order",
             "family", "genus", "species", "strain"
+        ),
+        bugphyzz = c(
+            "superkingdom", "phylum", "class", "order",
+            "family", "genus", "species", "strain"
         )
+    )
+    y[[x]]
 }

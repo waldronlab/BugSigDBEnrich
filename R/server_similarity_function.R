@@ -2,24 +2,37 @@
 #' @importFrom rlang .data 
 #' @param sig Input signature.
 #' @param sigL  List of BugSigDB signatures
+#' @param opt "bsdb"  or "bugphyzz"
 #'
 #' @return A data.frame
 #'
-simFun <- function(sig, sigL) {
+simFun <- function(sig, sigL, opt = NULL) {
     ji <- purrr::map_dbl(sigL,  ~ {
         round(.jaccard_similarity(.x, sig), 2)
     })
     oc <- purrr::map_dbl(sigL,  ~ {
         round(.overlap_coefficient(.x, sig), 2)
     })
-    data.frame(
-        bsdb_id = .getBsdbId(names(ji)),
+    
+    df <- data.frame(
         Signature = names(ji),
         JI = unname(ji),
         OC = unname(oc),
         Size = purrr::map_int(sigL, length)
     ) |>
         dplyr::arrange(-.data[["OC"]], -.data[["JI"]])
+    
+    if (!is.null(opt)) {
+        if (opt == "bsdb") {
+            df <- df |> 
+                dplyr::mutate(
+                    bsdb_id = .getBsdbId(.data$Signature)
+                ) |> 
+                dplyr::relocate(.data$bsdb_id)
+        }
+    }
+    
+    return(df)
 }
 
 ## Helper function for jacSim

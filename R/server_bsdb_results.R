@@ -5,6 +5,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
             "Please select at least one rank option.", 
             type = "error"
         )
+        return(NULL)
     }
     
     inputSig <- inputSigFun()
@@ -31,7 +32,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
         min.size = input$bsdb_min
     )
     sigPool <- unique(unlist(sigs, use.names = FALSE))
-    df <- simFun(inputSig, sigs) |> 
+    df <- simFun(inputSig, sigs, opt = "bsdb") |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
     
@@ -108,7 +109,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
     
     output$downloadData <- shiny::downloadHandler(
         filename = function() {
-            paste("BugSigDBEnrich-", Sys.Date(), ".tsv", sep = "")
+            paste("BugSigDBEnrich-bsdb-", Sys.Date(), ".tsv", sep = "")
         },
         content = function(file) {
             utils::write.table(

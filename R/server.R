@@ -30,23 +30,6 @@ server <- function(input, output, session) {
     b <- bugphyzz::importBugphyzz()
     waiter::waiter_hide()
     
-    # shiny::observe({
-    #     shiny::updateSelectInput(
-    #         session = session,
-    #         inputId = "bugphyzz_attributes",
-    #         choices =  c("select all", names(b))
-    #     )
-    # })
-    # shiny::observeEvent(input$bugphyzz_attributes, {
-    #     if ("select all" %in% input$bugphyzz_attributes) {
-    #         shiny::updateSelectizeInput(
-    #             session = session,
-    #             inputId = "bugphyzz_attributes",
-    #             selected = names(b)
-    #         )
-    #     }
-    # })
-    
     urlHandlerServer(session)
     httpGetHandler(query, session, input, output, inputSigFun, bsdb)
     
@@ -56,25 +39,19 @@ server <- function(input, output, session) {
     textBoxExamplesServer(input, session); fileInputExamplesServer(output)
     inputHelp(input)
     
-    ## BugSigDB - Options and help
-    bsdbSelectAllRanks(input, session)
-    bsdbSetExact2TrueWhenMultipleRanks(input, session)
+    bsdbSigOptionsServer(input, session)
     bsdbSigOptionsHelp(input)
     
-    ## Bugphyzz - Options and help
-    bugphyzzAttributes(input, session, b)
+    bugphyzzOptionsServer(input, session, b)
     bugphyzzOptionsHelp(input)
     
     shiny::observeEvent(input$analyzeButton, {
         output$result_header <- renderUI({ NULL })
         output$result_table <- DT::renderDT({ data.frame() })
-
         if (input$options_tab == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb)
         } else if (input$options_tab == "bugphyzz_panel") {
-            output$result_header <- shiny::renderUI({
-                htmltools::div("Placeholder.")
-            })
+            bugphyzzResult(input, output, inputSigFun, b)
         }
     })
 }
