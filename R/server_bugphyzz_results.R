@@ -1,51 +1,9 @@
 bugphyzzResult <- function(input, output, inputSigFun, b) {
     
-    if (!length(input$bugphyzz_attributes)) {
-        shiny::showNotification(
-            "Please select at least one attribute option.", 
-            type = "error"
-        )
-        return(NULL)
-    }
-    if (!length(input$bugphyzz_rank)) {
-        shiny::showNotification(
-            "Please select at least one rank option.", 
-            type = "error"
-        )
-        return(NULL)
-    }
-    if (!length(input$bugphyzz_evidence)) {
-        shiny::showNotification(
-            "Please select at least one evidence option.", 
-            type = "error"
-        )
-        return(NULL)
-    }
-    if (!length(input$bugphyzz_frequency)) {
-        shiny::showNotification(
-            "Please select at least one frequency option.", 
-            type = "error"
-        )
-        return(NULL)
-    }
-    
     inputSig <- inputSigFun()
-    
-    isMeta <- which("metaphlan" %in% whichType(inputSig))
-    if (length(isMeta) >= 1) {
-        shiny::showNotification(
-            stringr::str_c(
-                "Metaphlan not supported for bugphyzz. ",
-                length(isMeta), " of ", length(inputSig),
-                " identifiers are metaphlan. Please review their id type."
-            ),
-            type = "error"
-        )
-        return(NULL)
-    }
+    bugphyzzInputOptionsChecks(input, inputSig)
     
     vct_lgl <- isType(inputSig, input$bugphyzz_type)
-    
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
             stringr::str_c(
@@ -57,12 +15,10 @@ bugphyzzResult <- function(input, output, inputSigFun, b) {
     }
     
     subB <- b[input$bugphyzz_attributes]
-    
     idType <- dplyr::case_when(
         input$bugphyzz_type == "ncbi" ~ "NCBI_ID",
         input$bugphyzz_type == "taxname" ~ "Taxon_name"
     )
-    
     sigs <- purrr::map(subB, ~ {
         bugphyzz::makeSignatures(
             dat = .x,

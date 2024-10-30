@@ -1,17 +1,9 @@
 
 bsdbResult <- function(input, output, inputSigFun, bsdb) {
-    if (!length(input$bsdb_rank)) {
-        shiny::showNotification(
-            "Please select at least one rank option.", 
-            type = "error"
-        )
-        return(NULL)
-    }
-    
     inputSig <- inputSigFun()
+    bsdbInputOptionsChecks(input, inputSig)
     
     vct_lgl <- isType(inputSig, input$bsdb_type)
-    
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
             stringr::str_c(
@@ -19,7 +11,6 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
                 " identifiers are inconsistent. Please review their format."
             ),
             type = "warning"
-            
         )
     }
     
@@ -36,55 +27,33 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
     
-    dfDisplay <- df |> 
-        dplyr::mutate(
-            Study = stringr::str_c(
-                '<a href="https://bugsigdb.org/Study_', .data$Study,
-                '" target="_blank">', .data$Study, '</a>'
-            )
-        ) |>
-        dplyr::select(-.data$bsdb_id)
-    
-    input_exact_selection <- ifelse(input$bsdb_exact == TRUE, "Yes", "No")
-    
-    ## For the report
-    paragraphs <- c(
-        p1 = paste0("BugSigDB version: ", formals(bugsigdbr::importBugSigDB)$version),
-        p2 = paste0("Unique taxa in the BugSigDB signature pool: ", format(length(sigPool), big.mark = ",", scientific = FALSE)),
-        p3 = paste0("bugsigdbr version: ", packageVersion("bugsigdbr")),
-        
-        p4 = paste0("Number of input taxa: ", length(vct_lgl)),
-        p5 = paste0("Number of inconsistent input identifiers: ", sum(!vct_lgl)),
-        p6 = paste0("Number of indentifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool)),
-        
-        p7 = paste0("Identifier type: ", input$bsdb_type),
-        p8 = paste0("Rank(s): ", paste(input$bsdb_rank, collapse = ", ")),
-        p9 = paste0("Exact: ", input_exact_selection),
-        p10 = paste0("Minimum signature size: ", input$bsdb_min)
+    resultHeader <- stringr::str_c(
+        "### BugSigDB results\n\n",
+        "BugSigDB version: ", formals(bugsigdbr::importBugSigDB)$version, "  \n",
+        "Unique taxa in the pool of signatures: ", format(length(sigPool), big.mark = ",", scientific = FALSE), "  \n",
+        "bugsigdbr version: ", as.character(utils::packageVersion("bugsigdbr")), "  \n\n",
+
+        "Number of input taxa: ", length(vct_lgl), "  \n",
+        "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
+        "Number of identifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool), "\n\n",
+
+        "Identifier type: ", input$bsdb_type, "  \n",
+        "Rank(s): ", paste(input$bsdb_rank, collapse = ", "), "  \n",
+        "Exact: ", ifelse(input$bsdb_exact == TRUE, "Yes", "No"), "  \n",
+        "Minimum signature size: ", input$bsdb_min, "  \n"
     )
     
-    ## Handling outputs after analyzing #################################
-    output$result_header <- shiny::renderUI({
-        htmltools::tagList(
-            htmltools::h3("BugSigDB results"),
-            htmltools::tags$br(),
-            htmltools::p(paragraphs[["p1"]]),
-            htmltools::p(paragraphs[["p2"]]),
-            htmltools::p(paragraphs[["p3"]]),
-            htmltools::tags$br(),
-            htmltools::p(paragraphs[["p4"]]),
-            htmltools::p(paragraphs[["p5"]]),
-            htmltools::p(paragraphs[["p6"]]),
-            htmltools::tags$br(),
-            htmltools::p(paragraphs[["p7"]]),
-            htmltools::p(paragraphs[["p8"]]),
-            htmltools::p(paragraphs[["p9"]]),
-            htmltools::p(paragraphs[["p10"]]),
-            htmltools::tags$br()
-        )
-    })
+    output$result_header <- shiny::renderUI({ shiny::markdown(resultHeader)})
     
     output$result_table <- DT::renderDT({
+        dfDisplay <- df |> 
+            dplyr::mutate(
+                Study = stringr::str_c(
+                    '<a href="https://bugsigdb.org/Study_', .data$Study,
+                    '" target="_blank">', .data$Study, '</a>'
+                )
+            ) |>
+            dplyr::select(-.data$bsdb_id)
         tag_list <- getColNameTags(dfDisplay)
         dt <- DT::datatable(
             dfDisplay,
