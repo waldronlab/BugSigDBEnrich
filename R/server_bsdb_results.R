@@ -1,5 +1,4 @@
-
-bsdbResult <- function(input, output, inputSigFun, bsdb) {
+bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
     inputSig <- inputSigFun()
     bsdbInputOptionsChecks(input, inputSig)
     
@@ -14,7 +13,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
         )
     }
     
-    bsdbSub <- bsdb[,c("BSDB ID", "Study"), drop = FALSE]
+    bsdbSub <- bsdb[, c("BSDB ID", "Study"), drop = FALSE]
     sigs <- bugsigdbr::getSignatures(
         df = bsdb,
         tax.id.type = input$bsdb_type,
@@ -32,11 +31,9 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
         "BugSigDB version: ", formals(bugsigdbr::importBugSigDB)$version, "  \n",
         "Unique taxa in the pool of signatures: ", format(length(sigPool), big.mark = ",", scientific = FALSE), "  \n",
         "bugsigdbr version: ", as.character(utils::packageVersion("bugsigdbr")), "  \n\n",
-
         "Number of input taxa: ", length(vct_lgl), "  \n",
         "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
         "Number of identifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool), "\n\n",
-
         "Identifier type: ", input$bsdb_type, "  \n",
         "Rank(s): ", paste(input$bsdb_rank, collapse = ", "), "  \n",
         "Exact: ", ifelse(input$bsdb_exact == TRUE, "Yes", "No"), "  \n",
@@ -51,6 +48,9 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
                 Study = stringr::str_c(
                     '<a href="https://bugsigdb.org/Study_', .data$Study,
                     '" target="_blank">', .data$Study, '</a>'
+                ),
+                Signature = stringr::str_c(
+                    "<a href=\"javascript:void(0);\" class=\"name-link\" id=\"name_", dplyr::row_number(), "\">", .data$Signature, "</a>" 
                 )
             ) |>
             dplyr::select(-.data$bsdb_id)
@@ -87,4 +87,51 @@ bsdbResult <- function(input, output, inputSigFun, bsdb) {
             )
         }
     )
+    
+    open_tabs <- shiny::reactiveValues()
+    
+    observeEvent(input$clicked_name, {
+        clicked_id <- input$clicked_name
+        row_id <- as.numeric(sub("name_", "", clicked_id))
+        tab_title <- paste0("tab", row_id)
+        
+        if (is.null(open_tabs[[tab_title]])) {
+            open_tabs[[tab_title]] <- TRUE
+            new_tab <- tabPanel(
+                title = tab_title,
+                h3(paste("Details for", tab_title)),
+                p(paste(head(sigs[[ df$Signature[row_id] ]]), collapse = ", ")),
+                actionButton(inputId = paste0("close_", row_id), label = "Close Tab"),
+                downloadButton(outputId = paste0("download_", row_id), label = "Download Text")
+            )
+            
+            appendTab("main_tabs", new_tab, select = TRUE)
+            
+            output[[paste0("download_", row_id)]] <- downloadHandler(
+                filename = function() {
+                    paste("details_", row_id, ".txt", sep = "")
+                },
+                content = function(file) {
+                    writeLines(
+                        c(
+                            paste("Details for:", tab_title),
+                            paste("Row ID:", row_id),
+                            "Additional content specific to this row can be added here."
+                        ),
+                        con = file
+                    )
+                }
+            )
+        }
+    })
+}
+
+.tabOpener <- function() {
+    tags$head(tags$script(HTML("
+        $(document).on('click', '.name-link', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('id');
+            Shiny.setInputValue('clicked_name', id, {priority: 'event'});
+        });
+    ")))
 }

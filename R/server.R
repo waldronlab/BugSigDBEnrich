@@ -49,7 +49,7 @@ server <- function(input, output, session) {
         output$result_header <- renderUI({ NULL })
         output$result_table <- DT::renderDT({ data.frame() })
         if (input$options_tab == "bugsigdb_panel") {
-            bsdbResult(input, output, inputSigFun, bsdb)
+            bsdbResult(input, output, inputSigFun, bsdb, session)
         } else if (input$options_tab == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b)
         }
