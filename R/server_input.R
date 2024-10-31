@@ -1,6 +1,7 @@
 
 inputSignature <- function(input) {
     shiny::reactive({
+        ## This could be a different check activated with action button (maybe).
         cond1 <- !is.null(input$text_input) && nzchar(input$text_input)
         cond2 <- !is.null(input$file_input)
         if (isFALSE(cond1) & isFALSE(cond2)) {
@@ -26,4 +27,3 @@ readBox <- function(text_input) {
     char_vec <- unlist(strsplit(text_input, "\n"))
     char_vec <- char_vec[char_vec != ""]
 }
-

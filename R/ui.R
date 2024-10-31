@@ -26,6 +26,7 @@ analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
         urlHandler(), # For internal links to documentation
+        .tabOpener(),
         
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
@@ -37,10 +38,35 @@ analysisPanel <- function() {
         actionButtons(), shiny::tags$hr(),
         
         shiny::uiOutput("result_header"),
-        htmltools::div(
-            id = "table-container",
-            DT::DTOutput("result_table")
+        shiny::conditionalPanel(
+            condition = "input.analyzeButton > 0",
+            shiny::tabsetPanel(
+                id = "main_tabs",
+                shiny::tabPanel(
+                    title = "Table",
+                    htmltools::div(
+                        id = "table-container",
+                        DT::DTOutput("result_table")
+                    )
+                )
+            )
         )
+        
+        
+        # shiny::tabsetPanel(
+        #     id = "main_tabs",
+        #     shiny::tabPanel(
+        #         "Table",
+        #         htmltools::div(
+        #             id = "table-container",
+        #             DT::DTOutput("result_table")
+        #         )
+        #     )
+        # )
+        # htmltools::div(
+        #     id = "table-container",
+        #     DT::DTOutput("result_table")
+        # )
     )
 }
 

@@ -16,7 +16,7 @@ server <- function(input, output, session) {
             htmltools::tags$br(),
             htmltools::tags$br(),
             htmltools::div(
-                class = "h4", "Loading BugSigDBEnrich data...",
+                class = "h4", "Loading...",
                 style = "color: black;"
             ),
             htmltools::div(
@@ -27,6 +27,7 @@ server <- function(input, output, session) {
         color = "white"
     )
     bsdb <- bugsigdbr::importBugSigDB()
+    b <- bugphyzz::importBugphyzz()
     waiter::waiter_hide()
     
     urlHandlerServer(session)
@@ -38,24 +39,19 @@ server <- function(input, output, session) {
     textBoxExamplesServer(input, session); fileInputExamplesServer(output)
     inputHelp(input)
     
-    ## BugSigDB - Options and help
-    bsdbSelectAllRanks(input, session)
-    bsdbSetExact2TrueWhenMultipleRanks(input, session)
+    bsdbSigOptionsServer(input, session)
     bsdbSigOptionsHelp(input)
     
-    ## Bugphyzz - Options and help
-    ## TODO
+    bugphyzzOptionsServer(input, session, b)
+    bugphyzzOptionsHelp(input)
     
     shiny::observeEvent(input$analyzeButton, {
         output$result_header <- renderUI({ NULL })
         output$result_table <- DT::renderDT({ data.frame() })
-
         if (input$options_tab == "bugsigdb_panel") {
-            bsdbResult(input, output, inputSigFun, bsdb)
+            bsdbResult(input, output, inputSigFun, bsdb, session)
         } else if (input$options_tab == "bugphyzz_panel") {
-            output$result_header <- shiny::renderUI({
-                htmltools::div("Placeholder.")
-            })
+            bugphyzzResult(input, output, inputSigFun, b)
         }
     })
 }
