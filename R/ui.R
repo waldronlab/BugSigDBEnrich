@@ -26,7 +26,9 @@ analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
         urlHandler(), # For internal links to documentation
+        
         .tabOpener(),
+        .addTabCloseFeature(),
         
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
@@ -51,22 +53,6 @@ analysisPanel <- function() {
                 )
             )
         )
-        
-        
-        # shiny::tabsetPanel(
-        #     id = "main_tabs",
-        #     shiny::tabPanel(
-        #         "Table",
-        #         htmltools::div(
-        #             id = "table-container",
-        #             DT::DTOutput("result_table")
-        #         )
-        #     )
-        # )
-        # htmltools::div(
-        #     id = "table-container",
-        #     DT::DTOutput("result_table")
-        # )
     )
 }
 

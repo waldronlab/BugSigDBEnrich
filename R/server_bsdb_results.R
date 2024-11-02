@@ -90,39 +90,34 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
     
     open_tabs <- shiny::reactiveValues()
     
-    observeEvent(input$clicked_name, {
+    shiny::observeEvent(input$clicked_name, {
         clicked_id <- input$clicked_name
         row_id <- as.numeric(sub("name_", "", clicked_id))
-        tab_title <- paste0("tab", row_id)
+        tab_title <- stringr::str_extract(
+            df$Signature[row_id], "bsdb:\\d+/\\d+/\\d+"
+        )
         
         if (is.null(open_tabs[[tab_title]])) {
             open_tabs[[tab_title]] <- TRUE
-            new_tab <- tabPanel(
-                title = tab_title,
-                h3(paste("Details for", tab_title)),
-                p(paste(head(sigs[[ df$Signature[row_id] ]]), collapse = ", ")),
-                actionButton(inputId = paste0("close_", row_id), label = "Close Tab"),
-                downloadButton(outputId = paste0("download_", row_id), label = "Download Text")
+            new_tab <- shiny::tabPanel(
+                # title = tab_title,
+                title = div(tab_title, 
+                            span("x", class = "close-tab", style = "margin-left: 8px;")),
+                
+                p(paste0("Just in input: ", paste(setdiff(inputSig, sigs[[df$Signature[row_id]]]), collapse = ", "))),
+                p(paste0("In both: ", paste(intersect(inputSig, sigs[[df$Signature[row_id]]]), collapse = ", "))),
+                p(paste0("Just in target: ", paste(setdiff(sigs[[df$Signature[row_id]]], inputSig), collapse = ", "))),
+                
             )
             
             appendTab("main_tabs", new_tab, select = TRUE)
-            
-            output[[paste0("download_", row_id)]] <- downloadHandler(
-                filename = function() {
-                    paste("details_", row_id, ".txt", sep = "")
-                },
-                content = function(file) {
-                    writeLines(
-                        c(
-                            paste("Details for:", tab_title),
-                            paste("Row ID:", row_id),
-                            "Additional content specific to this row can be added here."
-                        ),
-                        con = file
-                    )
-                }
-            )
         }
+    })
+    
+    observeEvent(input$close_tab, {
+        tab_title <- input$close_tab
+        removeTab("main_tabs", target = tab_title)
+        open_tabs[[tab_title]] <- NULL
     })
 }
 
@@ -135,3 +130,30 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
         });
     ")))
 }
+
+.addTabCloseFeature <- function() {
+    tags$head(
+        tags$script(HTML("
+      $(document).on('click', '.close-tab', function(e) {
+        e.stopPropagation(); // Prevent tab switch on close
+        var tabId = $(this).parent().attr('data-value');
+        Shiny.setInputValue('close_tab', tabId, {priority: 'event'});
+      });
+    ")),
+        tags$style(HTML("
+      .nav-tabs .close-tab {
+        font-size: 12px;
+        color: #aaa;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+      .nav-tabs .close-tab:hover {
+        color: #333;
+      }
+    "))
+    )
+}
+
+
+
+
