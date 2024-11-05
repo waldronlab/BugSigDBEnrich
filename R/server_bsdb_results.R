@@ -22,6 +22,28 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         exact.tax.level = as.logical(input$bsdb_exact),
         min.size = input$bsdb_min
     )
+    
+    sigs2_type <- dplyr::case_when(
+        input$bsdb_type == "ncbi" ~ "taxname",
+        input$bsdb_type == "taxname" ~ "ncbi",
+        input$bsdb_type == "metaphlan" ~ "ncbi"
+    )
+    sigs2 <- bugsigdbr::getSignatures(
+        df = bsdb,
+        tax.id.type = sigs2_type,
+        tax.level = input$bsdb_rank,
+        exact.tax.level = as.logical(input$bsdb_exact),
+        min.size = input$bsdb_min
+    )
+    
+    sigs2 <- sigs2[names(sigs)]
+    sigs <- purrr::map2(sigs, sigs2, ~ {
+        names(.x) <- .y
+        .x
+    })
+    
+    print(sigs[[1]])
+    
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     df <- simFun(inputSig, sigs, opt = "bsdb") |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
@@ -90,8 +112,6 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         }
     )
     
-    # open_tabs <- shiny::reactiveVal(list())
-    
     shiny::observeEvent(input$clicked_signature, {
         clicked_id <- input$clicked_signature
         row_id <- as.numeric(sub("signature_", "", clicked_id))
@@ -102,29 +122,50 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
             stringr::str_replace(":", "_")
         
         current_tabs <- open_tabs()
-        message(length(current_tabs))
+        
         if (!(tab_title %in% names(current_tabs))) {
             sigsTable <- sets2Df(inputSig, sigs[[df$Signature[row_id]]])
+            tbl <- sigsTable |> 
+                dplyr::mutate(
+                    Label = factor(Label, levels = c(
+                        "Only in input", "Intersect", "Only in target"
+                    ))
+                ) |> 
+                dplyr::count(Label, .drop = FALSE)
+            counts <- tbl$n
+            names(counts) <- tbl$Label
+            
+            summaryText <- vector("character", length(counts))
+            for (i in seq_along(summaryText)) {
+               txt <- paste0(names(counts)[i], ": ", counts[i])
+               summaryText[i] <- txt
+            }
+            summaryText <- paste(summaryText, collapse = ", ")
+            
             new_tab <- shiny::tabPanel(
                 title = htmltools::span(
                     tab_title,
                     htmltools::span("×", class = "close-tab")
                 ),
                 value = tab_title,
-                DT::renderDT({
-                    DT::datatable(
-                        data = sigsTable, rownames = FALSE, escape = FALSE,
-                        selection = "none"
-                    )
-                })
+                htmltools::tagList(
+                    htmltools::p(summaryText),
+                    DT::renderDT({
+                        DT::datatable(
+                            data = sigsTable, rownames = FALSE, escape = FALSE,
+                            selection = "none",
+                            filter = "top"
+                        )
+                    }),
+                )
             )
-            appendTab(inputId = "main_tabs", new_tab, select = TRUE)
+            shiny::appendTab(inputId = "main_tabs", new_tab, select = TRUE)
             current_tabs[[tab_title]] <- TRUE
             open_tabs(current_tabs)
         }
     })
     
-    observeEvent(input$close_tab, {
+    shiny::observeEvent(input$close_tab, {
         tab_id <- input$close_tab
         current_tabs <- open_tabs()
         current_tabs[[tab_id]] <- NULL
