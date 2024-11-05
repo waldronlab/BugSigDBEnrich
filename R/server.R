@@ -45,11 +45,14 @@ server <- function(input, output, session) {
     bugphyzzOptionsServer(input, session, b)
     bugphyzzOptionsHelp(input)
     
+    open_tabs <- shiny::reactiveVal(list())
+    
     shiny::observeEvent(input$analyzeButton, {
         output$result_header <- renderUI({ NULL })
         output$result_table <- DT::renderDT({ data.frame() })
+        
         if (input$options_tab == "bugsigdb_panel") {
-            bsdbResult(input, output, inputSigFun, bsdb, session)
+            bsdbResult(input, output, inputSigFun, bsdb, session, open_tabs)
         } else if (input$options_tab == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b)
         }

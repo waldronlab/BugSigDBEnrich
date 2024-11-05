@@ -1,4 +1,5 @@
-bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
+
+bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
     inputSig <- inputSigFun()
     bsdbInputOptionsChecks(input, inputSig)
     
@@ -50,7 +51,8 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
                     '" target="_blank">', .data$Study, '</a>'
                 ),
                 Signature = stringr::str_c(
-                    "<a href=\"javascript:void(0);\" class=\"name-link\" id=\"name_", dplyr::row_number(), "\">", .data$Signature, "</a>" 
+                    '<a href="javascript:void(0);" class="signature-link" id="signature_',
+                    dplyr::row_number(), '">', .data$Signature, '</a>' 
                 )
             ) |>
             dplyr::select(-.data$bsdb_id)
@@ -68,7 +70,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
             ),
             options = list(
                 headerCallback = DT::JS("function(thead, data, start, end, display) {
-                $(thead).find('th').css('text-align', 'center'); // Center header text
+                $(thead).find('th').css('text-align', 'center');
             }")
             )
         )
@@ -88,72 +90,80 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session) {
         }
     )
     
-    open_tabs <- shiny::reactiveValues()
+    # open_tabs <- shiny::reactiveVal(list())
     
-    shiny::observeEvent(input$clicked_name, {
-        clicked_id <- input$clicked_name
-        row_id <- as.numeric(sub("name_", "", clicked_id))
+    shiny::observeEvent(input$clicked_signature, {
+        clicked_id <- input$clicked_signature
+        row_id <- as.numeric(sub("signature_", "", clicked_id))
         tab_title <- stringr::str_extract(
             df$Signature[row_id], "bsdb:\\d+/\\d+/\\d+"
-        )
+        ) |> 
+            stringr::str_replace_all("/", "_") |> 
+            stringr::str_replace(":", "_")
         
-        if (is.null(open_tabs[[tab_title]])) {
-            open_tabs[[tab_title]] <- TRUE
+        current_tabs <- open_tabs()
+        message(length(current_tabs))
+        if (!(tab_title %in% names(current_tabs))) {
+            sigsTable <- sets2Df(inputSig, sigs[[df$Signature[row_id]]])
             new_tab <- shiny::tabPanel(
-                # title = tab_title,
-                title = div(tab_title, 
-                            span("x", class = "close-tab", style = "margin-left: 8px;")),
-                
-                p(paste0("Just in input: ", paste(setdiff(inputSig, sigs[[df$Signature[row_id]]]), collapse = ", "))),
-                p(paste0("In both: ", paste(intersect(inputSig, sigs[[df$Signature[row_id]]]), collapse = ", "))),
-                p(paste0("Just in target: ", paste(setdiff(sigs[[df$Signature[row_id]]], inputSig), collapse = ", "))),
-                
+                title = htmltools::span(
+                    tab_title,
+                    htmltools::span("×", class = "close-tab")
+                ),
+                value = tab_title,
+                DT::renderDT({
+                    DT::datatable(
+                        data = sigsTable, rownames = FALSE, escape = FALSE,
+                        selection = "none"
+                    )
+                })
             )
-            
-            appendTab("main_tabs", new_tab, select = TRUE)
+            appendTab(inputId = "main_tabs", new_tab, select = TRUE)
+            current_tabs[[tab_title]] <- TRUE
+            open_tabs(current_tabs)
         }
     })
     
     observeEvent(input$close_tab, {
-        tab_title <- input$close_tab
-        removeTab("main_tabs", target = tab_title)
-        open_tabs[[tab_title]] <- NULL
+        tab_id <- input$close_tab
+        current_tabs <- open_tabs()
+        current_tabs[[tab_id]] <- NULL
+        open_tabs(current_tabs)
+        removeTab(inputId = "main_tabs", target = tab_id)
     })
 }
 
 .tabOpener <- function() {
-    tags$head(tags$script(HTML("
-        $(document).on('click', '.name-link', function(e) {
+    JS <- "
+        $(document).on('click', '.signature-link', function(e) {
             e.preventDefault();
             var id = $(this).attr('id');
-            Shiny.setInputValue('clicked_name', id, {priority: 'event'});
+            Shiny.setInputValue('clicked_signature', id, {priority: 'event'});
         });
-    ")))
+    "
+    htmltools::tags$script(htmltools::HTML(JS))
 }
 
 .addTabCloseFeature <- function() {
-    tags$head(
-        tags$script(HTML("
-      $(document).on('click', '.close-tab', function(e) {
-        e.stopPropagation(); // Prevent tab switch on close
-        var tabId = $(this).parent().attr('data-value');
-        Shiny.setInputValue('close_tab', tabId, {priority: 'event'});
-      });
-    ")),
-        tags$style(HTML("
-      .nav-tabs .close-tab {
-        font-size: 12px;
-        color: #aaa;
-        margin-left: 5px;
-        cursor: pointer;
-      }
-      .nav-tabs .close-tab:hover {
-        color: #333;
-      }
-    "))
+    htmltools::tagList(
+        htmltools::tags$script(htmltools::HTML("
+            $(document).on('click', '.close-tab', function(e) {
+                e.preventDefault();
+                e.stopPropagation();  // Prevent event from bubbling up
+                var tabId = $(this).closest('li').find('a').attr('data-value');
+                Shiny.setInputValue('close_tab', tabId, {priority: 'event'});
+            });
+        ")),
+        htmltools::tags$style(htmltools::HTML("
+            .nav-tabs .close-tab {
+                font-size: 12px;
+                color: #aaa;
+                margin-left: 5px;
+                cursor: pointer;
+            }
+            .nav-tabs .close-tab:hover {
+                color: #333;
+            }
+        "))
     )
 }
-
-
-
-

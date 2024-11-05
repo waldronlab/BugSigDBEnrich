@@ -1,3 +1,4 @@
+
 createUI <- function() {
     ui <- htmltools::tagList(
         waiter::use_waiter(),
@@ -10,7 +11,10 @@ createUI <- function() {
                 htmltools::tags$link(
                     rel = "shortcut icon",
                     href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
-                )
+                ),
+                .tabOpener(),
+                .addTabCloseFeature(),
+                urlHandler()
             ),
             theme = bslib::bs_theme(version = 5, bootswatch = "spacelab"),
             analysisPanel(),
@@ -25,10 +29,6 @@ createUI <- function() {
 analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
-        urlHandler(), # For internal links to documentation
-        
-        .tabOpener(),
-        .addTabCloseFeature(),
         
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
