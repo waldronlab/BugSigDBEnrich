@@ -173,38 +173,3 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         removeTab(inputId = "main_tabs", target = tab_id)
     })
 }
-
-.tabOpener <- function() {
-    JS <- "
-        $(document).on('click', '.signature-link', function(e) {
-            e.preventDefault();
-            var id = $(this).attr('id');
-            Shiny.setInputValue('clicked_signature', id, {priority: 'event'});
-        });
-    "
-    htmltools::tags$script(htmltools::HTML(JS))
-}
-
-.addTabCloseFeature <- function() {
-    htmltools::tagList(
-        htmltools::tags$script(htmltools::HTML("
-            $(document).on('click', '.close-tab', function(e) {
-                e.preventDefault();
-                e.stopPropagation();  // Prevent event from bubbling up
-                var tabId = $(this).closest('li').find('a').attr('data-value');
-                Shiny.setInputValue('close_tab', tabId, {priority: 'event'});
-            });
-        ")),
-        htmltools::tags$style(htmltools::HTML("
-            .nav-tabs .close-tab {
-                font-size: 12px;
-                color: #aaa;
-                margin-left: 5px;
-                cursor: pointer;
-            }
-            .nav-tabs .close-tab:hover {
-                color: #333;
-            }
-        "))
-    )
-}

@@ -4,8 +4,7 @@ bsdbNavPanel <- function() {
         "BugSigDB",
         value = "bugsigdb_panel",
         htmltools::br(),
-        bsdbSigOptions(),
-        bsdbDeactivateExactNo()
+        bsdbSigOptions()
     )
 }
 
@@ -45,25 +44,6 @@ bsdbSigOptions <- function() {
             max = 100,
             step = 1
         )
-    )
-}
-
-## Disable the use of false when two or more ranks are selected
-bsdbDeactivateExactNo <- function() {
-    htmltools::tags$head(
-        htmltools::tags$script(htmltools::HTML("
-            $(document).on('shiny:inputchanged', function(event) {
-                if (event.name === 'bsdb_rank') {
-                    const checkedCount = $('input[name=\"bsdb_rank\"]:checked').length; 
-                    if (checkedCount > 1) {
-                        $('input[name=\"bsdb_exact\"][value=\"FALSE\"]').prop('disabled', true);
-                        $('input[name=\"bsdb_exact\"][value=\"TRUE\"]').prop('checked', true);
-                    } else {
-                        $('input[name=\"bsdb_exact\"][value=\"FALSE\"]').prop('disabled', false);
-                    }
-                }
-            });
-        "))
     )
 }
 

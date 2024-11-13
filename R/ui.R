@@ -12,9 +12,8 @@ createUI <- function() {
                     rel = "shortcut icon",
                     href = "https://raw.githubusercontent.com/waldronlab/BugSigDB/refs/heads/master/_resources/favicon.ico"
                 ),
-                .tabOpener(),
-                .addTabCloseFeature(),
-                urlHandler()
+                htmltools::tags$script(htmltools::HTML(JS)),
+                htmltools::tags$style(htmltools::HTML(CSS))
             ),
             theme = bslib::bs_theme(version = 5, bootswatch = "spacelab"),
             analysisPanel(),
