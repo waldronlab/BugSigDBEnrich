@@ -26,8 +26,8 @@ server <- function(input, output, session) {
         ),
         color = "white"
     )
-    bsdb <- bugsigdbr::importBugSigDB()
-    b <- bugphyzz::importBugphyzz()
+    bsdb <- .pkgenv$bsdb
+    b <- .pkgenv$b
     waiter::waiter_hide()
     
     urlHandlerServer(session)
