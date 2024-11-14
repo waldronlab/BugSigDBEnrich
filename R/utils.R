@@ -24,6 +24,7 @@ sets2Df <- function(x, y) {
         # ID2 = ids2,
         Label = labels
     )
+    ncbi_path <- cacheTaxonomizr::txPath()
     
     if (isType(x, "ncbi")[[1]]) {
         df <- df |> 
@@ -46,7 +47,7 @@ sets2Df <- function(x, y) {
     } else if (isType(x, "taxname")[[1]]) {
         df <- df |> 
             dplyr::mutate(
-                `NCBI ID` = taxonomizr::getId(.data$ID, .pkgenv$ncbi_path)
+                `NCBI ID` = taxonomizr::getId(.data$ID, ncbi_path)
             ) |> 
             dplyr::relocate(.data$`NCBI ID`, .after = .data$ID) |> 
             dplyr::rename(`Taxon name` = .data$ID) |> 
@@ -95,7 +96,8 @@ helpIcon <- function(inputId) {
 }
 
 id2name <- function(x) {
-    taxonomizr::getCommon(x, .pkgenv$ncbi_path) |> 
+    ncbi_path <- cacheTaxonomizr::txPath()
+    taxonomizr::getCommon(x, ncbi_path) |> 
         purrr::map_chr(~ {
             if (is.null(.x)) {
                 return(NA)

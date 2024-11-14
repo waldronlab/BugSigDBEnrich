@@ -26,12 +26,12 @@ server <- function(input, output, session) {
         ),
         color = "white"
     )
-    bsdb <- .pkgenv$bsdb
-    b <- .pkgenv$b
-    ncbi_path <- .pkgenv$ncbi_path
-    message(ncbi_path)
-    # bsdb <- bugsigdbr::importBugSigDB()
-    # b <- bugphyzz::importBugphyzz()
+    # bsdb <- .pkgenv$bsdb
+    # b <- .pkgenv$b
+    # ncbi_path <- .pkgenv$ncbi_path
+    # message(ncbi_path)
+    bsdb <- bugsigdbr::importBugSigDB()
+    b <- bugphyzz::importBugphyzz()
     waiter::waiter_hide()
     
     inputSigFun <- inputSignature(input)
