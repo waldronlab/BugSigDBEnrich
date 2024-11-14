@@ -18,6 +18,7 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    BiocFileCache,
     bsicons,
     bslib,
     bugphyzz,
@@ -30,6 +31,7 @@ Imports:
     shiny,
     shinythemes,
     stringr,
+    taxonomizr,
     tools,
     utils,
     waiter

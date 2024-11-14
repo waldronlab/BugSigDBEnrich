@@ -36,13 +36,13 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         min.size = input$bsdb_min
     )
     
-    sigs2 <- sigs2[names(sigs)]
-    sigs <- purrr::map2(sigs, sigs2, ~ {
-        names(.x) <- .y
-        .x
-    })
-    
-    print(sigs[[1]])
+    # sigs2 <- sigs2[names(sigs)]
+    # sigs <- purrr::map2(sigs, sigs2, ~ {
+    #     names(.x) <- .y
+    #     .x
+    # })
+    # 
+    # print(sigs[[1]])
     
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     df <- simFun(inputSig, sigs, opt = "bsdb") |> 

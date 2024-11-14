@@ -28,6 +28,8 @@ server <- function(input, output, session) {
     )
     bsdb <- .pkgenv$bsdb
     b <- .pkgenv$b
+    ncbi_path <- .pkgenv$ncbi_path
+    message(ncbi_path)
     # bsdb <- bugsigdbr::importBugSigDB()
     # b <- bugphyzz::importBugphyzz()
     waiter::waiter_hide()
