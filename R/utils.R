@@ -31,14 +31,36 @@ sets2Df <- function(x, y) {
                 `Taxon name` = id2name(.data$ID)
             ) |> 
             dplyr::relocate(.data$`Taxon name`, .after = .data$ID) |> 
-            dplyr::rename(`NCBI ID` = .data$ID)
+            dplyr::rename(`NCBI ID` = .data$ID) |> 
+            dplyr::mutate(
+                `NCBI ID` =    .data$`NCBI ID` |> 
+                    strsplit(",") |> 
+                    purrr::map(
+                        ~ paste0(
+                            '<a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
+                            .x,'" target="_blank">', .x, '</a>'
+                        ) |> 
+                            paste(collapse = ",")
+                    )
+            )
     } else if (isType(x, "taxname")[[1]]) {
         df <- df |> 
             dplyr::mutate(
                 `NCBI ID` = taxonomizr::getId(.data$ID, .pkgenv$ncbi_path)
             ) |> 
             dplyr::relocate(.data$`NCBI ID`, .after = .data$ID) |> 
-            dplyr::rename(`Taxon name` = .data$ID)
+            dplyr::rename(`Taxon name` = .data$ID) |> 
+            dplyr::mutate(
+                `NCBI ID` =    .data$`NCBI ID` |> 
+                    strsplit(",") |> 
+                    purrr::map(
+                        ~ paste0(
+                            '<a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
+                            .x,'" target="_blank">', .x, '</a>'
+                        ) |> 
+                            paste(collapse = ",")
+                    )
+            )
     } else if (isType(x, "metaphlan")[[1]]) {
         df <- df |> 
             dplyr::mutate(
@@ -48,7 +70,18 @@ sets2Df <- function(x, y) {
                     taxonomizr::getId(.pkgenv$ncbi_path)
             ) |> 
             dplyr::relocate(.data$`NCBI ID`, .after = .data$ID) |> 
-            dplyr::rename(`Metaphlan name` = .data$ID)
+            dplyr::rename(`Metaphlan name` = .data$ID) |> 
+            dplyr::mutate(
+                `NCBI ID` =    .data$`NCBI ID` |> 
+                    strsplit(",") |> 
+                    purrr::map(
+                        ~ paste0(
+                            '<a href="https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=',
+                            .x,'" target="_blank">', .x, '</a>'
+                        ) |> 
+                            paste(collapse = ",")
+                    )
+            )
     }
      
     return(df)
