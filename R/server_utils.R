@@ -49,7 +49,7 @@ httpGetHandler <- function(query, session, input, output, inputSigFun, bsdb) {
 helpModal <- function(title, message)  {
     shiny::showModal(shiny::modalDialog(
         title = title,
-        message,
+        htmltools::HTML(message),
         footer = shiny::modalButton("Close", shiny::icon("times")),
         easyClose = TRUE
     ))
