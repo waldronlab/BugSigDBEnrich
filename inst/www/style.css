@@ -1,3 +1,4 @@
+/* Tabs in result table */
 .nav-tabs .close-tab {
     font-size: 12px;
     color: #aaa;
@@ -7,4 +8,15 @@
 
 .nav-tabs .close-tab:hover {
     color: #333;
+}
+
+/* Downloadable examples for both text and files */
+.download-example-container {
+    display: flex;
+    align-items: center;
+}
+
+.download-example-item {
+    display: inline-block;
+    margin-left: 10px;
 }

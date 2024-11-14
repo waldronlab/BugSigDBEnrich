@@ -11,27 +11,11 @@ textInputBox <- function() {
             resize = "both"
         ),
         htmltools::div(
-            style = "display: flex; align-items: center;",
-            htmltools::div(
-                style = "margin-right: 10px;",
-                "Load example text:"
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::actionLink("ncbi_box", "ncbi"),
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::actionLink("taxname_box", "taxname"),
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::actionLink("metaphlan_box", "metaphlan")
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::actionLink("badsig_box", "badsig")
-            )
+            class = "download-example-container", "Load example text:",
+            htmltools::div(class = "download-example-item", shiny::actionLink("ncbi_box", "ncbi")),
+            htmltools::div(class = "download-example-item", shiny::actionLink("taxname_box", "taxname")),
+            htmltools::div(class = "download-example-item", shiny::actionLink("metaphlan_box", "metaphlan")),
+            htmltools::div(class = "download-example-item", shiny::actionLink("badsig_box", "badsig"))
         )
     )
 }
@@ -46,23 +30,10 @@ fileInputBox <- function() {
             placeholder = "No .txt file selected"
         ),
         htmltools::div(
-            style = "display: flex; align-items: center;",
-            htmltools::div(
-                style = "margin-right: 10px;",
-                "Download example files:"
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::uiOutput("downloadExampleNCBI")
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::uiOutput("downloadExampleTaxname")
-            ),
-            htmltools::div(
-                style = "display: inline-block; margin-right: 10px;",
-                shiny::uiOutput("downloadExampleMetaphlan")
-            )
+            class = "download-example-container", "Download example files:",
+            htmltools::div(class = "download-example-item", shiny::uiOutput("downloadExampleNCBI")),
+            htmltools::div(class = "download-example-item", shiny::uiOutput("downloadExampleTaxname")),
+            htmltools::div(class = "download-example-item", shiny::uiOutput("downloadExampleMetaphlan"))
         )
     )
 }

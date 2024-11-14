@@ -55,6 +55,14 @@ analysisPanel <- function() {
     )
 }
 
+optionsNavSet <- function() {
+    bslib::navset_underline(
+        id = "options_tab",
+        bsdbNavPanel(),
+        bugphyzzNavPanel()
+    )
+}
+
 helpPanel <- function() {
     shiny::tabPanel(
         title = "Help",
@@ -83,10 +91,4 @@ aboutPanel <- function() {
     )
 }
 
-optionsNavSet <- function() {
-    bslib::navset_underline(
-        id = "options_tab",
-        bsdbNavPanel(),
-        bugphyzzNavPanel()
-    )
-}
+
