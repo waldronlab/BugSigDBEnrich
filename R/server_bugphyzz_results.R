@@ -1,6 +1,5 @@
-bugphyzzResult <- function(input, output, inputSigFun, b) {
+bugphyzzResult <- function(input, output, inputSig, b) {
     
-    inputSig <- inputSigFun()
     bugphyzzInputOptionsChecks(input, inputSig)
     
     vct_lgl <- isType(inputSig, input$bugphyzz_type)

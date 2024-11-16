@@ -1,6 +1,6 @@
 
-bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
-    inputSig <- inputSigFun()
+bsdbResult <- function(input, output, inputSig, bsdb, session, open_tabs) {
+    
     bsdbInputOptionsChecks(input, inputSig)
     
     vct_lgl <- isType(inputSig, input$bsdb_type)
@@ -22,27 +22,6 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         exact.tax.level = as.logical(input$bsdb_exact),
         min.size = input$bsdb_min
     )
-    
-    sigs2_type <- dplyr::case_when(
-        input$bsdb_type == "ncbi" ~ "taxname",
-        input$bsdb_type == "taxname" ~ "ncbi",
-        input$bsdb_type == "metaphlan" ~ "ncbi"
-    )
-    sigs2 <- bugsigdbr::getSignatures(
-        df = bsdb,
-        tax.id.type = sigs2_type,
-        tax.level = input$bsdb_rank,
-        exact.tax.level = as.logical(input$bsdb_exact),
-        min.size = input$bsdb_min
-    )
-    
-    # sigs2 <- sigs2[names(sigs)]
-    # sigs <- purrr::map2(sigs, sigs2, ~ {
-    #     names(.x) <- .y
-    #     .x
-    # })
-    # 
-    # print(sigs[[1]])
     
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     df <- simFun(inputSig, sigs, opt = "bsdb") |> 
