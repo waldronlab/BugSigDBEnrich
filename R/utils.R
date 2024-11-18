@@ -68,7 +68,7 @@ sets2Df <- function(x, y) {
                 `NCBI ID` = .data$ID |> 
                     stringr::str_extract("[^|]+$") |> 
                     stringr::str_remove("^[a-zA-Z]__") |> 
-                    taxonomizr::getId(.pkgenv$ncbi_path)
+                    taxonomizr::getId(ncbi_path)
             ) |> 
             dplyr::relocate(.data$`NCBI ID`, .after = .data$ID) |> 
             dplyr::rename(`Metaphlan name` = .data$ID) |> 
