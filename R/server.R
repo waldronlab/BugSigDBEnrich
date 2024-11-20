@@ -145,28 +145,13 @@ server <- function(input, output, session) {
     })
 }
 
-inputSignature <- function(input) {
-    shiny::reactive({
-        cond1 <- !is.null(input$text_input) && nzchar(input$text_input)
-        cond2 <- !is.null(input$file_input)
-        
-        if (cond1) {
-            inputSig <- unlist(strsplit(input$text_input, "\n"))
-            inputSig <- inputSig[inputSig != ""]
-        } else if (cond2) {
-            inputSig <- switch(
-                tools::file_ext(input$file_input$name),
-                txt = readLines(con = input$file_input$datapath),
-                shiny::validate("Invalid file; Please upload a .txt file")
-            )
-        } else {
-            shiny::showNotification("No input", type = "error")
-            shiny::req(FALSE)
-        }
-        return(inputSig)
+
+resetApp <- function(input, session) {
+    shiny::observeEvent(input$resetButton, {
+        session$sendCustomMessage("resetURL", list())
+        session$reload()
     })
 }
-
 # tabs_to_remove <- names(open_tabs())
 # for (tab_name in tabs_to_remove) {
 #     shiny::removeTab(inputId = "main_tabs", target = tab_name)

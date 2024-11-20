@@ -1,4 +1,17 @@
 
+# Header ------------------------------------------------------------------
+JS <-  system.file(
+    "www", "script.js", package = "BugSigDBEnrich", mustWork = TRUE
+) |> 
+    readLines() |> 
+    paste(collapse = "\n")
+
+CSS <- system.file(
+    "www", "style.css", package = "BugSigDBEnrich", mustWork = TRUE
+) |> 
+    readLines() |> 
+    paste(collapse = "\n")
+
 # Main page ---------------------------------------------------------------
 createUI <- function() {
     ui <- htmltools::tagList(
@@ -41,7 +54,7 @@ analysisPanel <- function() {
         actionButtons(), shiny::tags$hr(),
         
         shiny::uiOutput("result_header"),
-        shiny::uiOutput("res"),
+        shiny::uiOutput("res")
     )
 }
 
