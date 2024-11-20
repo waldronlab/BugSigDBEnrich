@@ -126,7 +126,8 @@ inputHelp <- function(input) {
                         "Enter a list of IDs; one per line.",
                         " The IDs can be in 'ncbi', 'taxname', or 'metaphlan' format.",
                         " Cick on the examples below to fill the text box with sample IDs. ",
-                        "<a href='?tab=help&anchor=#input' target='_blank'>More...</a>"
+                        helpPageDiv("More...", "input")
+                        # "<a href='?tab=help&anchor=#input' target='_blank'>More...</a>"
                     )
                 )
             )
@@ -138,7 +139,8 @@ inputHelp <- function(input) {
                     stringr::str_c(
                         "A text file with '.txt' extension containing one ID per line.",
                         " Click on the examples below to download a sample file. ",
-                        "<a href='?tab=help&anchor=#input' target='_blank'>More...</a>"
+                        helpPageDiv("More...", "input")
+                        # "<a href='?tab=help&anchor=#input' target='_blank'>More...</a>"
                     )
                 )
             )

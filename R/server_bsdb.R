@@ -138,7 +138,8 @@ bsdbSigOptionsHelp <- function(input) {
                 stringr::str_c(
                     "Type of the target signatures in BugSigDB.",
                     " The type must match the input IDs. ",
-                    "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
         }),
@@ -148,7 +149,8 @@ bsdbSigOptionsHelp <- function(input) {
                 stringr::str_c(
                     "Select the rank(s) of the taxa included in the target BugSigDB signature.",
                     " Use the '(De)select all' check box to select or deselect all ranks at once. ",
-                    "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
         }),
@@ -159,7 +161,8 @@ bsdbSigOptionsHelp <- function(input) {
                     "If 'Yes', only ranks manually curated will be included.",
                     " If 'No', the taxonomic tree will be cut at the specified rank (above).",
                     " Only one rank (above) can be selected when the 'No' options is used. ",
-                    "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
         }),
@@ -168,7 +171,8 @@ bsdbSigOptionsHelp <- function(input) {
                 "Minimum signature size",
                 stringr::str_c(
                     "Minimum number of IDs to filter the target BugSigDB signatures. ",
-                    "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
         })
