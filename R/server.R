@@ -123,7 +123,7 @@ server <- function(input, output, session) {
             tbl <- sigsTable |> 
                 dplyr::mutate(
                     Label = factor(Label, levels = c(
-                        "Only in input", "Intersect", "Only in target"
+                        "Input only", "Both", "Database only"
                     ))
                 ) |> 
                 dplyr::count(Label, .drop = FALSE)
