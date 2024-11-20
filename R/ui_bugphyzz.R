@@ -62,7 +62,7 @@ bugphyzzOptions <- function() {
         shiny::numericInput(
             inputId = "bugphyzz_min", 
             label = list("Minimum size:", helpIcon("bugphyzz_min_help")),
-            value = 1,
+            value = 5,
             min = 1,
             max = 100,
             step = 1

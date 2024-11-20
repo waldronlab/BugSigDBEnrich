@@ -18,6 +18,7 @@ simFun <- function(sig, sigL, opt = NULL) {
         Signature = names(ji),
         JI = unname(ji),
         OC = unname(oc),
+        OCPer = get_per(oc),
         Size = purrr::map_int(sigL, length)
     ) |>
         dplyr::arrange(-.data[["OC"]], -.data[["JI"]])

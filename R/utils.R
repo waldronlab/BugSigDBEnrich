@@ -219,30 +219,35 @@ getColNameTags <- function(dat) {
     cols <- list(
         ## Columns common to bugphyzz and bsdb results
         Signature = stringr::str_c(
-            "Name of the signature in the selected database.",
+            "Name of the signature in the selected database. ",
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         JI = stringr::str_c(
             "The Jaccard index (JI) shows how similar two signatures are by",
-            " comparing shared elements to total elements.",
+            " comparing shared elements to total elements. ",
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         OC = stringr::str_c(
-            "The overlap coefficient (OC) measures how much one signature fits within the other",
+            "The overlap coefficient (OC) measures how much one signature fits within the other. ",
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+        ),
+        OCPer = stringr::str_c(
+            "Overlap coefficient (OC) percentile (%) based on BSDB comparisons. ",
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         Size = stringr::str_c(
-            "Number of taxa in the database signature.",
+            "Number of taxa in the database signature. ",
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         ## Column only present in bsdb results
         Study = stringr::str_c(
             "The source Study of the signature.", 
-            " Click on it to be re-directed to the study's curation page in BugSigDB.",
+            " Click on it to be re-directed to the study's curation page in BugSigDB. ",
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         )
@@ -318,3 +323,16 @@ appendDTDeps <- function(dt) {
         )
     ))
 }
+
+# ecdf_ocs <- stats::ecdf(per)
+
+get_per <- function(x) {
+    purrr::map_int(x, ~ {
+        if (.x <= 0) {
+            return(0)
+        } 
+        as.integer(sub("%", "", names(per)[max(which(.x >= per))]))
+    })
+} 
+
+

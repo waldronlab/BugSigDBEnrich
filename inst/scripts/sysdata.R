@@ -1,8 +1,10 @@
 library(bugsigdbr)
+library(purrr)
 
+## Create examole sigantures
 bsdb <- importBugSigDB(version = "10.5281/zenodo.10627578")
 
-exampleSig <- "bsdb:855/1/2_Dry-eye-syndrome:Dry-Eye-Disease-patients_vs_Healthy-Controls_DOWN"
+exampleSig <- "bsdb:454/1/1_Colorectal-cancer:colorectal-cancer-(CRC)_vs_healthy-controls_UP"
 idTypes <- c("ncbi", "taxname", "metaphlan")
 names(idTypes) <- idTypes
 
@@ -27,6 +29,22 @@ for (i in seq_along(exampleSigs)) {
     writeLines(exampleSigs[[i]], con = fpath)
 }
 
+
+
+sigs <- bugsigdbr::getSignatures(bsdb, min.size = 5, exact.tax.level = TRUE)
+sigsComb <- utils::combn(sigs, 2, simplify = FALSE)
+system.time({
+    ocs <- purrr::map_dbl(sigsComb, ~ {
+        BugSigDBEnrich:::.overlap_coefficient(.x[[1]], .x[[2]])
+    })
+    
+})
+
+ocs <- ocs[ocs > 0]
+per <- quantile(ocs, probs = seq(0, 1, 0.01))
+# ecdf_ocs <- stats::ecdf(per)
+
 usethis::use_data(
-    exampleSigs, internal = TRUE, overwrite = TRUE
+    exampleSigs, ocs, per,
+    internal = TRUE, overwrite = TRUE
 )
