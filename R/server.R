@@ -32,7 +32,6 @@ server <- function(input, output, session) {
     
     # urlHandlerServer(session)
     
-    
     resetApp(input, session)
     
     textBoxExamplesServer(input, session); fileInputExamplesServer(output)
@@ -121,7 +120,7 @@ server <- function(input, output, session) {
                 ),
                 color = "white"
             )
-            sigsTable <- sets2Df(inputSigFun, sigs_rval()[[dat()$Signature[row_id]]])
+            sigsTable <- sets2Df(inputSigFun, sigs_rval()[[dat()$Signature[row_id]]], input)
             waiter::waiter_hide()
             
             tbl <- sigsTable |> 
@@ -152,8 +151,8 @@ server <- function(input, output, session) {
                     DT::renderDT({
                         DT::datatable(
                             data = sigsTable, rownames = FALSE, escape = FALSE,
-                            selection = "none",
-                            filter = "top"
+                            selection = "none"
+                            # filter = "top"
                         )
                     }),
                 )

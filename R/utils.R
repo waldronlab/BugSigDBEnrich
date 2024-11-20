@@ -1,20 +1,18 @@
-sets2Df <- function(inputSigFun, y) {
+sets2Df <- function(inputSigFun, y, input) {
     x <- inputSigFun()
-    # print(head(x))
-    # print(head(y))
+    
+    if (isType(x, "metaphlan")[[1]] && input$options_tab == "bugphyzz_panel") {
+        x <- x |> 
+            stringr::str_extract("[^|]+$") |> 
+            stringr::str_remove("^[a-zA-Z]__")
+    } 
+    
     input_only <- setdiff(x, y)
     both <- intersect(x, y)
     target_only <- setdiff(y, x)
+    
     ids <- c(input_only, both, target_only)
-    # names(x) <- x
-    # print(head(x))
-    # ids2 <- c(
-    #     names(x[input_only]),
-    #     names(y)[match(both, y)],
-    #     names(y)[match(target_only, y)]
-    # )
-    # message(length(ids))
-    # message(length(ids2))
+    
     labels <- dplyr::case_when(
         ids %in% input_only ~ "Input only",
         ids %in% both ~ "Both",
@@ -22,7 +20,6 @@ sets2Df <- function(inputSigFun, y) {
     )
     df <- data.frame(
         ID = ids,
-        # ID2 = ids2,
         Label = labels
     )
     ncbi_path <- cacheTaxonomizr::txPath()
@@ -35,7 +32,7 @@ sets2Df <- function(inputSigFun, y) {
             dplyr::relocate(.data$`Taxon name`, .after = .data$ID) |> 
             dplyr::rename(`NCBI ID` = .data$ID) |> 
             dplyr::mutate(
-                `NCBI ID` =    .data$`NCBI ID` |> 
+                `NCBI ID` = .data$`NCBI ID` |> 
                     strsplit(",") |> 
                     purrr::map(
                         ~ paste0(
@@ -53,7 +50,7 @@ sets2Df <- function(inputSigFun, y) {
             dplyr::relocate(.data$`NCBI ID`, .after = .data$ID) |> 
             dplyr::rename(`Taxon name` = .data$ID) |> 
             dplyr::mutate(
-                `NCBI ID` =    .data$`NCBI ID` |> 
+                `NCBI ID` = .data$`NCBI ID` |> 
                     strsplit(",") |> 
                     purrr::map(
                         ~ paste0(
@@ -67,14 +64,14 @@ sets2Df <- function(inputSigFun, y) {
         df <- df |> 
             dplyr::mutate(
                 `NCBI ID` = .data$ID |> 
-                    stringr::str_extract("[^|]+$") |> 
-                    stringr::str_remove("^[a-zA-Z]__") |> 
+                    stringr::str_extract("[^|]+$") |>
+                    stringr::str_remove("^[a-zA-Z]__") |>
                     taxonomizr::getId(ncbi_path)
             ) |> 
             dplyr::relocate(.data$`NCBI ID`, .after = .data$ID) |> 
             dplyr::rename(`Metaphlan name` = .data$ID) |> 
             dplyr::mutate(
-                `NCBI ID` =    .data$`NCBI ID` |> 
+                `NCBI ID` = .data$`NCBI ID` |> 
                     strsplit(",") |> 
                     purrr::map(
                         ~ paste0(
@@ -324,8 +321,6 @@ appendDTDeps <- function(dt) {
     ))
 }
 
-# ecdf_ocs <- stats::ecdf(per)
-
 get_per <- function(x) {
     purrr::map_int(x, ~ {
         if (.x <= 0) {
@@ -334,5 +329,3 @@ get_per <- function(x) {
         as.integer(sub("%", "", names(per)[max(which(.x >= per))]))
     })
 } 
-
-

@@ -242,6 +242,7 @@ bugphyzzOptionsHelp <- function(input) {
                 "Identifier type",
                 stringr::str_c(
                     "Select the identifier that matches your input. ",
+                    "Metaphlan identifiers will be converted to taxname identifiers. ",
                     helpPageDiv("More...", "input")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
@@ -252,7 +253,7 @@ bugphyzzOptionsHelp <- function(input) {
                 "Taxonomic rank",
                 stringr::str_c(
                     "Select one or more ranks matching your input. ",
-                    "Use '(de)select all' to select all or none. ",
+                    "Check '(de)select all' to select all or none. ",
                     helpPageDiv("More...", "options")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
@@ -268,6 +269,7 @@ bugphyzzOptionsHelp <- function(input) {
                     "nas = non-traceable author statement, ",
                     "tax = taxonomic progagation from strain to species, ",
                     "asr = ancestral state reconstruction. ",
+                    "Check '(de)select all' to select all or none. ",
                     helpPageDiv("More...", "options")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
@@ -282,6 +284,7 @@ bugphyzzOptionsHelp <- function(input) {
                     "usually: >= 0.8 & < 1, ",
                     "sometimes: >= 0.5 < 0.8, ",
                     "rarely: > 0 & < 0.5. ",
+                    "Check '(de)select all' to select all or none. ",
                     helpPageDiv("More...", "options")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
