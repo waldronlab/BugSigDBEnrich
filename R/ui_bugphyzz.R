@@ -22,7 +22,7 @@ bugphyzzOptions <- function() {
         shiny::radioButtons(
             inputId = "bugphyzz_type",
             label = list("Identifier type:", helpIcon("bugphyzz_type_help")),
-            choices = c("ncbi", "taxname"),
+            choices = c("ncbi", "taxname", "metaphlan"),
             selected = "ncbi",
             inline = TRUE
         ),

@@ -57,27 +57,34 @@ helpModal <- function(title, message)  {
 
 getColNameTags <- function(dat) {
     cols <- list(
+        ## Columns common to bugphyzz and bsdb results
         Signature = stringr::str_c(
-            "Name of the BugSigDB signature.",
-            "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+            "Name of the signature in the selected database.",
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         JI = stringr::str_c(
             "The Jaccard index (JI) shows how similar two signatures are by",
             " comparing shared elements to total elements.",
-            "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         OC = stringr::str_c(
             "The overlap coefficient (OC) measures how much one signature fits within the other",
-            "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         Size = stringr::str_c(
-            "Number of taxa in the target BugSigDB signature.",
-            "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+            "Number of taxa in the database signature.",
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
+        ## Column only present in bsdb results
         Study = stringr::str_c(
             "The source Study of the signature.", 
             " Click on it to be re-directed to the study's curation page in BugSigDB.",
-            "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         )
     )
     cols[colnames(dat)] |> 

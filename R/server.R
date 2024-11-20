@@ -76,7 +76,7 @@ server <- function(input, output, session) {
         if (input$options_tab == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
         } else if (input$options_tab == "bugphyzz_panel") {
-            bugphyzzResult(input, output, inputSigFun, b)
+            bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
     })
     
@@ -84,17 +84,42 @@ server <- function(input, output, session) {
     shiny::observeEvent(input$clicked_signature, {
         clicked_id <- input$clicked_signature
         row_id <- as.numeric(sub("signature_", "", clicked_id))
-        tab_title <- stringr::str_extract(
-            dat()$Signature[row_id], "bsdb:\\d+/\\d+/\\d+"
-        ) |> 
-            stringr::str_replace_all("/", "_") |> 
-            stringr::str_replace(":", "_")
+        
+        bsdb_rgx <- "^bsdb:\\d+/\\d+/\\d+"
+        is_bsdb <- grepl(bsdb_rgx, dat()$Signature[row_id])
+        
+        if (is_bsdb) {
+            tab_title <- stringr::str_extract(
+                dat()$Signature[row_id], bsdb_rgx
+            ) |> 
+                stringr::str_replace_all("/", "_") |> 
+                stringr::str_replace(":", "_")
+        } else {
+           tab_title <- make.names(dat()$Signature[row_id])
+        }
         
         current_tabs <- open_tabs()
         
         if (!(tab_title %in% names(current_tabs))) {
-            
+            waiter::waiter_show(
+                html = htmltools::tagList(
+                    waiter::spin_timer(),
+                    htmltools::tags$br(),
+                    htmltools::tags$br(),
+                    htmltools::div(
+                        class = "h4", "Getting taxonomy information...",
+                        style = "color: black;"
+                    ),
+                    htmltools::div(
+                        class = "h5", "Please wait...",
+                        style = "color: black;"
+                    )
+                ),
+                color = "white"
+            )
             sigsTable <- sets2Df(inputSigFun, sigs_rval()[[dat()$Signature[row_id]]])
+            waiter::waiter_hide()
+            
             tbl <- sigsTable |> 
                 dplyr::mutate(
                     Label = factor(Label, levels = c(

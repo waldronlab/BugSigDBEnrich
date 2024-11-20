@@ -27,16 +27,16 @@ bugphyzzInputOptionsChecks <- function(input, inputSig) {
         )
         shiny::req(FALSE)
     }
-    isMeta <- which("metaphlan" %in% whichType(inputSig))
-    if (length(isMeta) >= 1) {
-        shiny::showNotification(
-            stringr::str_c(
-                "Metaphlan not supported for bugphyzz. ",
-                length(isMeta), " of ", length(inputSig),
-                " identifiers are metaphlan. Please review their id type."
-            ),
-            type = "error"
-        )
-        shiny::req(FALSE)
-    }
+    # isMeta <- which("metaphlan" %in% whichType(inputSig))
+    # if (length(isMeta) >= 1) {
+    #     shiny::showNotification(
+    #         stringr::str_c(
+    #             "Metaphlan not supported for bugphyzz. ",
+    #             length(isMeta), " of ", length(inputSig),
+    #             " identifiers are metaphlan. Please review their id type."
+    #         ),
+    #         type = "error"
+    #     )
+    #     shiny::req(FALSE)
+    # }
 }

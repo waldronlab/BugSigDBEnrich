@@ -1,9 +1,9 @@
 
 # Results -----------------------------------------------------------------
 bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
+    
     inputSig <- inputSigFun()
     
-    print(inputSig)
     if (!length(input$bsdb_rank)) {
         shiny::showNotification(
             "Please select at least one rank option.", 
@@ -32,8 +32,6 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
         min.size = input$bsdb_min
     )
     
-    sigs_rval(sigs)
-    
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     
     df <- simFun(inputSig, sigs, opt = "bsdb") |> 
@@ -41,6 +39,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
     
     dat(df)
+    sigs_rval(sigs)
     
     resultHeader <- stringr::str_c(
         "### BugSigDB results\n\n",
