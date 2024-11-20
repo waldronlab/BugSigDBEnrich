@@ -1,4 +1,5 @@
-sets2Df <- function(x, y) {
+sets2Df <- function(inputSigFun, y) {
+    x <- inputSigFun()
     # print(head(x))
     # print(head(y))
     input_only <- setdiff(x, y)
@@ -109,3 +110,15 @@ id2name <- function(x) {
             }
         })
 }
+
+helpPageDiv <- function(x, hash = FALSE) {
+    URL <- "https://github.com/waldronlab/BugSigDBEnrich/blob/devel/inst/www/help.md"
+    if (!is.null(hash)) {
+        URL <- stringr::str_c(URL, "#", hash)
+    }
+    stringr::str_c(
+        '<a href="', URL, '" target="_blank">', x, '</a>'
+    )
+}
+
+

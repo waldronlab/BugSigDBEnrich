@@ -1,6 +1,5 @@
 
 # Main page ---------------------------------------------------------------
-
 createUI <- function() {
     ui <- htmltools::tagList(
         waiter::use_waiter(),
@@ -28,7 +27,6 @@ createUI <- function() {
 }
 
 # Panels ------------------------------------------------------------------
-
 analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
@@ -43,27 +41,7 @@ analysisPanel <- function() {
         actionButtons(), shiny::tags$hr(),
         
         shiny::uiOutput("result_header"),
-        shiny::conditionalPanel(
-            condition = "input.analyzeButton > 0",
-            shiny::tabsetPanel(
-                id = "main_tabs",
-                shiny::tabPanel(
-                    title = "Table",
-                    htmltools::div(
-                        id = "table-container",
-                        DT::DTOutput("result_table")
-                    )
-                )
-            )
-        )
-    )
-}
-
-optionsNavSet <- function() {
-    bslib::navset_underline(
-        id = "options_tab",
-        bsdbNavPanel(),
-        bugphyzzNavPanel()
+        shiny::uiOutput("res"),
     )
 }
 
@@ -71,8 +49,10 @@ helpPanel <- function() {
     shiny::tabPanel(
         title = "Help",
         value = "help",
-        shiny::includeMarkdown(
-            system.file("www", "help.md", package = "BugSigDBEnrich")
+        htmltools::HTML(
+            stringr::str_c(
+                "Find help about this app ", helpPageDiv("here"), "."
+            )
         )
     )
 }
@@ -95,6 +75,14 @@ aboutPanel <- function() {
     )
 }
 
+# Options tab -------------------------------------------------------------
+optionsNavSet <- function() {
+    bslib::navset_underline(
+        id = "options_tab",
+        bsdbNavPanel(),
+        bugphyzzNavPanel()
+    )
+}
 # Inputs ------------------------------------------------------------------
 textInputBox <- function() {
     list(
@@ -137,7 +125,6 @@ fileInputBox <- function() {
 }
 
 # Action buttons ----------------------------------------------------------
-
 actionButtons <- function() {
     list(
         shiny::actionButton(
@@ -156,4 +143,3 @@ actionButtons <- function() {
         )
     )
 }
-

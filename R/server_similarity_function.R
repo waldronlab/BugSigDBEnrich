@@ -35,7 +35,6 @@ simFun <- function(sig, sigL, opt = NULL) {
     return(df)
 }
 
-## Helper function for jacSim
 .jaccard_similarity <- function(x, y) {
     intersection <- length(intersect(x, y))
     union <- length(union(x, y))
