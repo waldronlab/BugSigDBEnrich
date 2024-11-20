@@ -4,12 +4,14 @@
 \alias{simFun}
 \title{Calculate jaccard similarity}
 \usage{
-simFun(sig, sigL)
+simFun(sig, sigL, opt = NULL)
 }
 \arguments{
 \item{sig}{Input signature.}
 
 \item{sigL}{List of BugSigDB signatures}
+
+\item{opt}{"bsdb"  or "bugphyzz"}
 }
 \value{
 A data.frame

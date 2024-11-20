@@ -1,7 +1,16 @@
 
-bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
+# Results -----------------------------------------------------------------
+bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
+    
     inputSig <- inputSigFun()
-    bsdbInputOptionsChecks(input, inputSig)
+    
+    if (!length(input$bsdb_rank)) {
+        shiny::showNotification(
+            "Please select at least one rank option.", 
+            type = "error"
+        )
+        shiny::req(FALSE)
+    }
     
     vct_lgl <- isType(inputSig, input$bsdb_type)
     if (isFALSE(all(vct_lgl))) {
@@ -23,31 +32,14 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         min.size = input$bsdb_min
     )
     
-    sigs2_type <- dplyr::case_when(
-        input$bsdb_type == "ncbi" ~ "taxname",
-        input$bsdb_type == "taxname" ~ "ncbi",
-        input$bsdb_type == "metaphlan" ~ "ncbi"
-    )
-    sigs2 <- bugsigdbr::getSignatures(
-        df = bsdb,
-        tax.id.type = sigs2_type,
-        tax.level = input$bsdb_rank,
-        exact.tax.level = as.logical(input$bsdb_exact),
-        min.size = input$bsdb_min
-    )
-    
-    # sigs2 <- sigs2[names(sigs)]
-    # sigs <- purrr::map2(sigs, sigs2, ~ {
-    #     names(.x) <- .y
-    #     .x
-    # })
-    # 
-    # print(sigs[[1]])
-    
     sigPool <- unique(unlist(sigs, use.names = FALSE))
+    
     df <- simFun(inputSig, sigs, opt = "bsdb") |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
+    
+    dat(df)
+    sigs_rval(sigs)
     
     resultHeader <- stringr::str_c(
         "### BugSigDB results\n\n",
@@ -63,7 +55,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
         "Minimum signature size: ", input$bsdb_min, "  \n"
     )
     
-    output$result_header <- shiny::renderUI({ shiny::markdown(resultHeader)})
+    output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
     
     output$result_table <- DT::renderDT({
         dfDisplay <- df |> 
@@ -111,65 +103,77 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, session, open_tabs) {
             )
         }
     )
-    
-    shiny::observeEvent(input$clicked_signature, {
-        clicked_id <- input$clicked_signature
-        row_id <- as.numeric(sub("signature_", "", clicked_id))
-        tab_title <- stringr::str_extract(
-            df$Signature[row_id], "bsdb:\\d+/\\d+/\\d+"
-        ) |> 
-            stringr::str_replace_all("/", "_") |> 
-            stringr::str_replace(":", "_")
-        
-        current_tabs <- open_tabs()
-        
-        if (!(tab_title %in% names(current_tabs))) {
-            sigsTable <- sets2Df(inputSig, sigs[[df$Signature[row_id]]])
-            tbl <- sigsTable |> 
-                dplyr::mutate(
-                    Label = factor(Label, levels = c(
-                        "Only in input", "Intersect", "Only in target"
-                    ))
-                ) |> 
-                dplyr::count(Label, .drop = FALSE)
-            counts <- tbl$n
-            names(counts) <- tbl$Label
-            
-            summaryText <- vector("character", length(counts))
-            for (i in seq_along(summaryText)) {
-               txt <- paste0(names(counts)[i], ": ", counts[i])
-               summaryText[i] <- txt
+}
+
+# Options -----------------------------------------------------------------
+bsdbSigOptionsServer <- function(input, session) {
+    list(
+        shiny::observeEvent(input$bsdb_rank_mixed, {
+            if (input$bsdb_rank_mixed) {
+                shiny::updateCheckboxGroupInput(
+                    session, "bsdb_rank", selected = rankOptions()
+                )
+            } else {
+                shiny::updateCheckboxGroupInput(
+                    session, "bsdb_rank", selected = character(0)
+                )
             }
-            summaryText <- paste(summaryText, collapse = ", ")
-            
-            new_tab <- shiny::tabPanel(
-                title = htmltools::span(
-                    tab_title,
-                    htmltools::span("×", class = "close-tab")
-                ),
-                value = tab_title,
-                htmltools::tagList(
-                    htmltools::p(summaryText),
-                    DT::renderDT({
-                        DT::datatable(
-                            data = sigsTable, rownames = FALSE, escape = FALSE,
-                            selection = "none",
-                            filter = "top"
-                        )
-                    }),
+        }),
+        shiny::observe({
+            if (length(input$bsdb_rank) > 1)
+                shiny::updateRadioButtons(
+                    session, "bsdb_exact", selected = TRUE
+                )
+        })
+    )
+}
+
+# Help --------------------------------------------------------------------
+bsdbSigOptionsHelp <- function(input) {
+    list(
+        shiny::observeEvent(input$bsdb_type_help, {
+            helpModal(
+                "Identifier type",
+                stringr::str_c(
+                    "Type of the target signatures in BugSigDB.",
+                    " The type must match the input IDs. ",
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
-            shiny::appendTab(inputId = "main_tabs", new_tab, select = TRUE)
-            current_tabs[[tab_title]] <- TRUE
-            open_tabs(current_tabs)
-        }
-    })
-    
-    shiny::observeEvent(input$close_tab, {
-        tab_id <- input$close_tab
-        current_tabs <- open_tabs()
-        current_tabs[[tab_id]] <- NULL
-        open_tabs(current_tabs)
-        removeTab(inputId = "main_tabs", target = tab_id)
-    })
+        }),
+        shiny::observeEvent(input$bsdb_rank_help, {
+            helpModal(
+                "Select taxonomic rank(s)",
+                stringr::str_c(
+                    "Select the rank(s) of the taxa included in the target BugSigDB signature.",
+                    " Use the '(De)select all' check box to select or deselect all ranks at once. ",
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                )
+            )
+        }),
+        shiny::observeEvent(input$bsdb_exact_help, {
+            helpModal(
+                "Use exact taxonomiic level",
+                stringr::str_c(
+                    "If 'Yes', only ranks manually curated will be included.",
+                    " If 'No', the taxonomic tree will be cut at the specified rank (above).",
+                    " Only one rank (above) can be selected when the 'No' options is used. ",
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                )
+            )
+        }),
+        shiny::observeEvent(input$bsdb_min_help, {
+            helpModal(
+                "Minimum signature size",
+                stringr::str_c(
+                    "Minimum number of IDs to filter the target BugSigDB signatures. ",
+                    helpPageDiv("More...", "options")
+                    # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+                )
+            )
+        })
+    )
 }

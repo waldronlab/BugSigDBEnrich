@@ -26,17 +26,11 @@ server <- function(input, output, session) {
         ),
         color = "white"
     )
-    # bsdb <- .pkgenv$bsdb
-    # b <- .pkgenv$b
-    # ncbi_path <- .pkgenv$ncbi_path
-    # message(ncbi_path)
     bsdb <- bugsigdbr::importBugSigDB()
     b <- bugphyzz::importBugphyzz()
     waiter::waiter_hide()
     
-    inputSigFun <- inputSignature(input)
-    
-    urlHandlerServer(session)
+    # urlHandlerServer(session)
     httpGetHandler(query, session, input, output, inputSigFun, bsdb)
     
     resetApp(input, session)
@@ -50,54 +44,140 @@ server <- function(input, output, session) {
     bugphyzzOptionsServer(input, session, b)
     bugphyzzOptionsHelp(input)
     
+    inputSigFun <- inputSignature(input)
+    
+    dat <- shiny::reactiveVal(data.frame())
     open_tabs <- shiny::reactiveVal(list())
+    sigs_rval <- shiny::reactiveVal(list())
     
     shiny::observeEvent(input$analyzeButton, {
-        cond1 <- !is.null(input$text_input) && nzchar(input$text_input)
-        cond2 <- !is.null(input$file_input)
-        if (isFALSE(cond1) & isFALSE(cond2)) {
-            shiny::showNotification(
-                "No input",
-                type = "error"
+        
+        output$result_header <- shiny::renderUI(NULL)
+        output$res <- shiny::renderUI(NULL)
+        
+        output$res <-  shiny::renderUI({
+            shiny::tabsetPanel(
+                id = "main_tabs",
+                shiny::tabPanel(
+                    title = "Table",
+                    htmltools::div(
+                        id = "table-container",
+                        DT::DTOutput("result_table")
+                    )
+                )
             )
-            shiny::req(FALSE)
-        }
-        output$result_header <- renderUI({ NULL })
-        output$result_table <- DT::renderDT({ data.frame() })
+        })
+        
+        ## Clean reactive values -- Not needed for inputSigFun
+        dat(data.frame())
+        open_tabs(list())
+        sigs_rval(list())
+
         if (input$options_tab == "bugsigdb_panel") {
-            bsdbResult(input, output, inputSigFun, bsdb, session, open_tabs)
+            bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
         } else if (input$options_tab == "bugphyzz_panel") {
-            bugphyzzResult(input, output, inputSigFun, b)
+            bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
     })
-}
-
-inputSignature <- function(input) {
-    ## TODO reactivity is not needed. Eliminate reactive
-    shiny::reactive({
-        ## This could be a different check activated with action button (maybe).
-        cond1 <- !is.null(input$text_input) && nzchar(input$text_input)
-        cond2 <- !is.null(input$file_input)
-        if (isFALSE(cond1) & isFALSE(cond2)) {
-            shiny::showNotification(
-                "No input",
-                type = "error"
+    
+    ## Open signature tabs
+    shiny::observeEvent(input$clicked_signature, {
+        clicked_id <- input$clicked_signature
+        row_id <- as.numeric(sub("signature_", "", clicked_id))
+        
+        bsdb_rgx <- "^bsdb:\\d+/\\d+/\\d+"
+        is_bsdb <- grepl(bsdb_rgx, dat()$Signature[row_id])
+        
+        if (is_bsdb) {
+            tab_title <- stringr::str_extract(
+                dat()$Signature[row_id], bsdb_rgx
+            ) |> 
+                stringr::str_replace_all("/", "_") |> 
+                stringr::str_replace(":", "_")
+        } else {
+           tab_title <- make.names(dat()$Signature[row_id])
+        }
+        
+        current_tabs <- open_tabs()
+        
+        if (!(tab_title %in% names(current_tabs))) {
+            waiter::waiter_show(
+                html = htmltools::tagList(
+                    waiter::spin_timer(),
+                    htmltools::tags$br(),
+                    htmltools::tags$br(),
+                    htmltools::div(
+                        class = "h4", "Getting taxonomy information...",
+                        style = "color: black;"
+                    ),
+                    htmltools::div(
+                        class = "h5", "Please wait...",
+                        style = "color: black;"
+                    )
+                ),
+                color = "white"
             )
+            sigsTable <- sets2Df(inputSigFun, sigs_rval()[[dat()$Signature[row_id]]])
+            waiter::waiter_hide()
+            
+            tbl <- sigsTable |> 
+                dplyr::mutate(
+                    Label = factor(Label, levels = c(
+                        "Input only", "Both", "Database only"
+                    ))
+                ) |> 
+                dplyr::count(Label, .drop = FALSE)
+            counts <- tbl$n
+            names(counts) <- tbl$Label
+            
+            summaryText <- vector("character", length(counts))
+            for (i in seq_along(summaryText)) {
+                txt <- paste0(names(counts)[i], ": ", counts[i])
+                summaryText[i] <- txt
+            }
+            summaryText <- paste(summaryText, collapse = ", ")
+            
+            new_tab <- shiny::tabPanel(
+                title = htmltools::span(
+                    tab_title,
+                    htmltools::span("×", class = "close-tab")
+                ),
+                value = tab_title,
+                htmltools::tagList(
+                    htmltools::p(summaryText),
+                    DT::renderDT({
+                        DT::datatable(
+                            data = sigsTable, rownames = FALSE, escape = FALSE,
+                            selection = "none",
+                            filter = "top"
+                        )
+                    }),
+                )
+            )
+            shiny::appendTab(inputId = "main_tabs", new_tab, select = TRUE)
+            current_tabs[[tab_title]] <- TRUE
+            open_tabs(current_tabs)
         }
-        shiny::req(cond1 | cond2)
-        if (cond1) {
-            return(readBox(input$text_input))
-        } else if (cond2) {
-            ext <- tools::file_ext(input$file_input$name)
-            return(switch(ext,
-                          txt = readLines(con = input$file_input$datapath),
-                          shiny::validate("Invalid file; Please upload a .txt file")
-            ))
-        }
+    })
+    
+    ## Close signature tabs
+    shiny::observeEvent(input$close_tab, {
+        tab_id <- input$close_tab
+        current_tabs <- open_tabs()
+        current_tabs[[tab_id]] <- NULL
+        open_tabs(current_tabs)
+        shiny::removeTab(inputId = "main_tabs", target = tab_id)
     })
 }
 
-readBox <- function(text_input) {
-    char_vec <- unlist(strsplit(text_input, "\n"))
-    char_vec <- char_vec[char_vec != ""]
+
+resetApp <- function(input, session) {
+    shiny::observeEvent(input$resetButton, {
+        session$sendCustomMessage("resetURL", list())
+        session$reload()
+    })
 }
+# tabs_to_remove <- names(open_tabs())
+# for (tab_name in tabs_to_remove) {
+#     shiny::removeTab(inputId = "main_tabs", target = tab_name)
+# }
