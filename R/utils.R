@@ -131,7 +131,9 @@ urlHandlerServer <- function(session) {
     }) 
 }
 
-httpGetHandler <- function(query, session, input, output, inputSigFun, bsdb) {
+httpGetHandler <- function(
+        query, session, input, output, inputSigFun, bsdb, b, dat, open_tabs, sigs_rval
+) {
     hasRun <- shiny::reactiveVal(FALSE)
     shiny::observe({
         query <- shiny::parseQueryString(session$clientData$url_search)
@@ -148,24 +150,59 @@ httpGetHandler <- function(query, session, input, output, inputSigFun, bsdb) {
             )
             if (!hasRun()) {
                 shiny::req(input$text_input)  # Ensure input is provided
-                bsdbResult(input, output, inputSigFun, bsdb)
+                output$res <-  shiny::renderUI({
+                    shiny::tabsetPanel(
+                        id = "main_tabs",
+                        shiny::tabPanel(
+                            title = "Table",
+                            htmltools::div(
+                                id = "table-container",
+                                DT::DTOutput("result_table")
+                            )
+                        )
+                    )
+                })
+                bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
                 hasRun(TRUE)  # Set the flag to indicate the analysis has run
             }
         }
     })
     shiny::observeEvent(input$run_analysis, {
-        shiny::req(input$text_input)  # Ensure input is provided
-        # bsdbResult(input, output, inputSigFun, bsdb)
-        output$result_header <- renderUI({ NULL })
-        output$result_table <- DT::renderDT({ data.frame() })
+        shiny::req(input$text_input)
+        
+        output$result_header <- shiny::renderUI(NULL)
+        output$res <- shiny::renderUI(NULL)
+        
+        output$res <-  shiny::renderUI({
+            shiny::tabsetPanel(
+                id = "main_tabs",
+                shiny::tabPanel(
+                    title = "Table",
+                    htmltools::div(
+                        id = "table-container",
+                        DT::DTOutput("result_table")
+                    )
+                )
+            )
+        })
+        
+        dat(data.frame())
+        open_tabs(list())
+        sigs_rval(list())
         
         if (input$options_tab == "bugsigdb_panel") {
-            bsdbResult(input, output, inputSigFun, bsdb)
+            bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
         } else if (input$options_tab == "bugphyzz_panel") {
-            output$result_header <- shiny::renderUI({
-                htmltools::div("Placeholder.")
-            })
+            bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
+        
+        # if (input$options_tab == "bugsigdb_panel") {
+        #     bsdbResult(input, output, inputSigFun, bsdb)
+        # } else if (input$options_tab == "bugphyzz_panel") {
+        #     output$result_header <- shiny::renderUI({
+        #         htmltools::div("Placeholder.")
+        #     })
+        # }
     })
 }
 
@@ -281,4 +318,3 @@ appendDTDeps <- function(dt) {
         )
     ))
 }
-

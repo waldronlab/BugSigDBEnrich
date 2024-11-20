@@ -31,7 +31,7 @@ server <- function(input, output, session) {
     waiter::waiter_hide()
     
     # urlHandlerServer(session)
-    httpGetHandler(query, session, input, output, inputSigFun, bsdb)
+    
     
     resetApp(input, session)
     
@@ -49,6 +49,10 @@ server <- function(input, output, session) {
     dat <- shiny::reactiveVal(data.frame())
     open_tabs <- shiny::reactiveVal(list())
     sigs_rval <- shiny::reactiveVal(list())
+    
+    httpGetHandler(
+        query, session, input, output, inputSigFun, bsdb, b, dat, open_tabs, sigs_rval
+    )
     
     shiny::observeEvent(input$analyzeButton, {
         
