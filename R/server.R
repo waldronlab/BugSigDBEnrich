@@ -54,6 +54,14 @@ server <- function(input, output, session) {
         )
     })
     
+    shiny::observe({
+        if (input$bsdb_type != "ncbi" || input$bugphyzz_type != "ncbi") {
+            shiny::updateRadioButtons(
+                session, "semantic", selected = FALSE
+            )
+        }
+    })
+    
     inputSigFun <- inputSignature(input)
     
     dat <- shiny::reactiveVal(data.frame())

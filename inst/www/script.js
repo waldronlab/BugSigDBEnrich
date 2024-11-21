@@ -66,14 +66,25 @@ $(document).on('shiny:inputchanged', function(event) {
     }
 });
 
-
-
-
 // This is for the reset button
 Shiny.addCustomMessageHandler('resetURL', function(message) {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         window.history.replaceState({}, document.title, '/');
     } else {
         window.history.replaceState({}, document.title, 'https://shiny.sph.cuny.edu/BugSigDBEnrich/');
+    }
+});
+
+
+// Deactivate semantic
+$(document).on('shiny:inputchanged', function(event) {
+    if (event.name === 'bsdb_type' || event.name === 'bugphyzz_type') {
+        const value = event.value;
+        if (value !== 'ncbi') {
+            $('input[name=\"semantic\"][value=\"TRUE\"]').prop('disabled', true);
+            $('input[name=\"semantic\"][value=\"FALSE\"]').prop('checked', true);
+        } else {
+            $('input[name=\"semantic\"][value=\"TRUE\"]').prop('disabled', false);
+        }
     }
 });

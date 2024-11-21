@@ -7,8 +7,6 @@ semSim <- function(inputSig, sigs) {
     inSig <- .getValidOBOSigs(inSig, obo)
     dbSigs <- .getValidOBOSigs(dbSigs, obo)
     
-    message("Starting semandtic")
-    
     res <- ontologySimilarity::get_sim_grid(
         ontology = obo, term_sets = inSig, term_sets2 = dbSigs
     ) |> 
@@ -20,7 +18,6 @@ semSim <- function(inputSig, sigs) {
         dplyr::mutate(
             SemSim = round(.data$SemSim, 2)
         )
-    message("Finished semantic")
     return(res)
 }
 

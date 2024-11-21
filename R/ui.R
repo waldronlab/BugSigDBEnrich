@@ -53,7 +53,15 @@ analysisPanel <- function() {
         htmltools::h3("Analysis options"),
         shiny::radioButtons(
             inputId = "semantic", 
-            label = list("Semantic similarity (this can take some time):", helpIcon("semantic_help")),
+            label = list(
+                "Semantic similarity (",
+                shiny::icon(
+                    "exclamation-triangle", class = "text-warning",
+                    title = "This operation can take several minutes",
+                ),
+                "this can take several minutes):",
+                helpIcon("semantic_help")
+            ),
             choiceNames = c("Yes", "No"),
             choiceValues = c(TRUE, FALSE),
             selected = FALSE,
