@@ -236,6 +236,11 @@ getColNameTags <- function(dat) {
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
+        SemSim = stringr::str_c(
+            "Semantic similarity. ",
+            helpPageDiv("More...", hash = "results")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+        ),
         Size = stringr::str_c(
             "Number of taxa in the database signature. ",
             helpPageDiv("More...", hash = "results")

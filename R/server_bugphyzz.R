@@ -46,7 +46,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
             stringr::str_remove("^[a-zA-Z]__")
     }
     
-    df <- simFun(inputSig, sigs)
+    df <- simFun(inputSig, sigs, input = input)
     
     dat(df)
     sigs_rval(sigs)

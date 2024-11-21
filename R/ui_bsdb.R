@@ -37,7 +37,7 @@ bsdbSigOptions <- function() {
             inline = TRUE
         ),
         shiny::numericInput(
-            inputId = "bsdb_min", 
+            inputId = "bsdb_min",
             label = list("Minimum size:", helpIcon("bsdb_min_help")),
             value = 5,
             min = 1,

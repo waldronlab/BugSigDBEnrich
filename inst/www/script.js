@@ -74,3 +74,17 @@ Shiny.addCustomMessageHandler('resetURL', function(message) {
         window.history.replaceState({}, document.title, 'https://shiny.sph.cuny.edu/BugSigDBEnrich/');
     }
 });
+
+
+// Deactivate semantic
+$(document).on('shiny:inputchanged', function(event) {
+    if (event.name === 'bsdb_type' || event.name === 'bugphyzz_type') {
+        const value = event.value;
+        if (value !== 'ncbi') {
+            $('input[name=\"semantic\"][value=\"TRUE\"]').prop('disabled', true);
+            $('input[name=\"semantic\"][value=\"FALSE\"]').prop('checked', true);
+        } else {
+            $('input[name=\"semantic\"][value=\"TRUE\"]').prop('disabled', false);
+        }
+    }
+});

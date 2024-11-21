@@ -3,10 +3,12 @@
 #' @param sig Input signature.
 #' @param sigL  List of BugSigDB signatures
 #' @param opt "bsdb"  or "bugphyzz"
+#' @param input shiny input variable
 #'
 #' @return A data.frame
 #'
-simFun <- function(sig, sigL, opt = NULL) {
+simFun <- function(sig, sigL, opt = NULL, input) {
+    
     ji <- purrr::map_dbl(sigL,  ~ {
         round(.jaccard_similarity(.x, sig), 2)
     })
@@ -31,6 +33,12 @@ simFun <- function(sig, sigL, opt = NULL) {
                 ) |> 
                 dplyr::relocate(.data$bsdb_id)
         }
+    }
+    
+    if (input$semantic) {
+        message("Perform similarity")
+        semantic_similarity <- semSim(list(inputSig = sig), sigL)
+        df <- dplyr::left_join(df, semantic_similarity, by = "Signature")
     }
     
     return(df)
