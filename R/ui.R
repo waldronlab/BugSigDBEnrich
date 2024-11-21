@@ -47,8 +47,19 @@ analysisPanel <- function() {
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
         
-        htmltools::h3("Options"),
+        htmltools::h3("Database options"),
         optionsNavSet(), shiny::tags$hr(),
+        
+        htmltools::h3("Analysis options"),
+        shiny::radioButtons(
+            inputId = "semantic", 
+            label = list("Semantic similarity (this can take some time):", helpIcon("semantic_help")),
+            choiceNames = c("Yes", "No"),
+            choiceValues = c(TRUE, FALSE),
+            selected = FALSE,
+            inline = TRUE
+        ),
+        shiny::tags$hr(),
         
         htmltools::h3("Actions"),
         actionButtons(), shiny::tags$hr(),

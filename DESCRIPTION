@@ -22,11 +22,13 @@ Imports:
     bslib,
     bugphyzz,
     bugsigdbr,
+    BugSigDBStats,
     cacheTaxonomizr,
     dplyr,
     DT,
     htmltools,
     htmlwidgets,
+    ontologySimilarity,
     purrr,
     rlang,
     shiny,
@@ -38,6 +40,7 @@ Imports:
     waiter
 Remotes:
     sdgamboa/cacheTaxonomizr@devel
+    waldronlab/BugSigDBStats@main
 RoxygenNote: 7.3.2
 URL: https://github.com/waldronlab/BugSigDBEnrich
 BugReports: https://github.com/waldronlab/BugSigDBEnrich/issues

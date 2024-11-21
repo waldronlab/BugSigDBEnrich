@@ -43,6 +43,17 @@ server <- function(input, output, session) {
     bugphyzzOptionsServer(input, session, b)
     bugphyzzOptionsHelp(input)
     
+    shiny::observeEvent(input$semantic_help, {
+        helpModal(
+            "Semantic similarity",
+            stringr::str_c(
+                "Only available when the input is of type ncbi. ",
+                helpPageDiv("More...", "options")
+                # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+            )
+        )
+    })
+    
     inputSigFun <- inputSignature(input)
     
     dat <- shiny::reactiveVal(data.frame())
@@ -75,12 +86,29 @@ server <- function(input, output, session) {
         dat(data.frame())
         open_tabs(list())
         sigs_rval(list())
-
+        
+        waiter::waiter_show(
+            html = htmltools::tagList(
+                waiter::spin_timer(),
+                htmltools::tags$br(),
+                htmltools::tags$br(),
+                htmltools::div(
+                    class = "h4", "Analyzing...",
+                    style = "color: black;"
+                ),
+                htmltools::div(
+                    class = "h5", "Please wait...",
+                    style = "color: black;"
+                )
+            ),
+            color = "white"
+        )
         if (input$options_tab == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
         } else if (input$options_tab == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
+        waiter::waiter_hide()
     })
     
     ## Open signature tabs

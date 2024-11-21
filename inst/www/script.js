@@ -66,6 +66,9 @@ $(document).on('shiny:inputchanged', function(event) {
     }
 });
 
+
+
+
 // This is for the reset button
 Shiny.addCustomMessageHandler('resetURL', function(message) {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {

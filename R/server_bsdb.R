@@ -34,7 +34,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
     
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     
-    df <- simFun(inputSig, sigs, opt = "bsdb") |> 
+    df <- simFun(inputSig, sigs, opt = "bsdb", input) |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
     
