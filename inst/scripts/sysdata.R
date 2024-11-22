@@ -10,7 +10,7 @@ names(idTypes) <- idTypes
 
 exampleSigs <- lapply(idTypes,  function(x) {
     sigs <- getSignatures(
-        df = bsdb, tax.id.type = x, tax.level = "genus",
+        df = bsdb, tax.id.type = x, tax.level = "mixed",
         exact.tax.level = TRUE, min.size = 5
     )
     sigs[exampleSig][[1]]
@@ -22,14 +22,11 @@ exampleSigs[["badsig"]] <- c(
     exampleSigs$metaphlan[1:3]
 )
 
-
 for (i in seq_along(exampleSigs)) {
     fname <- paste0(names(exampleSigs)[i], ".txt")
     fpath <- file.path("inst", "extdata", fname)
     writeLines(exampleSigs[[i]], con = fpath)
 }
-
-
 
 sigs <- bugsigdbr::getSignatures(bsdb, min.size = 5, exact.tax.level = TRUE)
 sigsComb <- utils::combn(sigs, 2, simplify = FALSE)

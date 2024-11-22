@@ -2,12 +2,15 @@ Actinomyces
 Alistipes
 Allisonella
 Bacteroides
+Bacteroidota
 Bifidobacterium
 Dialister
 Enterococcus
+Escherichia/Shigella sp.
 Fusobacterium
 Gemella
 Granulicatella
+Lachnospiraceae
 Mogibacterium
 Oscillibacter
 Parvimonas
@@ -20,9 +23,13 @@ Staphylococcus
 Streptococcus
 Victivallis
 Clostridium
+Eubacteriales
+Oscillospiraceae
+Oxalobacteraceae
 Acetanaerobacterium
 Campylobacter
 Eubacterium
 Howardella
 Porphyromonas
 Prevotella
+Porphyromonadaceae
