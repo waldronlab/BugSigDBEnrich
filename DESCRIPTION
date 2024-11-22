@@ -33,6 +33,7 @@ Imports:
     rlang,
     shiny,
     shinythemes,
+    shinyWidgets,
     stringr,
     taxonomizr,
     tools,

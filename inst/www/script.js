@@ -53,19 +53,6 @@ $(document).on('click', '.close-tab', function(e) {
     Shiny.setInputValue('close_tab', tabId, {priority: 'event'});
 });
 
-// Deactivate Exact in BugSigDB options when two or more ranks are selected
-$(document).on('shiny:inputchanged', function(event) {
-    if (event.name === 'bsdb_rank') {
-        const checkedCount = $('input[name=\"bsdb_rank\"]:checked').length; 
-        if (checkedCount > 1) {
-            $('input[name=\"bsdb_exact\"][value=\"FALSE\"]').prop('disabled', true);
-            $('input[name=\"bsdb_exact\"][value=\"TRUE\"]').prop('checked', true);
-        } else {
-            $('input[name=\"bsdb_exact\"][value=\"FALSE\"]').prop('disabled', false);
-        }
-    }
-});
-
 // This is for the reset button
 Shiny.addCustomMessageHandler('resetURL', function(message) {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
@@ -85,6 +72,19 @@ $(document).on('shiny:inputchanged', function(event) {
             $('input[name=\"semantic\"][value=\"FALSE\"]').prop('checked', true);
         } else {
             $('input[name=\"semantic\"][value=\"TRUE\"]').prop('disabled', false);
+        }
+    }
+});
+
+// Deactivate Exact in BugSigDB options when two or more ranks are selected
+$(document).on('shiny:inputchanged', function(event) {
+    if (event.name === 'bsdb_rank') {
+        const checkedCount = $('input[name=\"bsdb_rank\"]:checked').length; 
+        if (checkedCount > 1) {
+            $('input[name=\"bsdb_exact\"][value=\"FALSE\"]').prop('disabled', true);
+            $('input[name=\"bsdb_exact\"][value=\"TRUE\"]').prop('checked', true);
+        } else {
+            $('input[name=\"bsdb_exact\"][value=\"FALSE\"]').prop('disabled', false);
         }
     }
 });

@@ -20,3 +20,8 @@
     display: inline-block;
     margin-left: 10px;
 }
+
+input[type="radio"]:disabled + span {
+  cursor: not-allowed !important;
+  color: #FF0000 !important;
+}

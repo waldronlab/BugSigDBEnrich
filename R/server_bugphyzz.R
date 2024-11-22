@@ -160,21 +160,35 @@ bugphyzzInputOptionsChecks <- function(input, inputSig) {
 # Options -----------------------------------------------------------------
 bugphyzzOptionsServer <- function(input, session, b) {
     list(
+        # shiny::observe({
+        #     shiny::updateSelectInput(
+        #         session = session,
+        #         inputId = "bugphyzz_attributes",
+        #         choices =  c("select all", sort(names(b)))
+        #     )
+        # }),
+        # shiny::observeEvent(input$bugphyzz_attributes, {
+        #     if ("select all" %in% input$bugphyzz_attributes) {
+        #         shiny::updateSelectizeInput(
+        #             session = session,
+        #             inputId = "bugphyzz_attributes",
+        #             selected = sort(names(b))
+        #         )
+        #     }
+        # }),
         shiny::observe({
-            shiny::updateSelectInput(
+            shinyWidgets::updatePickerInput(
                 session = session,
                 inputId = "bugphyzz_attributes",
-                choices =  c("select all", sort(names(b)))
-            )
-        }),
-        shiny::observeEvent(input$bugphyzz_attributes, {
-            if ("select all" %in% input$bugphyzz_attributes) {
-                shiny::updateSelectizeInput(
-                    session = session,
-                    inputId = "bugphyzz_attributes",
-                    selected = sort(names(b))
+                choices = sort(names(b)), 
+                options = list(
+                    `actions-box` = TRUE,
+                    `live-search` = TRUE,
+                    `selected-text-format` = "count > 1",
+                    countSelectedText = "{0} attributes selected",
+                    title = "Select attributes"
                 )
-            }
+            )
         }),
         shiny::observeEvent(input$bugphyzz_rank_mixed, {
             if (input$bugphyzz_rank_mixed) {
