@@ -23,9 +23,9 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
         )
     }
     
-    bsdbSub <- bsdb[, c("BSDB ID", "Study"), drop = FALSE]
+    bsdbSub <- bsdb()[, c("BSDB ID", "Study"), drop = FALSE]
     sigs <- bugsigdbr::getSignatures(
-        df = bsdb,
+        df = bsdb(),
         tax.id.type = input$bsdb_type,
         tax.level = input$bsdb_rank,
         exact.tax.level = as.logical(input$bsdb_exact),
@@ -34,9 +34,26 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
     
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     
+    waiter::waiter_show(
+        html = htmltools::tagList(
+            waiter::spin_timer(),
+            htmltools::tags$br(),
+            htmltools::tags$br(),
+            htmltools::div(
+                class = "h4", "Analyzing...",
+                style = "color: black;"
+            ),
+            htmltools::div(
+                class = "h5", "Please wait...",
+                style = "color: black;"
+            )
+        ),
+        color = "white"
+    )
     df <- simFun(inputSig, sigs, opt = "bsdb", input) |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
+    waiter::waiter_hide()
     
     dat(df)
     sigs_rval(sigs)
@@ -54,6 +71,19 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
         "Exact: ", ifelse(input$bsdb_exact == TRUE, "Yes", "No"), "  \n",
         "Minimum signature size: ", input$bsdb_min, "  \n"
     )
+    
+    output$res <-  shiny::renderUI({
+        shiny::tabsetPanel(
+            id = "main_tabs",
+            shiny::tabPanel(
+                title = "Table",
+                htmltools::div(
+                    id = "table-container",
+                    DT::DTOutput("result_table")
+                )
+            )
+        )
+    })
     
     output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
     

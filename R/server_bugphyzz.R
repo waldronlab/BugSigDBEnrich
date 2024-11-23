@@ -17,7 +17,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
         )
     }
     
-    subB <- b[input$bugphyzz_attributes]
+    subB <- b()[input$bugphyzz_attributes]
     idType <- dplyr::case_when(
         input$bugphyzz_type == "ncbi" ~ "NCBI_ID",
         input$bugphyzz_type == "taxname" ~ "Taxon_name",
@@ -46,7 +46,24 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
             stringr::str_remove("^[a-zA-Z]__")
     }
     
+    waiter::waiter_show(
+        html = htmltools::tagList(
+            waiter::spin_timer(),
+            htmltools::tags$br(),
+            htmltools::tags$br(),
+            htmltools::div(
+                class = "h4", "Analyzing...",
+                style = "color: black;"
+            ),
+            htmltools::div(
+                class = "h5", "Please wait...",
+                style = "color: black;"
+            )
+        ),
+        color = "white"
+    )
     df <- simFun(inputSig, sigs, input = input)
+    waiter::waiter_hide()
     
     dat(df)
     sigs_rval(sigs)
@@ -66,6 +83,19 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
         "Frequency: ", paste(input$bugphyzz_frequency, collapse = ", "), "  \n",
         "Minimum signature size: ", input$bugphyzz_min, "  \n"
     )
+    
+    output$res <-  shiny::renderUI({
+        shiny::tabsetPanel(
+            id = "main_tabs",
+            shiny::tabPanel(
+                title = "Table",
+                htmltools::div(
+                    id = "table-container",
+                    DT::DTOutput("result_table")
+                )
+            )
+        )
+    })
     
     output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
     
@@ -120,7 +150,7 @@ bugphyzzInputOptionsChecks <- function(input, inputSig) {
             "Please select at least one attribute option.", 
             type = "error"
         )
-        shiny::req(FALSE)
+        shiny::req(FALSE, cancelOutput = "progress")
     }
     if (!length(input$bugphyzz_rank)) {
         shiny::showNotification(
@@ -180,7 +210,7 @@ bugphyzzOptionsServer <- function(input, session, b) {
             shinyWidgets::updatePickerInput(
                 session = session,
                 inputId = "bugphyzz_attributes",
-                choices = sort(names(b)), 
+                choices = sort(names(b())), 
                 options = list(
                     `actions-box` = TRUE,
                     `live-search` = TRUE,

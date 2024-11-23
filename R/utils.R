@@ -330,7 +330,7 @@ get_per <- function(x) {
     purrr::map_int(x, ~ {
         if (.x <= 0) {
             return(0)
-        } 
+        }
         as.integer(sub("%", "", names(per)[max(which(.x >= per))]))
     })
-} 
+}

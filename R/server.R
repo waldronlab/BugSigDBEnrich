@@ -18,19 +18,67 @@ server <- function(input, output, session) {
             htmltools::div(
                 class = "h4", "Loading...",
                 style = "color: black;"
-            ),
-            htmltools::div(
-                class = "h5", "Please wait...",
-                style = "color: black;"
             )
+            # htmltools::div(
+            #     class = "h5", "Please wait...",
+            #     style = "color: black;"
+            # )
         ),
         color = "white"
     )
-    bsdb <- bugsigdbr::importBugSigDB()
-    b <- bugphyzz::importBugphyzz()
+    # bsdb <- bugsigdbr::importBugSigDB()
+    # b <- bugphyzz::importBugphyzz()
+    bsdb <- shiny::reactiveVal(NULL)
+    b <- shiny::reactiveVal(NULL)
     waiter::waiter_hide()
     
     # urlHandlerServer(session)
+    
+    shiny::observe({
+        if (input$options_tab == "bugphyzz_panel") {
+            waiter::waiter_show(
+                html = htmltools::tagList(
+                    waiter::spin_atebits(),
+                    htmltools::tags$br(),
+                    htmltools::tags$br(),
+                    htmltools::div(
+                        class = "h4", "Preparing bugphyzz data...",
+                        style = "color: black;"
+                    )
+                    # htmltools::div(
+                    #     class = "h5", "Please wait...",
+                    #     style = "color: black;"
+                    # )
+                ),
+                color = "white"
+            )
+            if (is.null(b())) {
+                b(bugphyzz::importBugphyzz())
+            }
+            waiter::waiter_hide()
+        } else if (input$options_tab == "bugsigdb_panel") {
+            waiter::waiter_show(
+                html = htmltools::tagList(
+                    waiter::spin_atebits(),
+                    htmltools::tags$br(),
+                    htmltools::tags$br(),
+                    htmltools::div(
+                        class = "h4", "Preparing BugSibDB data...",
+                        style = "color: black;"
+                    )
+                    # htmltools::div(
+                    #     class = "h5", "Please wait...",
+                    #     style = "color: black;"
+                    # )
+                ),
+                color = "white"
+            )
+            if (is.null(bsdb())) {
+                bsdb(bugsigdbr::importBugSigDB())
+            }
+            waiter::waiter_hide()
+        }
+    })
     
     resetApp(input, session)
     
@@ -60,46 +108,48 @@ server <- function(input, output, session) {
         output$result_header <- shiny::renderUI(NULL)
         output$res <- shiny::renderUI(NULL)
         
-        output$res <-  shiny::renderUI({
-            shiny::tabsetPanel(
-                id = "main_tabs",
-                shiny::tabPanel(
-                    title = "Table",
-                    htmltools::div(
-                        id = "table-container",
-                        DT::DTOutput("result_table")
-                    )
-                )
-            )
-        })
-        
-        ## Clean reactive values -- Not needed for inputSigFun
         dat(data.frame())
         open_tabs(list())
         sigs_rval(list())
         
-        waiter::waiter_show(
-            html = htmltools::tagList(
-                waiter::spin_timer(),
-                htmltools::tags$br(),
-                htmltools::tags$br(),
-                htmltools::div(
-                    class = "h4", "Analyzing...",
-                    style = "color: black;"
-                ),
-                htmltools::div(
-                    class = "h5", "Please wait...",
-                    style = "color: black;"
-                )
-            ),
-            color = "white"
-        )
+        # output$res <-  shiny::renderUI({
+        #     shiny::tabsetPanel(
+        #         id = "main_tabs",
+        #         shiny::tabPanel(
+        #             title = "Table",
+        #             htmltools::div(
+        #                 id = "table-container",
+        #                 DT::DTOutput("result_table")
+        #             )
+        #         )
+        #     )
+        # })
+        
+        ## Clean reactive values -- Not needed for inputSigFun
+
+        
+        # waiter::waiter_show(
+        #     html = htmltools::tagList(
+        #         waiter::spin_wobblebar(),
+        #         htmltools::tags$br(),
+        #         htmltools::tags$br(),
+        #         htmltools::div(
+        #             class = "h4", "Analyzing...",
+        #             style = "color: black;"
+        #         ),
+        #         htmltools::div(
+        #             class = "h5", "Please wait...",
+        #             style = "color: black;"
+        #         )
+        #     ),
+        #     color = "white"
+        # )
         if (input$options_tab == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
         } else if (input$options_tab == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
-        waiter::waiter_hide()
+        # waiter::waiter_hide()
     })
     
     ## Open signature tabs
