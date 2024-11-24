@@ -100,12 +100,36 @@ bugReportPanel <- function() {
 }
 
 aboutPanel <- function() {
+    
+    # shiny::tabPanel(
+    #     title = "About",
+    #     shiny::includeMarkdown(
+    #         system.file("www", "about.md", package = "BugSigDBEnrich")
+    #     ) 
+    # )
     shiny::tabPanel(
         title = "About",
-        shiny::includeMarkdown(
-            system.file("www", "about.md", package = "BugSigDBEnrich")
-        ) 
+        htmltools::tagList(
+            shiny::includeMarkdown(
+                system.file("www", "about.md", package = "BugSigDBEnrich")
+            ),
+            htmltools::tags$hr(), # Horizontal line to separate content
+            htmltools::tags$h3("Package/app DESCRIPTION file:"), # Section header
+            htmltools::tags$pre( # Render the DESCRIPTION content
+                paste(
+                    readLines(system.file("DESCRIPTION", package = "BugSigDBEnrich")),
+                    collapse = "\n"
+                )
+            )
+            ## Code to display description contents
+        )
     )
+    
+    # html_content <- markdown::markdownToHTML(text = markdown_content)
+    # 
+    # output$markdown <- renderUI({
+    #     HTML(html_content)
+    # })
 }
 
 # Options tab -------------------------------------------------------------
