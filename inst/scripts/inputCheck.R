@@ -1,14 +1,64 @@
+library(purrr)
+
+getRank <- function(ids) {
+    path <- cacheTaxonomizr::txPath()
+    taxonomy <- withCallingHandlers(
+        warning = function(w) invokeRestart("muffleWarning"),
+        expr =  taxonomizr::getRawTaxonomy(ids, path)
+    )
+    lgl <- !purrr::map_lgl(taxonomy, ~ all(is.na(.x)))
+    purrr::map_if(
+        .x = taxonomy,
+        .p = lgl,
+        .f = ~ {
+            rks <- .x[ranks]
+            rks <- rks[!is.na(rks)]
+            names(rks)[length(rks)]
+        }
+    ) |> 
+        purrr::map_chr(~ {
+            if (!length(.x)) {
+                return(NA)
+            } else {
+                return(.x)
+            }
+        }) |> 
+        unname()
+}
+
+getTaxIDs <- function(x) {
+    path <- cacheTaxonomizr::txPath()
+    myIds <- withCallingHandlers(
+        warning = function(w) invokeRestart("muffleWarning"),
+        expr = taxonomizr::getId(x, sqlFile = path)
+    )
+    myIds |> 
+        strsplit(",") |> 
+        purrr::map_chr( ~{
+            if (length(.x) > 1) {
+                return(getProk(.x))
+            } else {
+                return(.x)
+            }
+        })
+    return(myIds)
+}
 
 
-s <- exampleSigs$ncbi
+nb <- exampleSigs$ncbi
+nb <- c(nb, 2010)
+tx <- exampleSigs$taxname
+tx <- c("house", tx, "Bacillus")
+mt <- exampleSigs$metaphlan
 
 
-tx_path <- cacheTaxonomizr::txPath()
+nb |> 
+    getRank()
 
-taxonomizr::getTaxonomy("562", sqlFile = tx_path)
+tx |> 
+    getTaxIDs() 
 
-taxonomizr::getCommon("562", sqlFile = tx_path, types = "scientific name")
-x <- taxonomizr::getId("Bacillus", sqlFile = tx_path) |> 
-    strsplit(",") |> 
-    unlist()
-    
+tx |> 
+    getTaxIDs() |> 
+    getRank()
+
