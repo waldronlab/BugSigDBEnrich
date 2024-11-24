@@ -1,13 +1,17 @@
 Package: BugSigDBEnrich
 Type: Package
 Title: A shiny app for BugSigDB
-Version: 0.99.6
+Version: 0.99.7
 Authors@R:
     c(
         person(
             given = "Samuel", family = "Gamboa", role = c("aut", "cre"),
             email = "samuel.gamboa.tuz@gmail.com",
             comment = c(ORCID = "0000-0002-6863-7943")
+        ),
+        person(
+            given = "Levi", family = "Waldron", role = c("aut"),
+            comment = c(ORCID = "0000-0003-2725-0694")
         )
     )
 Description: This package contains code for launching a shiny app for
