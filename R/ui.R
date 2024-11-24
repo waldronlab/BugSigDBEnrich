@@ -73,6 +73,7 @@ analysisPanel <- function() {
         actionButtons(), shiny::tags$hr(),
         
         shiny::uiOutput("result_header"),
+        shiny::uiOutput("rank_warning"),
         shiny::uiOutput("res")
     )
 }

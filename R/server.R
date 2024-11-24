@@ -106,44 +106,13 @@ server <- function(input, output, session) {
     shiny::observeEvent(input$analyzeButton, {
         
         output$result_header <- shiny::renderUI(NULL)
+        output$rank_warning <- shiny::renderUI(NULL)
         output$res <- shiny::renderUI(NULL)
         
         dat(data.frame())
         open_tabs(list())
         sigs_rval(list())
-        
-        # output$res <-  shiny::renderUI({
-        #     shiny::tabsetPanel(
-        #         id = "main_tabs",
-        #         shiny::tabPanel(
-        #             title = "Table",
-        #             htmltools::div(
-        #                 id = "table-container",
-        #                 DT::DTOutput("result_table")
-        #             )
-        #         )
-        #     )
-        # })
-        
-        ## Clean reactive values -- Not needed for inputSigFun
-
-        
-        # waiter::waiter_show(
-        #     html = htmltools::tagList(
-        #         waiter::spin_wobblebar(),
-        #         htmltools::tags$br(),
-        #         htmltools::tags$br(),
-        #         htmltools::div(
-        #             class = "h4", "Analyzing...",
-        #             style = "color: black;"
-        #         ),
-        #         htmltools::div(
-        #             class = "h5", "Please wait...",
-        #             style = "color: black;"
-        #         )
-        #     ),
-        #     color = "white"
-        # )
+    
         if (input$options_tab == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
         } else if (input$options_tab == "bugphyzz_panel") {

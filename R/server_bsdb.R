@@ -17,11 +17,14 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
         shiny::showNotification(
             stringr::str_c(
                 sum(vct_lgl == FALSE), " of ", length(vct_lgl),
-                " identifiers are inconsistent. Please review their format."
+                " identifiers are inconsistent. Check input type."
             ),
-            type = "warning"
+            type = "error"
         )
+        shiny::req(FALSE)
     }
+    
+    ranks <- checkRanks(input, inputSig, "bsdb")
     
     bsdbSub <- bsdb()[, c("BSDB ID", "Study"), drop = FALSE]
     sigs <- bugsigdbr::getSignatures(
@@ -86,6 +89,20 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
     })
     
     output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
+    
+    if (!is.null(ranks)) {
+        wrongRanks <- purrr::imap(ranks, ~ paste0(.y, " (", .x, ")")) |> 
+            purrr::flatten_chr() |> 
+            paste(collapse = ", ")
+        output$rank_warning <- shiny::renderUI({
+            htmltools::p(
+                shiny::icon(
+                    "exclamation-triangle", class = "text-warning"
+                ),
+                stringr::str_c("Wrong ranks: ", wrongRanks)
+            ) 
+        })
+    } 
     
     output$result_table <- DT::renderDT({
         dfDisplay <- df |> 

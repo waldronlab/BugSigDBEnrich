@@ -11,11 +11,14 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
         shiny::showNotification(
             stringr::str_c(
                 sum(vct_lgl == FALSE), " of ", length(vct_lgl),
-                " identifiers are inconsistent. Please review their format."
+                " identifiers are inconsistent. Check input type."
             ),
-            type = "warning"
+            type = "error"
         )
+        shiny::req(FALSE)
     }
+    
+    ranks <- checkRanks(input, inputSig, "bugphyzz")
     
     subB <- b()[input$bugphyzz_attributes]
     idType <- dplyr::case_when(
@@ -99,6 +102,20 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
     
     output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
     
+    if (!is.null(ranks)) {
+        wrongRanks <- purrr::imap(ranks, ~ paste0(.y, " (", .x, ")")) |> 
+            purrr::flatten_chr() |> 
+            paste(collapse = ", ")
+        output$rank_warning <- shiny::renderUI({
+            htmltools::p(
+                shiny::icon(
+                    "exclamation-triangle", class = "text-warning"
+                ),
+                stringr::str_c("Wrong ranks: ", wrongRanks)
+            ) 
+        })
+    } 
+    
     output$result_table <- DT::renderDT({
         dfDisplay <- df |> 
             dplyr::mutate(
@@ -173,39 +190,11 @@ bugphyzzInputOptionsChecks <- function(input, inputSig) {
         )
         shiny::req(FALSE)
     }
-    # isMeta <- which("metaphlan" %in% whichType(inputSig))
-    # if (length(isMeta) >= 1) {
-    #     shiny::showNotification(
-    #         stringr::str_c(
-    #             "Metaphlan not supported for bugphyzz. ",
-    #             length(isMeta), " of ", length(inputSig),
-    #             " identifiers are metaphlan. Please review their id type."
-    #         ),
-    #         type = "error"
-    #     )
-    #     shiny::req(FALSE)
-    # }
 }
 
 # Options -----------------------------------------------------------------
 bugphyzzOptionsServer <- function(input, session, b) {
     list(
-        # shiny::observe({
-        #     shiny::updateSelectInput(
-        #         session = session,
-        #         inputId = "bugphyzz_attributes",
-        #         choices =  c("select all", sort(names(b)))
-        #     )
-        # }),
-        # shiny::observeEvent(input$bugphyzz_attributes, {
-        #     if ("select all" %in% input$bugphyzz_attributes) {
-        #         shiny::updateSelectizeInput(
-        #             session = session,
-        #             inputId = "bugphyzz_attributes",
-        #             selected = sort(names(b))
-        #         )
-        #     }
-        # }),
         shiny::observe({
             shinyWidgets::updatePickerInput(
                 session = session,

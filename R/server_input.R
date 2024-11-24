@@ -147,3 +147,93 @@ inputHelp <- function(input) {
         })
     )
 }
+
+# Check ranks -------------------------------------------------------------
+checkRanks <- function(input, inputSig, db) {
+    id_type <- paste0(db, "_type")
+    id_rank <- paste0(db, "_rank")
+    if (input[[id_type]] == "ncbi") {
+        ranks <- inputSig |> 
+            getRank()
+    } else if (input[[id_type]] == "taxname") {
+        ranks <- inputSig |> 
+            getTaxIDs() |> 
+            getRank()
+    } else if (input[[id_type]] == "metaphlan") {
+        ranks <- inputSig |> 
+            stringr::str_extract("[^|]+$") |> 
+            stringr::str_remove("^[a-zA-Z]__") |> 
+            getTaxIDs() |> 
+            getRank()
+    }
+    names(ranks) <- inputSig
+    lgl_vct <- ranks %in% input[[id_rank]]
+    if (!all(lgl_vct)) {
+        shiny::showNotification(
+            stringr::str_c(
+                sum(!lgl_vct),  " wrong ranks. Check output."
+            ),
+            type = "warning"
+        )
+        return(ranks[!lgl_vct])
+        # shiny::req(FALSE)
+    } else {
+        return(NULL)
+    }
+}
+
+getRank <- function(ids) {
+    ranks <- rankOptions("bugphyzz") # NCBI uses bugphyzz tax level names
+    path <- cacheTaxonomizr::txPath()
+    taxonomy <- withCallingHandlers(
+        warning = function(w) invokeRestart("muffleWarning"),
+        expr =  taxonomizr::getRawTaxonomy(ids, path)
+    )
+    lgl <- !purrr::map_lgl(taxonomy, ~ all(is.na(.x)))
+    purrr::map_if(
+        .x = taxonomy,
+        .p = lgl,
+        .f = ~ {
+            rks <- .x[ranks]
+            rks <- rks[!is.na(rks)]
+            names(rks)[length(rks)]
+        }
+    ) |> 
+        purrr::map_chr(~ {
+            if (!length(.x)) {
+                return(NA)
+            } else {
+                return(.x)
+            }
+        }) |> 
+        unname()
+}
+
+getTaxIDs <- function(x) {
+    path <- cacheTaxonomizr::txPath()
+    myIds <- withCallingHandlers(
+        warning = function(w) invokeRestart("muffleWarning"),
+        expr = taxonomizr::getId(x, sqlFile = path)
+    )
+    myIds |> 
+        strsplit(",") |> 
+        purrr::map_chr( ~{
+            if (length(.x) > 1) {
+                return(getProk(.x))
+            } else {
+                return(.x)
+            }
+        })
+    return(myIds)
+}
+
+getProk <- function(x) {
+    path <- cacheTaxonomizr::txPath()
+    taxonomizr::getRawTaxonomy(x, path) |> 
+        purrr::keep(~ {
+            sk <- .x[["superkingdom"]]
+            sk %in% c("Bacteria", "Archaea")
+        }) |> 
+        names() |> 
+        stringr::str_trim()
+}

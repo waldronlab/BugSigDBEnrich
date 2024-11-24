@@ -1,6 +1,12 @@
 library(purrr)
 
-getRank <- function(ids) {
+ranks <- c(
+    "superkingdom", "phylum", "class", "order", "family",
+    "genus", "species", "strain"
+)
+
+getRank <- function(ids, db) {
+    ranks <- rankOptions(db)
     path <- cacheTaxonomizr::txPath()
     taxonomy <- withCallingHandlers(
         warning = function(w) invokeRestart("muffleWarning"),
@@ -44,21 +50,34 @@ getTaxIDs <- function(x) {
     return(myIds)
 }
 
+getProk <- function(x) {
+    path <- cacheTaxonomizr::txPath()
+    taxonomizr::getRawTaxonomy(x, path) |> 
+        purrr::keep(~ {
+            sk <- .x[["superkingdom"]]
+            sk %in% c("Bacteria", "Archaea")
+        }) |> 
+        names() |> 
+        stringr::str_trim()
+}
 
 nb <- exampleSigs$ncbi
-nb <- c(nb, 2010)
+# nb <- c(nb, 2010)
 tx <- exampleSigs$taxname
-tx <- c("house", tx, "Bacillus")
+# tx <- c("house", tx, "Bacillus")
 mt <- exampleSigs$metaphlan
 
 
-nb |> 
-    getRank()
-
-tx |> 
-    getTaxIDs() 
-
-tx |> 
+rs <- tx |>
     getTaxIDs() |> 
     getRank()
 
+names(rs) <- nb
+
+# !all(x %in% rankOptions("bugphyzz"))
+
+purrr::imap(rs, ~ paste0(.y, " (", .x, ")")) |> 
+    purrr::flatten_chr() |> 
+    paste(collapse = ", ")
+
+    
