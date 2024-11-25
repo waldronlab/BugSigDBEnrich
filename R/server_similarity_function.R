@@ -7,7 +7,7 @@
 #'
 #' @return A data.frame
 #'
-simFun <- function(sig, sigL, opt = NULL, input) {
+simFun <- function(sig, sigL, opt = NULL, input, obo) {
     
     ji <- purrr::map_dbl(sigL,  ~ {
         round(.jaccard_similarity(.x, sig), 2)
@@ -36,8 +36,7 @@ simFun <- function(sig, sigL, opt = NULL, input) {
     }
     
     if (input$semantic) {
-        message("Perform similarity")
-        semantic_similarity <- semSim(list(inputSig = sig), sigL)
+        semantic_similarity <- semSim(list(inputSig = sig), sigL, obo)
         df <- dplyr::left_join(df, semantic_similarity, by = "Signature")
     }
     

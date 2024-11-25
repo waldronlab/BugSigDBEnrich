@@ -1,6 +1,6 @@
 
 # Results -----------------------------------------------------------------
-bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
+bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
     
     inputSig <- inputSigFun()
     
@@ -65,7 +65,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval) {
         ),
         color = "white"
     )
-    df <- simFun(inputSig, sigs, input = input)
+    df <- simFun(inputSig, sigs, input = input, obo)
     waiter::waiter_hide()
     
     dat(df)

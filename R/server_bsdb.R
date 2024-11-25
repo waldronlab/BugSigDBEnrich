@@ -1,6 +1,6 @@
 
 # Results -----------------------------------------------------------------
-bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
+bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
     
     inputSig <- inputSigFun()
     
@@ -53,7 +53,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
         ),
         color = "white"
     )
-    df <- simFun(inputSig, sigs, opt = "bsdb", input) |> 
+    df <- simFun(inputSig, sigs, opt = "bsdb", input, obo) |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
         dplyr::mutate(Study = stringr::str_remove(.data$Study, "^Study "))
     waiter::waiter_hide()

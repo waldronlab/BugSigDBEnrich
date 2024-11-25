@@ -30,6 +30,7 @@ server <- function(input, output, session) {
     # b <- bugphyzz::importBugphyzz()
     bsdb <- shiny::reactiveVal(NULL)
     b <- shiny::reactiveVal(NULL)
+    obo <- shiny::reactiveVal(NULL)
     waiter::waiter_hide()
     
     # urlHandlerServer(session)
@@ -114,9 +115,9 @@ server <- function(input, output, session) {
         sigs_rval(list())
     
         if (input$options_tab == "bugsigdb_panel") {
-            bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
+            bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval, obo)
         } else if (input$options_tab == "bugphyzz_panel") {
-            bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
+            bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval, obo)
         }
         # waiter::waiter_hide()
     })
