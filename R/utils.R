@@ -252,6 +252,10 @@ getColNameTags <- function(dat) {
             " Click on it to be re-directed to the study's curation page in BugSigDB. ",
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+        ),
+        `Signature link` = stringr::str_c(
+            "Signature link",
+            helpPageDiv("More...", hash = "results")
         )
     )
     cols[colnames(dat)] |> 

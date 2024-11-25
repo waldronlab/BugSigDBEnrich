@@ -114,8 +114,24 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
                 Signature = stringr::str_c(
                     '<a href="javascript:void(0);" class="signature-link" id="signature_',
                     dplyr::row_number(), '">', .data$Signature, '</a>' 
-                )
-            ) |>
+                ),
+                `Signature link` = .data$bsdb_id |> 
+                    stringr::str_replace(
+                        "^bsdb:(\\d+)", "Study_\\1"
+                    ) |> 
+                    stringr::str_replace(
+                        "^(Study_\\d+/)(\\d+)", "\\1Experiment_\\2"
+                    ) |>  
+                    stringr::str_replace_all(
+                        "^(Study_\\d+/Experiment_\\d+/)(\\d+)", "\\1Signature_\\2"
+                    ) |> 
+                    {\(y)  stringr::str_c("https://bugsigdb.org/", y)}() |> 
+                    {\(y)
+                        stringr::str_c(
+                            '<a href="', y, '" target="_blank">', .data$bsdb_id,
+                            '</a>'
+                        )}()
+            ) |> 
             dplyr::select(-.data$bsdb_id)
         tag_list <- getColNameTags(dfDisplay)
         dt <- DT::datatable(

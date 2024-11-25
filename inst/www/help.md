@@ -1,6 +1,12 @@
 
 # Help
 
+## Introduction
+
+The [BugSigDBEnrich app](https://shiny.sph.cuny.edu/BugSigDBEnrich/) 
+
+
+
 **Table of contents**
 
 [1. Input](#input)<br>
