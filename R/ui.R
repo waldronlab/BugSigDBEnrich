@@ -157,8 +157,8 @@ textInputBox <- function() {
             class = "download-example-container", "Load example text:",
             htmltools::div(class = "download-example-item", shiny::actionLink("ncbi_box", "ncbi")),
             htmltools::div(class = "download-example-item", shiny::actionLink("taxname_box", "taxname")),
-            htmltools::div(class = "download-example-item", shiny::actionLink("metaphlan_box", "metaphlan")),
-            htmltools::div(class = "download-example-item", shiny::actionLink("badsig_box", "badsig"))
+            htmltools::div(class = "download-example-item", shiny::actionLink("metaphlan_box", "metaphlan"))
+            # htmltools::div(class = "download-example-item", shiny::actionLink("badsig_box", "badsig"))
         )
     )
 }
