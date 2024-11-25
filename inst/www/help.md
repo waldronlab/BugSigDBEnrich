@@ -1,54 +1,55 @@
+# BugSigDBEnrich Help
 
-# Help
+**Links**
 
-## Introduction
++ [BugSigDBEnrich app](https://shiny.sph.cuny.edu/BugSigDBEnrich/)
++ [Source code](https://github.com/waldronlab/BugSigDBEnrich)
++ [Bugs repors](https://github.com/waldronlab/BugSigDBEnrich/issues)
 
-The [BugSigDBEnrich app](https://shiny.sph.cuny.edu/BugSigDBEnrich/) 
+**Contents**
 
++ [Introduction](#intro)<br>
++ [Input](#input)<br>
++ [Options](#options)<br>
++ [Action buttons](#actions)<br>
++ [Results](#results)<br>
++ [HTTP GET](#httpget)<br>
 
+## Introduction <a name="intro"></a>
 
-**Table of contents**
+## Input <a name="input"></a>
 
-[1. Input](#input)<br>
-[2. Options](#options)<br>
-[3. Action buttons](#actions)<br>
-[4. Results](#results)<br>
-[5. HTTP GET](#httpget)<br>
+The app's input is a list of taxon identifiers that can be entered into
+the text box, one identifier per line (**Figure 1-1**).
 
----
+Alternatively, a text file (*.txt) with identifiers can be uploaded with the
+`Browse` button, one identifier per line (**Figure 1-2**).
 
-## 1. Input <a name="input"></a>
+The accepted indentifiers can be of three types:
 
-The input is a list of taxa using one of the following identifier types:
-
-+ **ncbi**. An NCBI taxonomy ID (or taxid). For example, 562.
-Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.
-
++ **ncbi**. An NCBI taxonomy ID (or taxid). For example,
+Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.<br>
 + **taxname**. A scientific name from the NCBI taxonomy.
 For example, _Escherichia coli_.
-Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.
-
+Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.<br>
 + **metaphlan**. A taxonomy name in the metaphlan format.
 This format contains the full taxonomy of the taxon separated by 
-`|\\w__`, where `\\w` can be one of the following: k = kingdom, 
+`|\\w__`, which can be one of the following: k = kingdom, 
 p = phylum, c = class, o = order, f = family, g = genus, s = species,
 t = strain. For example, 
-k__Bacteria|p__Pseudomonadota|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli.
+`k__Bacteria|p__Pseudomonadota|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli`.<br>
 
-You can enter the list of taxa by pasting one identifier per line into the text
-box. Alternatively, you may upload a text file (*.txt) containing one identifier
-per line by using the "Browse..." button.
+> ❌ All identifiers must be of the same type.
 
-> ⚠️ All identifiers must be from the same
-type. A warning will be displayed if they are not,
-but the analysis will still run.
+For detailed examples, click on the links below the input box to
+fill the input box (**Figure 1-3**) or click on the links below the `Browse` button to download
+an example file to your machine (**Figure 1-4**).
 
-For detailed examples, please refer to the examples below the text box or
-download one of the sample files provided under the "Browse..." button.
+![Input](input.png "Input")
 
----
+**Figure 1**. Input.
 
-## 2. Options <a name="options"></a>
+## Options <a name="options"></a>
 
 ### BugSigDB
 
@@ -103,9 +104,8 @@ number of elements. The default is 1, meaning that only signatures with at
 least one taxon identifier fulfilling all of the options above will be included
 in the analysis.
 
----
 
-## 3. Action buttons <a name="actions"></a>
+## Action buttons <a name="actions"></a>
 
 + Click on the "Analyze" button when the input and signature options are ready.
 + After the analysis has been run, the "Download result" button will become
@@ -114,9 +114,8 @@ values (.tsv extension).
 + Use the "Reset app" button to restart the app. This is equivalent to 
 refreshing the webpage.
 
----
 
-## 4. Results <a name="results"></a>
+## Results <a name="results"></a>
 
 The results table includes:
 <!-- 
@@ -147,9 +146,8 @@ The results table includes:
 | Size | Signature size |
 | Study | The study number. When clicked, this will redirect to the BugSigDB study page.|
 
----
 
-## 5. HTTP GET <a name="httpget"></a>
+## HTTP GET <a name="httpget"></a>
 
 BugSigDBEnrich accepts the HTTP GET method to get input data. When an
 HTTP method is used, the app will:
