@@ -115,7 +115,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
                     '<a href="javascript:void(0);" class="signature-link" id="signature_',
                     dplyr::row_number(), '">', .data$Signature, '</a>' 
                 ),
-                `Signature link` = .data$bsdb_id |> 
+                SigLink = .data$bsdb_id |> 
                     stringr::str_replace(
                         "^bsdb:(\\d+)", "Study_\\1"
                     ) |> 

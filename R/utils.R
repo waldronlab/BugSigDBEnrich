@@ -253,8 +253,8 @@ getColNameTags <- function(dat) {
             helpPageDiv("More...", hash = "results")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
-        `Signature link` = stringr::str_c(
-            "Signature link",
+        SigLink = stringr::str_c(
+            "Signature link. ",
             helpPageDiv("More...", hash = "results")
         )
     )
