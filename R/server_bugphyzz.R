@@ -18,6 +18,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         shiny::req(FALSE)
     }
     
+    
     ranks <- checkRanks(input, inputSig, "bugphyzz")
     
     subB <- b()[input$bugphyzz_attributes]
@@ -65,7 +66,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         ),
         color = "white"
     )
-    df <- simFun(inputSig, sigs, input = input, obo)
+    df <- simFun(inputSig, sigs, input = input, obo = obo)
     waiter::waiter_hide()
     
     dat(df)
@@ -137,12 +138,42 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
                 )
             ),
             options = list(
-                headerCallback = DT::JS("function(thead, data, start, end, display) {
+                headerCallback = DT::JS("
+            function(thead, data, start, end, display) {
                 $(thead).find('th').css('text-align', 'center');
-            }")
+            }
+        "),
+                initComplete = DT::JS("
+            function(settings, json) {
+                setTimeout(() => {
+                    const tooltipTriggerList = document.querySelectorAll('#table-container th[title]');
+                    tooltipTriggerList.forEach(element => {
+                        new bootstrap.Tooltip(element, { html: true });
+                    });
+                }, 100);
+            }
+        ")
             )
         )
-        dt$dependencies <- appendDTDeps(dt)
+        # dt <- DT::datatable(
+        #     dfDisplay,
+        #     rownames = FALSE,
+        #     escape = FALSE,
+        #     selection = "none",
+        #     container = htmltools::withTags(
+        #         htmltools::tags$table(
+        #             class = 'display',
+        #             htmltools::tags$thead(htmltools::tags$tr(tag_list))
+        #         )
+        #     ),
+        #     options = list(
+        #         headerCallback = DT::JS("function(thead, data, start, end, display) {
+        #         $(thead).find('th').css('text-align', 'center');
+        #     }")
+        #     )
+        # )
+        # dt$dependencies <- appendDTDeps(dt)
+        dt$dependencies <- c(dt$dependencies, appendDTDeps())
         dt
     })
     
