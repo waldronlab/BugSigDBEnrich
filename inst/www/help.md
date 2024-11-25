@@ -27,7 +27,7 @@ Alternatively, a text file (*.txt) with identifiers can be uploaded with the
 
 The accepted indentifiers can be of three types:
 
-+ **ncbi**. An NCBI taxonomy ID (or taxid). For example,
++ **ncbi**. An NCBI taxonomy ID (or taxid). For example, 562.
 Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.<br>
 + **taxname**. A scientific name from the NCBI taxonomy.
 For example, _Escherichia coli_.
