@@ -128,7 +128,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval) {
                     {\(y)  stringr::str_c("https://bugsigdb.org/", y)}() |> 
                     {\(y)
                         stringr::str_c(
-                            '<a href="', y, '" target="_blank">', .data$bsdb_id,
+                            '<a href="', y, '" target="_blank">', sub("^bsdb:", "", .data$bsdb_id),
                             '</a>'
                         )}()
             ) |> 
