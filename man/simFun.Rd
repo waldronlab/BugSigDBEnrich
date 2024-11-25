@@ -4,7 +4,7 @@
 \alias{simFun}
 \title{Calculate jaccard similarity}
 \usage{
-simFun(sig, sigL, opt = NULL, input)
+simFun(sig, sigL, opt = NULL, input, obo)
 }
 \arguments{
 \item{sig}{Input signature.}

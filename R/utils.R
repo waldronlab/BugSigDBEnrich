@@ -263,73 +263,6 @@ getColNameTags <- function(dat) {
         unname()
 }
 
-appendDTDeps <- function(dt) {
-    append(dt$dependencies, list(
-        htmltools::htmlDependency(
-            name = "tooltip-init",
-            version = "1.0.0",
-            src = c(file = tempdir()),
-            head = "
-          <style>
-          .tooltip {
-            pointer-events: auto !important;
-          }
-          .tooltip a {
-            color: #fff;
-            text-decoration: underline;
-          }
-          </style>
-          <script>
-            $(document).ready(function() {
-              const tooltipTriggerList = document.querySelectorAll('#table-container th[title]');
-              tooltipTriggerList.forEach(element => {
-                const tooltip = new bootstrap.Tooltip(element, {
-                  html: true,
-                  trigger: 'manual',
-                  placement: 'top'
-                });
-                
-                let isOver = false;
-                let isOverTooltip = false;
-                
-                element.addEventListener('mouseenter', () => {
-                  isOver = true;
-                  tooltip.show();
-                });
-                
-                element.addEventListener('mouseleave', () => {
-                  isOver = false;
-                  setTimeout(() => {
-                    if (!isOver && !isOverTooltip) {
-                      tooltip.hide();
-                    }
-                  }, 100);
-                });
-                
-                // Handle mouse over tooltip
-                document.addEventListener('mouseover', (e) => {
-                  const tooltipEl = document.querySelector('.tooltip');
-                  if (tooltipEl && tooltipEl.contains(e.target)) {
-                    isOverTooltip = true;
-                  }
-                });
-                
-                document.addEventListener('mouseout', (e) => {
-                  const tooltipEl = document.querySelector('.tooltip');
-                  if (tooltipEl && !tooltipEl.contains(e.target)) {
-                    isOverTooltip = false;
-                    if (!isOver) {
-                      tooltip.hide();
-                    }
-                  }
-                });
-              });
-            });
-          </script>"
-        )
-    ))
-}
-
 get_per <- function(x) {
     purrr::map_int(x, ~ {
         if (.x <= 0) {
@@ -338,3 +271,77 @@ get_per <- function(x) {
         as.integer(sub("%", "", names(per)[max(which(.x >= per))]))
     })
 }
+
+appendDTDeps <- function() {
+    list(
+        htmltools::htmlDependency(
+            name = "tooltip-init",
+            version = "1.0.0",
+            src = c(file = tempdir()),
+            head = "
+              <style>
+              .tooltip {
+                pointer-events: auto !important;
+              }
+              .tooltip a {
+                color: #fff;
+                text-decoration: underline;
+              }
+              </style>
+              <script>
+                $(document).ready(function() {
+                  const tooltipTriggerList = document.querySelectorAll('#table-container th[title]');
+                  tooltipTriggerList.forEach(element => {
+                    const tooltip = new bootstrap.Tooltip(element, {
+                      html: true,
+                      trigger: 'manual',
+                      placement: 'top'
+                    });
+                    
+                    let isOverElement = false;
+                    let isOverTooltip = false;
+                    
+                    element.addEventListener('mouseenter', () => {
+                      isOverElement = true;
+                      tooltip.show();
+                    });
+                    
+                    element.addEventListener('mouseleave', () => {
+                      isOverElement = false;
+                      setTimeout(() => {
+                        if (!isOverElement && !isOverTooltip) {
+                          tooltip.hide();
+                        }
+                      }, 100);
+                    });
+                    
+                    document.addEventListener('mouseover', (e) => {
+                      const tooltipEl = document.querySelector('.tooltip');
+                      if (tooltipEl && tooltipEl.contains(e.target)) {
+                        isOverTooltip = true;
+                      }
+                    });
+                    
+                    document.addEventListener('mouseout', (e) => {
+                      const tooltipEl = document.querySelector('.tooltip');
+                      if (tooltipEl && !tooltipEl.contains(e.target)) {
+                        isOverTooltip = false;
+                        setTimeout(() => {
+                          if (!isOverElement && !isOverTooltip) {
+                            tooltip.hide();
+                          }
+                        }, 100);
+                      }
+                    });
+                  });
+                });
+              </script>"
+        )
+    )
+}
+
+
+
+
+
+
