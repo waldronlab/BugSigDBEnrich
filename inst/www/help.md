@@ -1,4 +1,5 @@
-# BugSigDBEnrich Help
+
+# BugSigDBEnrich Help <a name="top"></a>
 
 **Links**
 
