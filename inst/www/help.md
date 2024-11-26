@@ -17,6 +17,9 @@
 + [Analysis options](#analysisoptions)<br>
 + [Action buttons](#actions)<br>
 + [Results](#results)<br>
+    * [Results header](#resheader)<br>
+    * [Results table](#restable)<br>
+* [Error/warning messages](#messages)<br>
 + [HTTP GET](#httpget)<br>
 
 ## Introduction <a name="intro"></a>
@@ -51,9 +54,9 @@ an example file to your machine (**Figure 1-4**).
 
 ![Input](input.png "Input")
 
-[Back to the top](#top) ⬆️
-
 **Figure 1**. Input.
+
+[Back to the top](#top) ⬆️
 
 ## Database options <a name="dboptions"></a>
 
@@ -152,6 +155,12 @@ refreshing the webpage.
 
 ## Results <a name="results"></a>
 
+### Results header <a name="resheader"></a>
+
+[Back to the top](#top) ⬆️
+
+### Results table <a name="restable"></a>
+
 | Column | Description | Database |
 | ------ | ----------- | -------- |
 | Signature | BugSigDB signature name. | BugSigDB, Bugphyzz |
@@ -164,17 +173,22 @@ refreshing the webpage.
 | SemSim | Semantic similarity. | BugSigDB, Bugphyzz |
 
 The percentile (OCper) was determined by running an all-vs-all overlapping
-coefficient (OC) analysis of all BugSigDB signatures with a minimum size of 5.
+coefficient (OC) analysis of all BugSigDB signatures with a minimum size of 5
+(**Figure 6**).
 
 ![](per_plot.png)
 
-**Figure 5**. Counts of overlapping coefficient (OC) values per percentile.
+**Figure 6**. Counts of overlapping coefficient (OC) values per percentile.
+
+[Back to the top](#top) ⬆️
+
+## Error/Warning messages <a name="messages"></a>
 
 [Back to the top](#top) ⬆️
 
 ## HTTP GET <a name="httpget"></a>
 
-BugSigDBEnrich accepts the HTTP GET method to get input data. When an
+BugSigDBEnrich accepts the HTTP GET method to get input data. When the
 HTTP method is used, the app will:
 
 1. Fill in the text box area with the parameters from the URL.
