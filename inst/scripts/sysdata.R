@@ -41,6 +41,20 @@ ocs <- ocs[ocs > 0]
 per <- quantile(ocs, probs = seq(0, 1, 0.01))
 # ecdf_ocs <- stats::ecdf(per)
 
+# library(ggplot2)
+# p <- data.frame(x = per) |> 
+#     ggplot(aes(x)) +
+#     geom_histogram(
+#         fill = "dodgerblue3", color = "white", binwidth = 0.05
+#     ) +
+#     labs(
+#         x = "Percentile", y = "Count of overlapping coefficient scores"
+#     ) +
+#     theme_bw()
+# ggsave(
+#     filename = "../www/per_plot.png", plot = p
+# )
+
 usethis::use_data(
     exampleSigs, ocs, per,
     internal = TRUE, overwrite = TRUE
