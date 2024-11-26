@@ -6,12 +6,14 @@
 + [Source code](https://github.com/waldronlab/BugSigDBEnrich)
 + [Bugs report](https://github.com/waldronlab/BugSigDBEnrich/issues)
 
-**Contents**
+**Contents** <a name="top"></a>
 
 + [Introduction](#intro)<br>
 + [Input](#input)<br>
 + [Database options](#dboptions)<br>
-+ [Analysis options](#anoptions)<br>
+    * [BugSigDB options](#bsdboptions)<br>
+    * [Bugphyzz options](#bugphyzzoptions)<br>
++ [Analysis options](#analysisoptions)<br>
 + [Action buttons](#actions)<br>
 + [Results](#results)<br>
 + [HTTP GET](#httpget)<br>
@@ -48,12 +50,17 @@ an example file to your machine (**Figure 1-4**).
 
 ![Input](input.png "Input")
 
+[Back to the top](#top) ⬆️
+
 **Figure 1**. Input.
 
 ## Database options <a name="dboptions"></a>
 
-BugSigDBEnrich implements the [bugsigdbr]() and [bugphyzz]() packages to
+BugSigDBEnrich implements the [bugsigdbr](https://github.com/waldronlab/bugsigdbr)
+and [bugphyzz](https://github.com/waldronlab/bugphyzz) packages to
 obtain bug signatures, each with their own options.
+
+[Back to the top](#top) ⬆️
 
 ### BugSigDB <a name="bsdboptions"></a>
 
@@ -106,11 +113,15 @@ included in the analysis (**Figure 2-4**).
 
 **Figure 2.** BugSigDB options.
 
+[Back to the top](#top) ⬆️
+
  ### Bugphyzz <a name="bugphyzzoptions"></a>
 
 ![](bugphyzz_options.png)
 
 **Figure 3**. Bugphyz options.
+
+[Back to the top](#top) ⬆️
 
 ## Analysis options <a name="analysisoptions"></a>
 
@@ -125,6 +136,8 @@ the "Reset app" button is not clicked.)
 
 **Figure 4**. Analysis options.
 
+[Back to the top](#top) ⬆️
+
 ## Action buttons <a name="actions"></a>
 
 + **Analyze**. Click on the "Analyze" button when the input and signature options are ready.
@@ -133,6 +146,8 @@ available for downloading the result table in a text file with tab separated
 values (.tsv extension).
 + **Reset app**. Use the "Reset app" button to restart the app. This is equivalent to 
 refreshing the webpage.
+
+[Back to the top](#top) ⬆️
 
 ## Results <a name="results"></a>
 
@@ -153,6 +168,8 @@ coefficient (OC) analysis of all BugSigDB signatures with a minimum size of 5.
 ![](per_plot.png)
 
 **Figure 5**. Counts of overlapping coefficient (OC) values per percentile.
+
+[Back to the top](#top) ⬆️
 
 ## HTTP GET <a name="httpget"></a>
 
@@ -176,3 +193,5 @@ identifiers.
 allowed in the URL. This could be especially the case for metaphlan names.
 In such case, saving the identifiers in a text file (see the input section)
 is recommended or pasting directly in the text box.
+
+[Back to the top](#top) ⬆️
