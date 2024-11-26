@@ -43,7 +43,7 @@ server <- function(input, output, session) {
                     htmltools::tags$br(),
                     htmltools::tags$br(),
                     htmltools::div(
-                        class = "h4", "Preparing bugphyzz data...",
+                        class = "h4", "Preparing Bugphyzz data...",
                         style = "color: black;"
                     )
                     # htmltools::div(
@@ -64,7 +64,7 @@ server <- function(input, output, session) {
                     htmltools::tags$br(),
                     htmltools::tags$br(),
                     htmltools::div(
-                        class = "h4", "Preparing BugSibDB data...",
+                        class = "h4", "Preparing BugSigDB data...",
                         style = "color: black;"
                     )
                     # htmltools::div(

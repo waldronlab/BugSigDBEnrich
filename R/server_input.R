@@ -12,10 +12,10 @@ inputSignature <- function(input) {
             inputSig <- switch(
                 tools::file_ext(input$file_input$name),
                 txt = readLines(con = input$file_input$datapath),
-                shiny::validate("Invalid file; Please upload a .txt file")
+                shiny::validate("Invalid file. Please upload a .txt file")
             )
         } else {
-            shiny::showNotification("No input", type = "error")
+            shiny::showNotification("❌ No input.", type = "error")
             shiny::req(FALSE)
         }
         return(inputSig)

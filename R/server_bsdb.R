@@ -6,7 +6,8 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
     
     if (!length(input$bsdb_rank)) {
         shiny::showNotification(
-            "Please select at least one rank option.", 
+            "❌ No rank selected. Please select at least one rank option.", 
+            duration = 5, 
             type = "error"
         )
         shiny::req(FALSE)
@@ -15,10 +16,11 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
     vct_lgl <- isType(inputSig, input$bsdb_type)
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
-            stringr::str_c(
+            stringr::str_c("❌Inconsistent identifiers. ",
                 sum(vct_lgl == FALSE), " of ", length(vct_lgl),
-                " identifiers are inconsistent. Check input type."
+                " identifiers are inconsistent. Input type and selected input type must match."
             ),
+            duration = 8,
             type = "error"
         )
         shiny::req(FALSE)
@@ -230,7 +232,7 @@ bsdbSigOptionsHelp <- function(input) {
                 stringr::str_c(
                     "Type of the target signatures in BugSigDB.",
                     " The type must match the input IDs. ",
-                    helpPageDiv("More...", "options")
+                    helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
@@ -241,7 +243,7 @@ bsdbSigOptionsHelp <- function(input) {
                 stringr::str_c(
                     "Select the rank(s) of the taxa included in the target BugSigDB signature.",
                     " Use the '(De)select all' check box to select or deselect all ranks at once. ",
-                    helpPageDiv("More...", "options")
+                    helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
@@ -253,7 +255,7 @@ bsdbSigOptionsHelp <- function(input) {
                     "If 'Yes', only ranks manually curated will be included.",
                     " If 'No', the taxonomic tree will be cut at the specified rank (above).",
                     " Only one rank (above) can be selected when the 'No' options is used. ",
-                    helpPageDiv("More...", "options")
+                    helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
@@ -263,7 +265,7 @@ bsdbSigOptionsHelp <- function(input) {
                 "Minimum signature size",
                 stringr::str_c(
                     "Minimum number of IDs to filter the target BugSigDB signatures. ",
-                    helpPageDiv("More...", "options")
+                    helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )

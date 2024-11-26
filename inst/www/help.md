@@ -24,6 +24,11 @@
 
 ## Introduction <a name="intro"></a>
 
+The BugSigDBEnrich app allows the comparison of a list of microbes with
+[BugSigDB](https://bugsigdb.org/), a manually curated database of microbial
+signatures from published studies. It also enables comparisons with Bugphyzz,
+which provides annotations of physiological and other bacterial traits.
+
 ## Input <a name="input"></a>
 
 The app's input is a list of taxon identifiers that can be entered into
@@ -120,6 +125,48 @@ included in the analysis (**Figure 2-4**).
 [Back to the top](#top) ⬆️
 
  ### Bugphyzz <a name="bugphyzzoptions"></a>
+
+**Attributes**. Each attribute represents a phenotipic trait and its possible
+values. For example, the areophilicity attribute can have "areobic",
+"anaerobic", and "facultatively anaerobic" values. A signature of microbes will
+be craeted for each attribute value (**Figure 3-1**).
+
+**Identifier type**. Bugphyzz signatures will be created with the chosen type
+of identifier. The selected identifier type must match the input type
+(**Figure 3-2**).
+
+**Taxonomic rank(s)**. This option selects the taxonomic
+ranks allowed in the BugSigDB signatures. The `(De)select all` checkbox can
+help to quickly check/uncheck all ranks (**Figure 3-3**).
+
+**Evidence**. The type of evidence backing up the bugphyzz
+annotations (**Figure 3-4**):
+
+| Evidence code | Description |
+| ------------- | ----------- |
+| exp | Experimental data. |
+| igc | Inferred from genomic context. |
+| tas | Traceable author statement. |
+| nas | Non-traceable author statement. |
+| tax | Used as synonym for IBD: Inferred from Biological aspect of Descendant. |
+| asr | Inferred through ancestral state reconstruction. |
+
+Learn more about the evidence codes [here](https://geneontology.org/docs/guide-go-evidence-codes/).
+
+**Frequency**. An estimator of the probability or confidence interval of the
+annotation. Values between 0 and 1 (**Figure 3-5**):
+
+| Frequency code | Description |
+| -------------- | ----------- |
+| always | >= 0.9 |
+| usually | >= 0.8 & < 0.9|
+| sometimes | >= 0.4 < 0.8 |
+| unknown | Not enough information to determine. |
+
+**Minimum size**. Filter the target Bugphyzz signatures based on their
+number of elements. The default is 5, meaning that only signatures with at
+least five taxon identifiers fulfilling all of the options above will be
+included in the analysis (**Figure 3-6**).
 
 ![](bugphyzz_options.png)
 
