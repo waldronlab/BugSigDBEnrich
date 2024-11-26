@@ -12,7 +12,7 @@ https://shiny.sph.cuny.edu/BugSigDBEnrich/
 Install with:
 
 ```r
-BiocManager::install("waldronlab/BugSigDBEnrich")
+BiocManager::install("waldronlab/BugSigDBEnrich", dependencies = TRUE)
 ```
 
 ## Launch the app
@@ -20,3 +20,6 @@ BiocManager::install("waldronlab/BugSigDBEnrich")
 ```r
 BugSigDBEnrich::myApp()
 ```
+## Help
+
+The help documentation can be found [here](https://github.com/waldronlab/BugSigDBEnrich/blob/devel/inst/www/help.md)
