@@ -43,7 +43,14 @@ createUI <- function() {
 analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
-        
+        shiny::markdown(stringr::str_c(
+            'Compare your list of microbes with published microbial signatures',
+            ' from <a href="https://bugsigdb.org/" target="_blank">BugSigDB</a>',
+            ' or phenotypic annotation sets from <a href="https://github.com/waldronlab/bugphyzz" target="_blank">BugPhyzz</a>.',
+            ' The app calculates similarity metrics, including the Jaccard',
+            ' Index and Overlap Coefficient, to identify shared taxa between sets.'
+        )),
+        htmltools::tags$hr(),
         shiny::markdown(stringr::str_c(
             "### Getting Started  \n\n",
             "Follow these steps to try the app:  \n\n",
@@ -54,7 +61,7 @@ analysisPanel <- function() {
             "  \n\n",
             "For more details, check the <a href=\"https://github.com/waldronlab/BugSigDBEnrich/blob/devel/inst/www/help.md\" target=\"_blank\">help documentation</a>."
         )),
-        shiny::tags$hr(),
+        htmltools::tags$hr(),
         
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),

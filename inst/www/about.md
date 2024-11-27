@@ -5,7 +5,7 @@ The BugSigDBEnrich app allows the comparison of a list of microbes with
 a manually curated database of microbial
 signatures from published studies. It also enables comparisons with
 <a href="https://github.com/waldronlab/bugphyzz" target="_blank">Bugphyzz</a>,
-which provides annotations of physiological and other phenotipic bacterial
+which provides annotations of physiological and other phenotypic bacterial
 traits.
 
 * <a href="https://github.com/waldronlab/BugSigDBEnrich/" target="_blank">Source code</a>.<br>

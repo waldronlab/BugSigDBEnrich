@@ -296,7 +296,7 @@ bugphyzzOptionsHelp <- function(input) {
             helpModal(
                 "Attributes",
                 stringr::str_c(
-                    "Select one or more bugphyzz attributes containing phenotipic traits. ",
+                    "Select one or more bugphyzz attributes containing phenotypic traits. ",
                     helpPageDiv("More...", "bugphyzzoptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )

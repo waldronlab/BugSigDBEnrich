@@ -26,7 +26,7 @@
 The BugSigDBEnrich app allows the comparison of a list of microbes with
 [BugSigDB](https://bugsigdb.org/), a manually curated database of microbial
 signatures from published studies. It also enables comparisons with [Bugphyzz](https://github.com/waldronlab/bugphyzz),
-which provides annotations of physiological and other phenotipic bacterial
+which provides annotations of physiological and other phenotypic bacterial
 traits.
 
 ## Input <a name="input"></a>
@@ -126,7 +126,7 @@ included in the analysis (**Figure 2-4**).
 
  ### Bugphyzz options<a name="bugphyzzoptions"></a>
 
-**Attributes**. Each attribute represents a phenotipic trait and its possible
+**Attributes**. Each attribute represents a phenotypic trait and its possible
 values. For example, the areophilicity attribute can have "areobic",
 "anaerobic", and "facultatively anaerobic" values. A signature of microbes will
 be craeted for each attribute value (**Figure 3-1**).
