@@ -19,7 +19,6 @@
 + [Results](#results)<br>
     * [Results header](#resheader)<br>
     * [Results table](#restable)<br>
-* [Error/warning messages](#messages)<br>
 + [HTTP GET](#httpget)<br>
 
 ## Introduction <a name="intro"></a>
