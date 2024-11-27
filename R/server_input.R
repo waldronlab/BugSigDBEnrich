@@ -171,8 +171,11 @@ checkRanks <- function(input, inputSig, db) {
     if (!all(lgl_vct)) {
         shiny::showNotification(
             stringr::str_c(
-                sum(!lgl_vct),  " wrong ranks. Check output."
+                "⚠ Mismatching ranks. ",
+                sum(!lgl_vct),  " taxa have a rank mismatching the selected options.",
+                " Check which taxa they are in the results header."
             ),
+            duration = 10,
             type = "warning"
         )
         return(ranks[!lgl_vct])

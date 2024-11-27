@@ -26,8 +26,9 @@
 
 The BugSigDBEnrich app allows the comparison of a list of microbes with
 [BugSigDB](https://bugsigdb.org/), a manually curated database of microbial
-signatures from published studies. It also enables comparisons with Bugphyzz,
-which provides annotations of physiological and other bacterial traits.
+signatures from published studies. It also enables comparisons with [Bugphyzz](https://github.com/waldronlab/bugphyzz),
+which provides annotations of physiological and other phenotipic bacterial
+traits.
 
 ## Input <a name="input"></a>
 
@@ -37,7 +38,7 @@ the text box, one identifier per line (**Figure 1-1**).
 Alternatively, a text file (*.txt) with identifiers can be uploaded with the
 `Browse` button, one identifier per line (**Figure 1-2**).
 
-The accepted indentifiers can be of three types:
+Indentifiers can be of three types:
 
 + **ncbi**. An NCBI taxonomy ID (or taxid). For example, 562.
 Learn more at the <a href="https://www.ncbi.nlm.nih.gov/books/NBK53758/" target="_blank">NCBI site</a>.<br>
@@ -51,10 +52,10 @@ p = phylum, c = class, o = order, f = family, g = genus, s = species,
 t = strain. For example, 
 `k__Bacteria|p__Pseudomonadota|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli`.<br>
 
-> ❌ All identifiers must be of the same type.
+> ❌ Identifier types cannot be mixed in the same input.
 
 For detailed examples, click on the links below the input box to
-fill the input box (**Figure 1-3**) or click on the links below the `Browse` button to download
+fill in the input box (**Figure 1-3**) or click on the links below the `Browse` button to download
 an example file to your machine (**Figure 1-4**).
 
 ![Input](input.png "Input")
@@ -84,8 +85,8 @@ check/uncheck all ranks (**Figure 2-2**).
 **Exact taxonomic level**. If `Yes` is selected, the BugSigDB signatures will
 only contain taxa of the selected ranks (above) that were manually curated in
 the database. The `No` option, which can only be used with a single taxonomic
-rank, will cut the taxonomic tree to the checked rank (above). This allows
-the inclusion of parent taxa in the signatures, even if they were not manually
+rank, will cut the taxonomic tree to the checked rank. This allows
+the inclusion of parent taxa in the signatures even if they were not manually
 curated in BugSigDB (**Figure 2-3**).
 
 Let’s use the signature [bsdb:1\/2\/1](https://bugsigdb.org/Study_1/Experiment_2/Signature_1)
@@ -98,7 +99,7 @@ BugSigDB: _Anaerostipes_ (genus) and _Lacticaseibacillus zeae_ (species).
 + If "species" is checked, only _Lacticaseibacillus zeae_ will be included.<br>
 + If both "genus" and "species" are checked, both _Anaerostipes_ and
 _Lacticaseibacillus zeae_ will be included.<br>
-+ If "mixed" is checked, both elements will be included, and nothing else,
++ If all ranks are checked, both taxa will be included and nothing else
 as no other taxa were manually annotated for this signature.
 
 "Exact taxonomic rank" set to "No":
@@ -111,7 +112,7 @@ which is the parent genus of *Lacticaseibacillus zeae* (manually curated).
 annotation of a taxon to be extended to its parent. However, this process
 does not follow a formal propagation algorithm.
 The tree could be truncated at the "kingdom" level, resulting in a signature
-that only includes the Bacteria domain, which might not be very informative.
+that only includes the Bacteria domain, which might not be the desired result.
 
 **Minimum size**. Filter the target BugSigDB signatures based on their
 number of elements. The default is 5, meaning that only signatures with at
@@ -136,25 +137,25 @@ of identifier. The selected identifier type must match the input type
 (**Figure 3-2**).
 
 **Taxonomic rank(s)**. This option selects the taxonomic
-ranks allowed in the BugSigDB signatures. The `(De)select all` checkbox can
+ranks allowed in the Bugphyzz signatures. The `(De)select all` checkbox can
 help to quickly check/uncheck all ranks (**Figure 3-3**).
 
-**Evidence**. The type of evidence backing up the bugphyzz
+**Evidence**. Type of evidence backing up bugphyzz
 annotations (**Figure 3-4**):
 
 | Evidence code | Description |
 | ------------- | ----------- |
-| exp | Experimental data. |
+| exp | Wet lab experimental data. |
 | igc | Inferred from genomic context. |
 | tas | Traceable author statement. |
 | nas | Non-traceable author statement. |
 | tax | Used as synonym for IBD: Inferred from Biological aspect of Descendant. |
 | asr | Inferred through ancestral state reconstruction. |
 
-Learn more about the evidence codes [here](https://geneontology.org/docs/guide-go-evidence-codes/).
+Learn more about ontology evidence codes [here](https://geneontology.org/docs/guide-go-evidence-codes/).
 
-**Frequency**. An estimator of the probability or confidence interval of the
-annotation. Values between 0 and 1 (**Figure 3-5**):
+**Frequency**. Keywords reprsenting estimators of the probability or
+confidence interval of the annotations in bugphyzz. (**Figure 3-5**):
 
 | Frequency code | Description |
 | -------------- | ----------- |
@@ -192,11 +193,11 @@ the "Reset app" button is not clicked.)
 ## Action buttons <a name="actions"></a>
 
 + **Analyze**. Click on the "Analyze" button when the input and signature options are ready.
-+ **Download results**. After the analysis has been run, the "Download result" button will become
++ **Download results**. After the analysis has been run, the "Download result" button will be 
 available for downloading the result table in a text file with tab separated
 values (.tsv extension).
 + **Reset app**. Use the "Reset app" button to restart the app. This is equivalent to 
-refreshing the webpage.
+refreshing the page in the brwoser (e.g., pressing F5).
 
 [Back to the top](#top) ⬆️
 
@@ -204,13 +205,30 @@ refreshing the webpage.
 
 ### Results header <a name="resheader"></a>
 
+The results header contains information about the database, such as version
+and number of unique taxa in the signature pool (**Figure 6**).
+
+It also contains the summary of the selected options.
+
+If you get a warning message with "Mismatching taxa ranks", you'll find which
+taxa have mismatching ranks in this section.
+
+> ⚠ A "Mismatching ranks" warning message means that the input contained
+taxa of ranks different to the one in the signatures, so these taxa didn't 
+actually contributed to the calculation of the metrics in the results table
+(section below).
+
+![](result_header.png)
+
+**Figure 6**. Results header.
+
 [Back to the top](#top) ⬆️
 
 ### Results table <a name="restable"></a>
 
 | Column | Description | Database |
 | ------ | ----------- | -------- |
-| Signature | BugSigDB signature name. | BugSigDB, Bugphyzz |
+| Signature | Signature name. When clicked, you'll be able to see the taxa overlaps between sets. | BugSigDB, Bugphyzz |
 | JI | Jaccard Index. | BugSigDB, Bugphyzz |
 | OC | Overlapping coefficient. | BugSigDB, Bugphyzz |
 | OCPer | Percentile of OCs based on BugSigDB signatures. | BugSigDB, Bugphyzz |
@@ -221,15 +239,11 @@ refreshing the webpage.
 
 The percentile (OCper) was determined by running an all-vs-all overlapping
 coefficient (OC) analysis of all BugSigDB signatures with a minimum size of 5
-(**Figure 6**).
+(**Figure 7**).
 
 ![](per_plot.png)
 
-**Figure 6**. Counts of overlapping coefficient (OC) values per percentile.
-
-[Back to the top](#top) ⬆️
-
-## Error/Warning messages <a name="messages"></a>
+**Figure 7**. Counts of overlapping coefficient (OC) values per percentile.
 
 [Back to the top](#top) ⬆️
 

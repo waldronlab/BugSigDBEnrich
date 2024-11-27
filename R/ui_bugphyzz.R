@@ -10,15 +10,6 @@ bugphyzzNavPanel <- function(b) {
 
 bugphyzzOptions <- function() {
     list(
-        # shiny::selectizeInput( 
-        #     inputId = "bugphyzz_attributes", 
-        #     label = list(
-        #         "Attribute(s):",
-        #         helpIcon("bugphyzz_attributes_help")
-        #     ),
-        #     choices = NULL,
-        #     multiple = TRUE, width = "500px"
-        # ),
         shinyWidgets::pickerInput(
             inputId = "bugphyzz_attributes",
             label = list("Attributes: ", helpIcon("bugphyzz_attributes_help")),
@@ -42,7 +33,7 @@ bugphyzzOptions <- function() {
         ),
         shiny::checkboxGroupInput(
             inputId = "bugphyzz_rank",
-            label = list("Taxonomic ranks(s):", helpIcon("bugphyzz_rank_help")),
+            label = list("Taxonomic rank(s):", helpIcon("bugphyzz_rank_help")),
             choices = rankOptions("bugphyzz"),
             inline = TRUE
         ),

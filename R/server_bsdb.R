@@ -6,7 +6,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
     
     if (!length(input$bsdb_rank)) {
         shiny::showNotification(
-            "❌ No rank selected. Please select at least one rank option.", 
+            "❌No rank selected. Please select at least one rank option.", 
             duration = 5, 
             type = "error"
         )
@@ -16,7 +16,8 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
     vct_lgl <- isType(inputSig, input$bsdb_type)
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
-            stringr::str_c("❌Inconsistent identifiers. ",
+            stringr::str_c(
+                "❌Inconsistent identifiers. ",
                 sum(vct_lgl == FALSE), " of ", length(vct_lgl),
                 " identifiers are inconsistent. Input type and selected input type must match."
             ),
@@ -69,7 +70,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         "Unique taxa in the pool of signatures: ", format(length(sigPool), big.mark = ",", scientific = FALSE), "  \n",
         "bugsigdbr version: ", as.character(utils::packageVersion("bugsigdbr")), "  \n\n",
         "Number of input taxa: ", length(vct_lgl), "  \n",
-        "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
+        # "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
         "Number of identifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool), "\n\n",
         "Identifier type: ", input$bsdb_type, "  \n",
         "Rank(s): ", paste(input$bsdb_rank, collapse = ", "), "  \n",
@@ -101,7 +102,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
                 shiny::icon(
                     "exclamation-triangle", class = "text-warning"
                 ),
-                stringr::str_c("Wrong ranks: ", wrongRanks)
+                stringr::str_c("Taxa with mismatching ranks: ", wrongRanks)
             ) 
         })
     } 

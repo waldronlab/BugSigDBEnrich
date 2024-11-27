@@ -10,14 +10,15 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
     if (isFALSE(all(vct_lgl))) {
         shiny::showNotification(
             stringr::str_c(
+                "❌Inconsistent identifiers. ",
                 sum(vct_lgl == FALSE), " of ", length(vct_lgl),
-                " identifiers are inconsistent. Check input type."
+                " identifiers are inconsistent. Input type and selected input type must match."
             ),
+            duration = 8,
             type = "error"
         )
         shiny::req(FALSE)
     }
-    
     
     ranks <- checkRanks(input, inputSig, "bugphyzz")
     
@@ -78,7 +79,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         "Unique taxa in the pool of signatures: ", format(length(sigPool), big.mark = ",", scientific = FALSE), "  \n",
         "bugphyzz version: ", as.character(utils::packageVersion("bugphyzz")), "  \n\n",
         "Number of input taxa: ", length(vct_lgl), "  \n",
-        "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
+        # "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
         "Number of identifiers not found in bugphyzz: ", sum(!inputSig %in% sigPool), "\n\n",
         "Attributes: ", paste(input$bugphyzz_attributes, collapse = ", "), "  \n",
         "Identifier type: ", input$bugphyzz_type, "  \n",
@@ -112,7 +113,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
                 shiny::icon(
                     "exclamation-triangle", class = "text-warning"
                 ),
-                stringr::str_c("Wrong ranks: ", wrongRanks)
+                stringr::str_c("Taxa with mismatching ranks: ", wrongRanks)
             ) 
         })
     } 
@@ -195,28 +196,28 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
 bugphyzzInputOptionsChecks <- function(input, inputSig) {
     if (!length(input$bugphyzz_attributes)) {
         shiny::showNotification(
-            "Please select at least one attribute option.", 
+            "❌ No attribute selected. Select at least one attribute option.", 
             type = "error"
         )
         shiny::req(FALSE, cancelOutput = "progress")
     }
     if (!length(input$bugphyzz_rank)) {
         shiny::showNotification(
-            "Please select at least one rank option.", 
+            "❌  No rank selected. Select at least one rank option.", 
             type = "error"
         )
         shiny::req(FALSE)
     }
     if (!length(input$bugphyzz_evidence)) {
         shiny::showNotification(
-            "Please select at least one evidence option.",
+            "❌  No evidence selected. Select at least one evidence option.",
             type = "error"
         )
         shiny::req(FALSE)
     }
     if (!length(input$bugphyzz_frequency)) {
         shiny::showNotification(
-            "Please select at least one frequency option.", 
+            "❌  No frequency selected. select at least one frequency option.", 
             type = "error"
         )
         shiny::req(FALSE)
