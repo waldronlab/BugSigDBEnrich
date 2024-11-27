@@ -296,7 +296,7 @@ bugphyzzOptionsHelp <- function(input) {
             helpModal(
                 "Attributes",
                 stringr::str_c(
-                    "Select one or more bugphyzz attributes. ",
+                    "Select one or more bugphyzz attributes containing phenotipic traits. ",
                     helpPageDiv("More...", "bugphyzzoptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
@@ -317,7 +317,7 @@ bugphyzzOptionsHelp <- function(input) {
             helpModal(
                 "Taxonomic rank",
                 stringr::str_c(
-                    "Select one or more ranks matching your input. ",
+                    "Check the rank(s) of the taxa that should be included in the Bugphyzz signatrues. ",
                     "Check '(de)select all' to select all or none. ",
                     helpPageDiv("More...", "bugphyzzoptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
@@ -328,8 +328,8 @@ bugphyzzOptionsHelp <- function(input) {
             helpModal(
                 "Evidence",
                 stringr::str_c(
-                    "Select evidence type. ",
-                    "exp = experimental, igc = inferred from genomic context, ",
+                    "exp = wet lab experiments, ",
+                    "igc = inferred from genomic context, ",
                     "tas = traceable author statement, ",
                     "nas = non-traceable author statement, ",
                     "tax = taxonomic progagation from strain to species, ",
@@ -344,11 +344,11 @@ bugphyzzOptionsHelp <- function(input) {
             helpModal(
                 "Frequency",
                 stringr::str_c(
-                    "Probability of the annotation. ",
+                    "Confidence of the annotations in Bugzphyzz. ",
                     "always: 1, ",
                     "usually: >= 0.8 & < 1, ",
                     "sometimes: >= 0.5 < 0.8, ",
-                    "rarely: > 0 & < 0.5. ",
+                    "unknown: Not enough information to determine ",
                     "Check '(de)select all' to select all or none. ",
                     helpPageDiv("More...", "bugphyzzoptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
@@ -359,7 +359,7 @@ bugphyzzOptionsHelp <- function(input) {
             helpModal(
                 "Minimum signature size",
                 stringr::str_c(
-                    "Minimum number of taxa in the database signature. ",
+                    "Minimum number of IDs in the target Bugphyzz signature. ",
                     helpPageDiv("More...", "bugphyzzoptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )

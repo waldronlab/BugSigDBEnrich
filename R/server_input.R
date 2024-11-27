@@ -120,12 +120,12 @@ inputHelp <- function(input) {
     list(
         shiny::observeEvent(input$inputtext_help_link, {
             helpModal(
-                "Enter list of NCBI taxids, taxon names, or metaphlan names",
+                "Enter list of taxon identifiers",
                 htmltools::HTML(
                     stringr::str_c(
                         "Enter a list of IDs; one per line.",
                         " The IDs can be in 'ncbi', 'taxname', or 'metaphlan' format.",
-                        " Cick on the examples below to fill the text box with sample IDs. ",
+                        " Cick on the examples below the text box to load some sample IDs. ",
                         helpPageDiv("More...", "input")
                         # "<a href='?tab=help&anchor=#input' target='_blank'>More...</a>"
                     )
@@ -134,11 +134,11 @@ inputHelp <- function(input) {
         }),
         shiny::observeEvent(input$inputfile_help_link, {
             helpModal(
-                "Upload a file:",
+                "Upload a file",
                 htmltools::HTML(
                     stringr::str_c(
                         "A text file with '.txt' extension containing one ID per line.",
-                        " Click on the examples below to download a sample file. ",
+                        " Click on the examples below the 'Browse' button to download sample files. ",
                         helpPageDiv("More...", "input")
                         # "<a href='?tab=help&anchor=#input' target='_blank'>More...</a>"
                     )

@@ -240,9 +240,9 @@ bsdbSigOptionsHelp <- function(input) {
         }),
         shiny::observeEvent(input$bsdb_rank_help, {
             helpModal(
-                "Select taxonomic rank(s)",
+                "Taxonomic rank(s)",
                 stringr::str_c(
-                    "Select the rank(s) of the taxa included in the target BugSigDB signature.",
+                    "Check the rank(s) of the taxa that should included in the target BugSigDB signature.",
                     " Use the '(De)select all' check box to select or deselect all ranks at once. ",
                     helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
@@ -254,8 +254,8 @@ bsdbSigOptionsHelp <- function(input) {
                 "Use exact taxonomiic level",
                 stringr::str_c(
                     "If 'Yes', only ranks manually curated will be included.",
-                    " If 'No', the taxonomic tree will be cut at the specified rank (above).",
-                    " Only one rank (above) can be selected when the 'No' options is used. ",
+                    " If 'No', the taxonomic tree will be cut at the specified rank.",
+                    " Only one rank can be selected when the 'No' options is used. ",
                     helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
@@ -265,7 +265,7 @@ bsdbSigOptionsHelp <- function(input) {
             helpModal(
                 "Minimum signature size",
                 stringr::str_c(
-                    "Minimum number of IDs to filter the target BugSigDB signatures. ",
+                    "Minimum number of IDs in the target BugSigDB signatures. ",
                     helpPageDiv("More...", "bsdboptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )

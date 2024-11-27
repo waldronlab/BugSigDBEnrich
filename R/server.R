@@ -227,7 +227,7 @@ analysisOptionsServer <- function(input, session) {
                 "Semantic similarity",
                 stringr::str_c(
                     "Only available when the input is of type ncbi. ",
-                    helpPageDiv("More...", "options")
+                    helpPageDiv("More...", "analysisoptions")
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )

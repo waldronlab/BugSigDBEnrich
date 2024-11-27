@@ -159,9 +159,9 @@ confidence interval of the annotations in bugphyzz. (**Figure 3-5**):
 
 | Frequency code | Description |
 | -------------- | ----------- |
-| always | >= 0.9 |
-| usually | >= 0.8 & < 0.9|
-| sometimes | >= 0.4 < 0.8 |
+| always | 1 |
+| usually | >= 0.8 & < 1|
+| sometimes | >= 0.5 < 0.8 |
 | unknown | Not enough information to determine. |
 
 **Minimum size**. Filter the target Bugphyzz signatures based on their

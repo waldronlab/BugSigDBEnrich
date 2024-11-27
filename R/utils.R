@@ -216,7 +216,7 @@ getColNameTags <- function(dat) {
     cols <- list(
         ## Columns common to bugphyzz and bsdb results
         Signature = stringr::str_c(
-            "Name of the signature in the selected database. ",
+            "Signature name. Click on them to see overlaps. ",
             helpPageDiv("More...", hash = "restable")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
@@ -249,12 +249,12 @@ getColNameTags <- function(dat) {
         ## Column only present in bsdb results
         Study = stringr::str_c(
             "The source Study of the signature.", 
-            " Click on it to be re-directed to the study's curation page in BugSigDB. ",
+            " Click on it to be re-directed to the study's curation page on BugSigDB. ",
             helpPageDiv("More...", hash = "restable")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
         SigLink = stringr::str_c(
-            "Signature link. ",
+            "Signature link. Click on it to be re-directed to the signature's page on BugSigDB",
             helpPageDiv("More...", hash = "restable")
         )
     )
