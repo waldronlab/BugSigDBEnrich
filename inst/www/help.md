@@ -72,7 +72,7 @@ obtain bug signatures, each with their own options.
 
 [Back to the top](#top) ⬆️
 
-### BugSigDB <a name="bsdboptions"></a>
+### BugSigDB options<a name="bsdboptions"></a>
 
 **Identifier type**. BugSigDB signatures will be created with the chosen type
 of identifier. The selected identifier type must match the input type
@@ -125,7 +125,7 @@ included in the analysis (**Figure 2-4**).
 
 [Back to the top](#top) ⬆️
 
- ### Bugphyzz <a name="bugphyzzoptions"></a>
+ ### Bugphyzz options<a name="bugphyzzoptions"></a>
 
 **Attributes**. Each attribute represents a phenotipic trait and its possible
 values. For example, the areophilicity attribute can have "areobic",

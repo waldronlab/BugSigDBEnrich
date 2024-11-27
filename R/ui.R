@@ -44,6 +44,18 @@ analysisPanel <- function() {
     shiny::tabPanel(
         title = "Analysis",
         
+        shiny::markdown(stringr::str_c(
+            "### Getting Started  \n\n",
+            "Follow these steps to try the app:  \n\n",
+            "1. **Load an example**: Click the \"ncbi\" link below the text box to load a <a href=\"https://bugsigdb.org/Study_454/Experiment_1/Signature_1\" target=\"_blanck\">sample list of bacteria</a>.  \n",
+            "2. **Set the ID type**: Ensure \"ncbi\" is selected as the ID type in the *Database Options*.  \n",
+            "3. **Use default settings**: Leave all other options at their default values.  \n",
+            "4. **Run the analysis**: Click the \"Analyze\" button in the *Actions* section.",
+            "  \n\n",
+            "For more details, check the <a href=\"https://github.com/waldronlab/BugSigDBEnrich/blob/devel/inst/www/help.md\" target=\"_blank\">help documentation</a>."
+        )),
+        shiny::tags$hr(),
+        
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
         
@@ -143,6 +155,8 @@ optionsNavSet <- function() {
 # Inputs ------------------------------------------------------------------
 textInputBox <- function() {
     list(
+        # htmltools::div(
+            # class = "input-container",
         shiny::textAreaInput(
             inputId = "text_input",
             label = list(
@@ -153,8 +167,14 @@ textInputBox <- function() {
             width = "500px",
             resize = "both"
         ),
+            # htmltools::div(
+                # class = "markdown-instructions",
+
+            # )
+        # ),
         htmltools::div(
-            class = "download-example-container", "Load example text:",
+            class = "download-example-container",
+            "Load example text:",
             htmltools::div(class = "download-example-item", shiny::actionLink("ncbi_box", "ncbi")),
             htmltools::div(class = "download-example-item", shiny::actionLink("taxname_box", "taxname")),
             htmltools::div(class = "download-example-item", shiny::actionLink("metaphlan_box", "metaphlan"))

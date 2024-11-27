@@ -25,3 +25,18 @@ input[type="radio"]:disabled + span {
   cursor: not-allowed !important;
   color: #FF0000 !important;
 }
+
+.input-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* Space between the text box and the instructions */
+    max-width: 100%;
+}
+
+.markdown-instructions {
+    flex-grow: 0; /* Prevent the Markdown block from growing */
+    max-width: 30%; /* Allow shrinking but set a max width */
+    word-wrap: break-word; /* Ensure text wraps properly */
+    font-size: 14px; /* Adjust font size for readability */
+    line-height: 1.5; /* Spacing between lines */
+}
