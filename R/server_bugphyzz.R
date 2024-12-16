@@ -231,7 +231,8 @@ bugphyzzOptionsServer <- function(input, session, b) {
             shinyWidgets::updatePickerInput(
                 session = session,
                 inputId = "bugphyzz_attributes",
-                choices = sort(names(b())), 
+                choices = sort(names(b())),
+                selected = sort(names(b())),
                 options = list(
                     `actions-box` = TRUE,
                     `live-search` = TRUE,
