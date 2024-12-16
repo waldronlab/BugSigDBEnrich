@@ -89,26 +89,26 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         "Minimum signature size: ", input$bugphyzz_min, "  \n"
     )
     
-    output$res <-  shiny::renderUI({
+    output$res_bp <-  shiny::renderUI({
         shiny::tabsetPanel(
             id = "main_tabs",
             shiny::tabPanel(
                 title = "Table",
                 htmltools::div(
                     id = "table-container",
-                    DT::DTOutput("result_table")
+                    DT::DTOutput("result_table_bp")
                 )
             )
         )
     })
     
-    output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
+    output$result_header_bp <- shiny::renderUI({shiny::markdown(resultHeader)})
     
     if (!is.null(ranks)) {
         wrongRanks <- purrr::imap(ranks, ~ paste0(.y, " (", .x, ")")) |> 
             purrr::flatten_chr() |> 
             paste(collapse = ", ")
-        output$rank_warning <- shiny::renderUI({
+        output$rank_warning_bp <- shiny::renderUI({
             htmltools::p(
                 shiny::icon(
                     "exclamation-triangle", class = "text-warning"
@@ -118,7 +118,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         })
     } 
     
-    output$result_table <- DT::renderDT({
+    output$result_table_bp <- DT::renderDT({
         dfDisplay <- df |> 
             dplyr::mutate(
                 Signature = stringr::str_c(

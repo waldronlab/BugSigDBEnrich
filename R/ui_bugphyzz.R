@@ -3,8 +3,18 @@ bugphyzzNavPanel <- function(b) {
         "Bugphyzz",
         value = 'bugphyzz_panel',
         htmltools::br(),
-        bugphyzzOptions()
+        bugphyzzOptions(),
+        shiny::tags$hr(),
+        # htmltools::h3("Analysis options"),
+        # semanticAnalysisButton(),
+        # shiny::tags$hr(),
+        htmltools::h3("Actions"),
+        actionButtons(),
+        shiny::tags$hr(),
         
+        shiny::uiOutput("result_header_bp"),
+        shiny::uiOutput("rank_warning_bp"),
+        shiny::uiOutput("res_bp")
     ) 
 }
 

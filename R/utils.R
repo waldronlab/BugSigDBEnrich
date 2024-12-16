@@ -192,14 +192,6 @@ httpGetHandler <- function(
         } else if (input$options_tab == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
-        
-        # if (input$options_tab == "bugsigdb_panel") {
-        #     bsdbResult(input, output, inputSigFun, bsdb)
-        # } else if (input$options_tab == "bugphyzz_panel") {
-        #     output$result_header <- shiny::renderUI({
-        #         htmltools::div("Placeholder.")
-        #     })
-        # }
     })
 }
 

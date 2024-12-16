@@ -3,13 +3,13 @@
 JS <-  system.file(
     "www", "script.js", package = "BugSigDBEnrich", mustWork = TRUE
 ) |> 
-    readLines() |> 
+    readLines() |>
     paste(collapse = "\n")
 
 CSS <- system.file(
     "www", "style.css", package = "BugSigDBEnrich", mustWork = TRUE
 ) |> 
-    readLines() |> 
+    readLines() |>
     paste(collapse = "\n")
 
 # Main page ---------------------------------------------------------------
@@ -66,34 +66,39 @@ analysisPanel <- function() {
         htmltools::h3("Input"),
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
         
-        htmltools::h3("Database options"),
-        optionsNavSet(), shiny::tags$hr(),
-        
         htmltools::h3("Analysis options"),
-        shiny::radioButtons(
-            inputId = "semantic", 
-            label = list(
-                "Semantic similarity (",
-                shiny::icon(
-                    "exclamation-triangle", class = "text-warning",
-                    title = "This operation can take several minutes",
-                ),
-                "this can take several minutes):",
-                helpIcon("semantic_help")
-            ),
-            choiceNames = c("Yes", "No"),
-            choiceValues = c(TRUE, FALSE),
-            selected = FALSE,
-            inline = TRUE
-        ),
+        semanticAnalysisButton(),
         shiny::tags$hr(),
         
-        htmltools::h3("Actions"),
-        actionButtons(), shiny::tags$hr(),
+        htmltools::h3("Database options"),
+        optionsNavSet()
+        # shiny::tags$hr(),
         
-        shiny::uiOutput("result_header"),
-        shiny::uiOutput("rank_warning"),
-        shiny::uiOutput("res")
+        # htmltools::h3("Analysis options"),
+        # shiny::radioButtons(
+        #     inputId = "semantic", 
+        #     label = list(
+        #         "Semantic similarity (",
+        #         shiny::icon(
+        #             "exclamation-triangle", class = "text-warning",
+        #             title = "This operation can take several minutes",
+        #         ),
+        #         "this can take several minutes):",
+        #         helpIcon("semantic_help")
+        #     ),
+        #     choiceNames = c("Yes", "No"),
+        #     choiceValues = c(TRUE, FALSE),
+        #     selected = FALSE,
+        #     inline = TRUE
+        # ),
+        # shiny::tags$hr(),
+        # 
+        # htmltools::h3("Actions"),
+        # actionButtons(), shiny::tags$hr(),
+        
+        # shiny::uiOutput("result_header"),
+        # shiny::uiOutput("rank_warning"),
+        # shiny::uiOutput("res")
     )
 }
 
@@ -227,3 +232,25 @@ actionButtons <- function() {
         )
     )
 }
+
+## Semantic ####
+semanticAnalysisButton <- function() {
+    shiny::radioButtons(
+        inputId = "semantic", 
+        label = list(
+            "Semantic similarity (",
+            shiny::icon(
+                "exclamation-triangle", class = "text-warning",
+                title = "This operation can take several minutes",
+            ),
+            "this can take several minutes):",
+            helpIcon("semantic_help")
+        ),
+        choiceNames = c("Yes", "No"),
+        choiceValues = c(TRUE, FALSE),
+        selected = FALSE,
+        inline = TRUE
+    )
+}
+
+

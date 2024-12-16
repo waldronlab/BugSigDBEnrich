@@ -4,7 +4,19 @@ bsdbNavPanel <- function() {
         "BugSigDB",
         value = "bugsigdb_panel",
         htmltools::br(),
-        bsdbSigOptions()
+        bsdbSigOptions(),
+        # shiny::tags$hr(),
+        # htmltools::h3("Analysis options"),
+        # semanticAnalysisButton(),
+        shiny::tags$hr(),
+        htmltools::h3("Actions"),
+        actionButtons(),
+        shiny::tags$hr(),
+        
+        shiny::uiOutput("result_header_bsdb"),
+        shiny::uiOutput("rank_warning_bsdb"),
+        shiny::uiOutput("res_bsdb")
+        # shiny::tags$hr()
     )
 }
 

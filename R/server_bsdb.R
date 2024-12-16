@@ -78,26 +78,26 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         "Minimum signature size: ", input$bsdb_min, "  \n"
     )
     
-    output$res <-  shiny::renderUI({
+    output$res_bsdb <-  shiny::renderUI({
         shiny::tabsetPanel(
             id = "main_tabs",
             shiny::tabPanel(
                 title = "Table",
                 htmltools::div(
                     id = "table-container",
-                    DT::DTOutput("result_table")
+                    DT::DTOutput("result_table_bsdb")
                 )
             )
         )
     })
     
-    output$result_header <- shiny::renderUI({shiny::markdown(resultHeader)})
+    output$result_header_bsdb <- shiny::renderUI({shiny::markdown(resultHeader)})
     
     if (!is.null(ranks)) {
         wrongRanks <- purrr::imap(ranks, ~ paste0(.y, " (", .x, ")")) |> 
             purrr::flatten_chr() |> 
             paste(collapse = ", ")
-        output$rank_warning <- shiny::renderUI({
+        output$rank_warning_bsdb <- shiny::renderUI({
             htmltools::p(
                 shiny::icon(
                     "exclamation-triangle", class = "text-warning"
@@ -107,7 +107,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         })
     } 
     
-    output$result_table <- DT::renderDT({
+    output$result_table_bsdb <- DT::renderDT({
         dfDisplay <- df |> 
             dplyr::mutate(
                 Study = stringr::str_c(
