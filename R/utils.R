@@ -187,9 +187,11 @@ httpGetHandler <- function(
         open_tabs(list())
         sigs_rval(list())
         
-        if (input$options_tab == "bugsigdb_panel") {
+        # if (input$options_tab == "bugsigdb_panel") {
+        if (input$dbselect == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
-        } else if (input$options_tab == "bugphyzz_panel") {
+        # } else if (input$options_tab == "bugphyzz_panel") {
+        } else if (input$dbselect == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval)
         }
         

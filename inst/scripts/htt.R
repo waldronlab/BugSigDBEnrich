@@ -1,4 +1,4 @@
-baseURL <- "http://127.0.0.1:7994/" 
+baseURL <- "http://127.0.0.1:5198" 
 
 x <- BugSigDBEnrich:::generateExampleText("ncbi") |> 
     strsplit("\n") |> 
