@@ -71,7 +71,7 @@ analysisPanel <- function() {
         shinyWidgets::pickerInput(
             inputId = "dbselect",
             label =  list("Select database:", helpIcon("dbselect_help")),
-            choices = c("bugsigdb_panel", "bugphyzz_panel"),
+            choices = c(BugSigDB = "bugsigdb_panel", Bugphyzz = "bugphyzz_panel"),
             selected =  "bugsigdb_panel"
         ),
         shiny::uiOutput("db_options"),
