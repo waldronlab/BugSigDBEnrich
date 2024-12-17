@@ -18,9 +18,10 @@ bsdbSigOptions <- function() {
             inline = TRUE
         ),
         shiny::checkboxGroupInput(
-            inputId = "bsdb_rank", 
+            inputId = "bsdb_rank",
             label = list("Taxonomic ranks(s):", helpIcon("bsdb_rank_help")),
             choices = rankOptions(),
+            selected = rankOptions(),
             inline = TRUE
         ),
         shiny::checkboxInput(

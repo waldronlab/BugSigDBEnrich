@@ -67,7 +67,16 @@ analysisPanel <- function() {
         textInputBox(), htmltools::br(), fileInputBox(), shiny::tags$hr(),
         
         htmltools::h3("Database options"),
-        optionsNavSet(), shiny::tags$hr(),
+        # optionsNavSet(),
+        shinyWidgets::pickerInput(
+            inputId = "dbselect",
+            label =  list("Select database:", helpIcon("dbselect_help")),
+            choices = c(BugSigDB = "bugsigdb_panel", Bugphyzz = "bugphyzz_panel"),
+            selected =  "bugsigdb_panel"
+        ),
+        shiny::uiOutput("db_options"),
+        
+        shiny::tags$hr(),
         
         htmltools::h3("Analysis options"),
         shiny::radioButtons(
@@ -152,13 +161,15 @@ aboutPanel <- function() {
 }
 
 # Options tab -------------------------------------------------------------
-optionsNavSet <- function() {
-    bslib::navset_underline(
-        id = "options_tab",
-        bsdbNavPanel(),
-        bugphyzzNavPanel()
-    )
-}
+# optionsNavSet <- function() {
+#     bslib::navset_underline(
+#         id = "options_tab",
+#         bsdbNavPanel(),
+#         bugphyzzNavPanel()
+#     )
+# }
+
+
 # Inputs ------------------------------------------------------------------
 textInputBox <- function() {
     list(
