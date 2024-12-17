@@ -1,20 +1,23 @@
-bugphyzzNavPanel <- function(b) {
-    bslib::nav_panel(
-        "Bugphyzz",
-        value = 'bugphyzz_panel',
-        htmltools::br(),
-        bugphyzzOptions()
-        
-    ) 
-}
+# bugphyzzNavPanel <- function(b) {
+#     bslib::nav_panel(
+#         "Bugphyzz",
+#         value = 'bugphyzz_panel',
+#         htmltools::br(),
+#         bugphyzzOptions()
+#         
+#     ) 
+# }
 
-bugphyzzOptions <- function() {
+bugphyzzOptions <- function(b) {
+    print(names(b()))
     list(
         shinyWidgets::pickerInput(
             inputId = "bugphyzz_attributes",
             label = list("Attributes: ", helpIcon("bugphyzz_attributes_help")),
-            choices = NULL, 
-            selected = NULL,
+            # choices = NULL,
+            choices = sort(names(b())),
+            # selected = NULL,
+            selected = sort(names(b())),
             multiple = TRUE,
             options = list(
                 `actions-box` = TRUE,
@@ -35,6 +38,7 @@ bugphyzzOptions <- function() {
             inputId = "bugphyzz_rank",
             label = list("Taxonomic rank(s):", helpIcon("bugphyzz_rank_help")),
             choices = rankOptions("bugphyzz"),
+            selected = rankOptions("bugphyzz"),
             inline = TRUE
         ),
         shiny::checkboxInput(
@@ -46,6 +50,7 @@ bugphyzzOptions <- function() {
             inputId = "bugphyzz_evidence",
             label = list("Evidence:", helpIcon("bugphyzz_evidence_help")),
             choices = bugphyzzEvidenceOptions(),
+            selected = bugphyzzEvidenceOptions(),
             inline = TRUE
         ),
         shiny::checkboxInput(
@@ -57,6 +62,7 @@ bugphyzzOptions <- function() {
             inputId = "bugphyzz_frequency",
             label = list("Frequency:", helpIcon("bugphyzz_frequency_help")),
             choices = bugphyzzFrequencyOptions(),
+            selected = bugphyzzFrequencyOptions(),
             inline = TRUE
         ),
         shiny::checkboxInput(

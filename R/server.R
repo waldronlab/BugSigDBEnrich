@@ -36,7 +36,7 @@ server <- function(input, output, session) {
     # urlHandlerServer(session)
     
     shiny::observe({
-        if (input$options_tab == "bugphyzz_panel") {
+        if (input$dbselect == "bugphyzz_panel") {
             waiter::waiter_show(
                 html = htmltools::tagList(
                     waiter::spin_atebits(),
@@ -56,8 +56,13 @@ server <- function(input, output, session) {
             if (is.null(b())) {
                 b(bugphyzz::importBugphyzz())
             }
+            # output$db_options <- shiny::renderUI({
+            #     req(!is.null(b()))
+            #     bugphyzzOptions(b)
+            # })
+
             waiter::waiter_hide()
-        } else if (input$options_tab == "bugsigdb_panel") {
+        } else if (input$dbselect == "bugsigdb_panel") {
             waiter::waiter_show(
                 html = htmltools::tagList(
                     waiter::spin_atebits(),
@@ -77,7 +82,23 @@ server <- function(input, output, session) {
             if (is.null(bsdb())) {
                 bsdb(bugsigdbr::importBugSigDB())
             }
+            # output$db_options <- shiny::renderUI({
+            #     bsdbSigOptions()
+            # })
+
             waiter::waiter_hide()
+        }
+    })
+    
+    output$db_options <- shiny::renderUI({
+        if (input$dbselect == "bugsigdb_panel") {
+            shiny::req(bsdb())
+            bsdbSigOptions()
+
+        } else if (input$dbselect == "bugphyzz_panel") {
+            shiny::req(b())
+            # print(names(b()))
+            bugphyzzOptions(b)
         }
     })
     
@@ -88,10 +109,10 @@ server <- function(input, output, session) {
     
     bsdbSigOptionsServer(input, session)
     bsdbSigOptionsHelp(input)
-    
+
     bugphyzzOptionsServer(input, session, b)
     bugphyzzOptionsHelp(input)
-    
+    # 
     analysisOptionsServer(input, session)
     
     inputSigFun <- inputSignature(input)
@@ -114,9 +135,11 @@ server <- function(input, output, session) {
         open_tabs(list())
         sigs_rval(list())
     
-        if (input$options_tab == "bugsigdb_panel") {
+        # if (input$options_tab == "bugsigdb_panel") {
+        if (input$dbselect == "bugsigdb_panel") {
             bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval, obo)
-        } else if (input$options_tab == "bugphyzz_panel") {
+        } else if (input$dbselect == "bugphyzz_panel") {
+        # } else if (input$options_tab == "bugphyzz_panel") {
             bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval, obo)
         }
         # waiter::waiter_hide()
@@ -231,14 +254,14 @@ analysisOptionsServer <- function(input, session) {
                     # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
                 )
             )
-        }),
-        shiny::observe({
-            if (input$bsdb_type != "ncbi" || input$bugphyzz_type != "ncbi") {
-                shiny::updateRadioButtons(
-                    session, "semantic", selected = FALSE
-                )
-            }
         })
+        # shiny::observe({
+        #     if (input$bsdb_type != "ncbi" || input$bugphyzz_type != "ncbi") {
+        #         shiny::updateRadioButtons(
+        #             session, "semantic", selected = FALSE
+        #         )
+        #     }
+        # })
     )
 }
 
