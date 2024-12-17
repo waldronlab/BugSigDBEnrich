@@ -129,7 +129,7 @@ urlHandlerServer <- function(session) {
 }
 
 httpGetHandler <- function(
-        query, session, input, output, inputSigFun, bsdb, b, dat, open_tabs, sigs_rval
+        query, session, input, output, inputSigFun, bsdb, b, dat, open_tabs, sigs_rval, obo
 ) {
     hasRun <- shiny::reactiveVal(FALSE)
     shiny::observe({
@@ -145,7 +145,7 @@ httpGetHandler <- function(
                 session = session, inputId = "bsdb_type",
                 selected = detectedType
             )
-            if (!hasRun()) {
+            # if (!hasRun()) {
                 shiny::req(input$text_input)  # Ensure input is provided
                 output$res <-  shiny::renderUI({
                     shiny::tabsetPanel(
@@ -159,9 +159,18 @@ httpGetHandler <- function(
                         )
                     )
                 })
-                bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval)
-                hasRun(TRUE)  # Set the flag to indicate the analysis has run
-            }
+                bsdbResult(input, output, inputSigFun, bsdb, dat, sigs_rval, obo)
+                
+                if (input$options_tab == "bugphyzz_panel") {
+                    bugphyzzResult(input, output, inputSigFun, b, dat, sigs_rval, obo)
+                }
+                
+                
+                
+                
+                
+                # hasRun(TRUE)  # Set the flag to indicate the analysis has run
+            # }
         }
     })
     shiny::observeEvent(input$run_analysis, {
