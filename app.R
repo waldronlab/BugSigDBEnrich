@@ -1,3 +1,3 @@
 # Launch BugSigDBEnrich
-b <- bugphyzz::importBugphyzz()
+b <- bugphyzz::importBugphyzz() # import bugphyzz
 BugSigDBEnrich::myApp()
