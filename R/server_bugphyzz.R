@@ -22,7 +22,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
     
     ranks <- checkRanks(input, inputSig, "bugphyzz")
     
-    subB <- b[input$bugphyzz_attributes]
+    subB <- b()[input$bugphyzz_attributes]
     idType <- dplyr::case_when(
         input$bugphyzz_type == "ncbi" ~ "NCBI_ID",
         input$bugphyzz_type == "taxname" ~ "Taxon_name",

@@ -29,7 +29,7 @@ server <- function(input, output, session) {
     # bsdb <- bugsigdbr::importBugSigDB()
     # b <- bugphyzz::importBugphyzz()
     bsdb <- shiny::reactiveVal(NULL)
-    # b <- shiny::reactiveVal(NULL)
+    b <- shiny::reactiveVal(NULL)
     obo <- shiny::reactiveVal(NULL)
     waiter::waiter_hide()
     
@@ -49,9 +49,9 @@ server <- function(input, output, session) {
                 ),
                 color = "white"
             )
-            # if (is.null(b())) {
-            #     b(bugphyzz::importBugphyzz())
-            # }
+            if (is.null(b())) {
+                b(bugphyzz::importBugphyzz())
+            }
             waiter::waiter_hide()
         } else if (input$dbselect == "bugsigdb_panel") {
             waiter::waiter_show(
@@ -87,8 +87,7 @@ server <- function(input, output, session) {
             bsdbSigOptions()
 
         } else if (input$dbselect == "bugphyzz_panel") {
-            # shiny::req(b())
-            # print(names(b()))
+            shiny::req(b())
             bugphyzzOptions(b)
         }
     })
