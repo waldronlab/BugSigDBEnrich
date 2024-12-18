@@ -29,7 +29,7 @@ server <- function(input, output, session) {
     # bsdb <- bugsigdbr::importBugSigDB()
     # b <- bugphyzz::importBugphyzz()
     bsdb <- shiny::reactiveVal(NULL)
-    b <- shiny::reactiveVal(NULL)
+    # b <- shiny::reactiveVal(NULL)
     obo <- shiny::reactiveVal(NULL)
     waiter::waiter_hide()
     
@@ -46,21 +46,12 @@ server <- function(input, output, session) {
                         class = "h4", "Preparing Bugphyzz data...",
                         style = "color: black;"
                     )
-                    # htmltools::div(
-                    #     class = "h5", "Please wait...",
-                    #     style = "color: black;"
-                    # )
                 ),
                 color = "white"
             )
-            if (is.null(b())) {
-                b(bugphyzz::importBugphyzz())
-            }
-            # output$db_options <- shiny::renderUI({
-            #     req(!is.null(b()))
-            #     bugphyzzOptions(b)
-            # })
-
+            # if (is.null(b())) {
+            #     b(bugphyzz::importBugphyzz())
+            # }
             waiter::waiter_hide()
         } else if (input$dbselect == "bugsigdb_panel") {
             waiter::waiter_show(
@@ -96,7 +87,7 @@ server <- function(input, output, session) {
             bsdbSigOptions()
 
         } else if (input$dbselect == "bugphyzz_panel") {
-            shiny::req(b())
+            # shiny::req(b())
             # print(names(b()))
             bugphyzzOptions(b)
         }

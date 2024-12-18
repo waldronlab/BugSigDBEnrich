@@ -9,15 +9,15 @@
 # }
 
 bugphyzzOptions <- function(b) {
-    print(names(b()))
+    # print(names(b()))
     list(
         shinyWidgets::pickerInput(
             inputId = "bugphyzz_attributes",
             label = list("Attributes: ", helpIcon("bugphyzz_attributes_help")),
             # choices = NULL,
-            choices = sort(names(b())),
+            choices = sort(names(b)),
             # selected = NULL,
-            selected = sort(names(b())),
+            selected = sort(names(b)),
             multiple = TRUE,
             options = list(
                 `actions-box` = TRUE,
