@@ -1,7 +1,7 @@
 
-#' Launch my app
+#' Launch BugSigDBEnrich
 #'
 #' @return A shinyApp.
 #' @export
 #'
-myApp <- function() shiny::shinyApp(ui = createUI(), server = server)
+BugSigDBEnrich <- function() shiny::shinyApp(ui = createUI(), server = server)

@@ -18,7 +18,7 @@ BiocManager::install("waldronlab/BugSigDBEnrich", dependencies = TRUE)
 ## Launch the app
 
 ```r
-BugSigDBEnrich::myApp()
+BugSigDBEnrich::BugSigDBEnrich()
 ```
 ## Help
 

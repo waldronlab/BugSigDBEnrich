@@ -1,2 +1,2 @@
 # Launch BugSigDBEnrich
-BugSigDBEnrich::myApp()
+BugSigDBEnrich::BugSigDBEnrich()
