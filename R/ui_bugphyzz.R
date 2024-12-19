@@ -27,13 +27,13 @@ bugphyzzOptions <- function(b) {
                 title = "Select attributes"
             )
         ),
-        shiny::radioButtons(
-            inputId = "bugphyzz_type",
-            label = list("Identifier type:", helpIcon("bugphyzz_type_help")),
-            choices = c("ncbi", "taxname", "metaphlan"),
-            selected = "ncbi",
-            inline = TRUE
-        ),
+        # shiny::radioButtons(
+        #     inputId = "bugphyzz_type",
+        #     label = list("Identifier type:", helpIcon("bugphyzz_type_help")),
+        #     choices = c("ncbi", "taxname", "metaphlan"),
+        #     selected = "ncbi",
+        #     inline = TRUE
+        # ),
         shiny::checkboxGroupInput(
             inputId = "bugphyzz_rank",
             label = list("Taxonomic rank(s):", helpIcon("bugphyzz_rank_help")),

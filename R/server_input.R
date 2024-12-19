@@ -35,6 +35,10 @@ isType <- function(input_sig, input_type) {
     whichType(input_sig) == input_type
 }
 
+# Check input -------------------------------------------------------------
+
+
+
 # Example text ------------------------------------------------------------
 generateExampleText <- function(x) {
     paste(exampleSigs[[x]], collapse = "\n")
@@ -149,17 +153,20 @@ inputHelp <- function(input) {
 }
 
 # Check ranks -------------------------------------------------------------
-checkRanks <- function(input, inputSig, db) {
-    id_type <- paste0(db, "_type")
+checkRanks <- function(input, inputSig, db, inputType) {
+    # id_type <- paste0(db, "_type")
     id_rank <- paste0(db, "_rank")
-    if (input[[id_type]] == "ncbi") {
+    # if (input[[id_type]] == "ncbi") {
+    if (inputType == "ncbi") {
         ranks <- inputSig |> 
             getRank()
-    } else if (input[[id_type]] == "taxname") {
+    } else if (inputType == "taxname") {
+    # } else if (input[[id_type]] == "taxname") {
         ranks <- inputSig |> 
             getTaxIDs() |> 
             getRank()
-    } else if (input[[id_type]] == "metaphlan") {
+    } else if (inputType == "metaphlan") {
+    # } else if (input[[id_type]] == "metaphlan") {
         ranks <- inputSig |> 
             stringr::str_extract("[^|]+$") |> 
             stringr::str_remove("^[a-zA-Z]__") |> 

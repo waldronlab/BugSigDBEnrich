@@ -13,26 +13,39 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         shiny::req(FALSE)
     }
     
-    vct_lgl <- isType(inputSig, input$bsdb_type)
-    if (isFALSE(all(vct_lgl))) {
+    inputType <-  unique(whichType(inputSig))
+    
+    if (any(is.na(inputType)) || length(inputType) != 1) {
         shiny::showNotification(
             stringr::str_c(
-                "❌Inconsistent identifiers. ",
-                sum(vct_lgl == FALSE), " of ", length(vct_lgl),
-                " identifiers are inconsistent. Input type and selected input type must match."
+                "❌All taxa identifiers must be of the same type. "
             ),
             duration = 8,
             type = "error"
         )
         shiny::req(FALSE)
     }
+    # vct_lgl <- isType(inputSig, input$bsdb_type)
+    # if (isFALSE(all(vct_lgl))) {
+    #     shiny::showNotification(
+    #         stringr::str_c(
+    #             "❌Inconsistent identifiers. ",
+    #             sum(vct_lgl == FALSE), " of ", length(vct_lgl),
+    #             " identifiers are inconsistent. Input type and selected input type must match."
+    #         ),
+    #         duration = 8,
+    #         type = "error"
+    #     )
+    #     shiny::req(FALSE)
+    # }
     
-    ranks <- checkRanks(input, inputSig, "bsdb")
+    ranks <- checkRanks(input, inputSig, "bsdb", inputType)
     
     bsdbSub <- bsdb()[, c("BSDB ID", "Study"), drop = FALSE]
     sigs <- bugsigdbr::getSignatures(
         df = bsdb(),
-        tax.id.type = input$bsdb_type,
+        tax.id.type = inputType,
+        # tax.id.type = input$bsdb_type,
         tax.level = input$bsdb_rank,
         exact.tax.level = as.logical(input$bsdb_exact),
         min.size = input$bsdb_min
@@ -69,7 +82,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         "BugSigDB version: ", formals(bugsigdbr::importBugSigDB)$version, "  \n",
         "Unique taxa in the pool of signatures: ", format(length(sigPool), big.mark = ",", scientific = FALSE), "  \n",
         "bugsigdbr version: ", as.character(utils::packageVersion("bugsigdbr")), "  \n\n",
-        "Number of input taxa: ", length(vct_lgl), "  \n",
+        # "Number of input taxa: ", length(vct_lgl), "  \n",
         # "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
         "Number of identifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool), "\n\n",
         "Identifier type: ", input$bsdb_type, "  \n",
@@ -157,15 +170,16 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
                 initComplete = DT::JS("
             function(settings, json) {
                 setTimeout(() => {
-                    const tooltipTriggerList = document.querySelectorAll('#table-container th[title]');
-                    tooltipTriggerList.forEach(element => {
-                        new bootstrap.Tooltip(element, { html: true });
-                    });
+                    initializeTooltips(); // Trigger tooltip initialization
                 }, 100);
             }
         ")
             )
         )
+        
+        # Append dependencies
+        dt$dependencies <- c(dt$dependencies, appendDTDeps())
+        dt
         # dt <- DT::datatable(
         #     dfDisplay,
         #     rownames = FALSE,
@@ -178,14 +192,25 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         #         )
         #     ),
         #     options = list(
-        #         headerCallback = DT::JS("function(thead, data, start, end, display) {
+        #         headerCallback = DT::JS("
+        #     function(thead, data, start, end, display) {
         #         $(thead).find('th').css('text-align', 'center');
-        #     }")
+        #     }
+        # "),
+        #         initComplete = DT::JS("
+        #     function(settings, json) {
+        #         setTimeout(() => {
+        #             const tooltipTriggerList = document.querySelectorAll('#table-container th[title]');
+        #             tooltipTriggerList.forEach(element => {
+        #                 new bootstrap.Tooltip(element, { html: true });
+        #             });
+        #         }, 100);
+        #     }
+        # ")
         #     )
         # )
-        # dt$dependencies <- appendDTDeps(dt)
-        dt$dependencies <- c(dt$dependencies, appendDTDeps())
-        dt
+        # dt$dependencies <- c(dt$dependencies, appendDTDeps())
+        # dt
     })
     
     output$downloadData <- shiny::downloadHandler(

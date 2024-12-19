@@ -172,6 +172,7 @@ server <- function(input, output, session) {
                 ),
                 color = "white"
             )
+            
             sigsTable <- sets2Df(inputSigFun, sigs_rval()[[dat()$Signature[row_id]]], input)
             waiter::waiter_hide()
             

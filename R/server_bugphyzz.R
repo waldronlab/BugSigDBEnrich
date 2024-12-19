@@ -6,13 +6,12 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
     
     bugphyzzInputOptionsChecks(input, inputSig)
     
-    vct_lgl <- isType(inputSig, input$bugphyzz_type)
-    if (isFALSE(all(vct_lgl))) {
+    inputType <-  unique(whichType(inputSig))
+    
+    if (any(is.na(inputType)) || length(inputType) != 1) {
         shiny::showNotification(
             stringr::str_c(
-                "❌Inconsistent identifiers. ",
-                sum(vct_lgl == FALSE), " of ", length(vct_lgl),
-                " identifiers are inconsistent. Input type and selected input type must match."
+                "❌I All taxa identifiers must be of the same type. ",
             ),
             duration = 8,
             type = "error"
@@ -20,15 +19,33 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         shiny::req(FALSE)
     }
     
-    ranks <- checkRanks(input, inputSig, "bugphyzz")
+    # vct_lgl <- isType(inputSig, input$bugphyzz_type)
+    # if (isFALSE(all(vct_lgl))) {
+    #     shiny::showNotification(
+    #         stringr::str_c(
+    #             "❌Inconsistent identifiers. ",
+    #             sum(vct_lgl == FALSE), " of ", length(vct_lgl),
+    #             " identifiers are inconsistent. Input type and selected input type must match."
+    #         ),
+    #         duration = 8,
+    #         type = "error"
+    #     )
+    #     shiny::req(FALSE)
+    # }
+    
+    ranks <- checkRanks(input, inputSig, "bugphyzz", inputType)
+    print(ranks)
     
     subB <- b()[input$bugphyzz_attributes]
     idType <- dplyr::case_when(
-        input$bugphyzz_type == "ncbi" ~ "NCBI_ID",
-        input$bugphyzz_type == "taxname" ~ "Taxon_name",
-        input$bugphyzz_type == "metaphlan" ~ "Taxon_name"
+        inputType == "ncbi" ~ "NCBI_ID",
+        inputType == "taxname" ~ "Taxon_name",
+        inputType == "metaphlan" ~ "Taxon_name"
+        # input$bugphyzz_type == "ncbi" ~ "NCBI_ID",
+        # input$bugphyzz_type == "taxname" ~ "Taxon_name",
+        # input$bugphyzz_type == "metaphlan" ~ "Taxon_name"
     )
-    
+    print(idType)
     sigs <- purrr::map(subB, ~ {
         bugphyzz::makeSignatures(
             dat = .x,
@@ -45,7 +62,8 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
     
     sigPool <- unique(unlist(sigs, use.names = FALSE))
     
-    if (input$bugphyzz_type == "metaphlan") {
+    # if (input$bugphyzz_type == "metaphlan") {
+    if (inputType == "metaphlan") {
         inputSig <- inputSig |> 
             stringr::str_extract("[^|]+$") |> 
             stringr::str_remove("^[a-zA-Z]__")
@@ -78,11 +96,12 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         "bugphyzz version: ", formals(bugphyzz::importBugphyzz)$version, "  \n",
         "Unique taxa in the pool of signatures: ", format(length(sigPool), big.mark = ",", scientific = FALSE), "  \n",
         "bugphyzz version: ", as.character(utils::packageVersion("bugphyzz")), "  \n\n",
-        "Number of input taxa: ", length(vct_lgl), "  \n",
+        # "Number of input taxa: ", length(vct_lgl), "  \n",
         # "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
         "Number of identifiers not found in bugphyzz: ", sum(!inputSig %in% sigPool), "\n\n",
         "Attributes: ", paste(input$bugphyzz_attributes, collapse = ", "), "  \n",
-        "Identifier type: ", input$bugphyzz_type, "  \n",
+        "Identifier type: ", inputType, "  \n",
+        # "Identifier type: ", input$bugphyzz_type, "  \n",
         "Rank(s): ", paste(input$bugphyzz_rank, collapse = ", "), "  \n",
         "Evidence: ", paste(input$bugphyzz_evidence, collapse = ", "), "  \n",
         "Frequency: ", paste(input$bugphyzz_frequency, collapse = ", "), "  \n",

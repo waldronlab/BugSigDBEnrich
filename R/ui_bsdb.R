@@ -10,13 +10,13 @@ bsdbNavPanel <- function() {
 
 bsdbSigOptions <- function() {
     list(
-        shiny::radioButtons(
-            inputId = "bsdb_type",
-            label = list("Identifier type:", helpIcon("bsdb_type_help")),
-            choices = c("ncbi", "taxname", "metaphlan"),
-            selected = "ncbi",
-            inline = TRUE
-        ),
+        # shiny::radioButtons(
+        #     inputId = "bsdb_type",
+        #     label = list("Identifier type:", helpIcon("bsdb_type_help")),
+        #     choices = c("ncbi", "taxname", "metaphlan"),
+        #     selected = "ncbi",
+        #     inline = TRUE
+        # ),
         shiny::checkboxGroupInput(
             inputId = "bsdb_rank",
             label = list("Taxonomic ranks(s):", helpIcon("bsdb_rank_help")),
