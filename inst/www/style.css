@@ -40,3 +40,9 @@ input[type="radio"]:disabled + span {
     font-size: 14px; /* Adjust font size for readability */
     line-height: 1.5; /* Spacing between lines */
 }
+
+.nav-tabs .nav-link.active {
+    background-color: #2c3e50; /* Example: AliceBlue */
+    color: #FFF !important; /* Optional: Change text color */
+    border-color: #dee2e6 #dee2e6 #f0f8ff; /* Adjust border color */
+}

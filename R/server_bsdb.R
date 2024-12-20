@@ -86,7 +86,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         # "Number of input taxa: ", length(vct_lgl), "  \n",
         # "Number of inconsistent identifiers: ", sum(!vct_lgl), "  \n",
         "Number of identifiers not found in BugSigDB: ", sum(!inputSig %in% sigPool), "\n\n",
-        "Identifier type: ", input$bsdb_type, "  \n",
+        "Identifier type: ", inputType, "  \n",
         "Rank(s): ", paste(input$bsdb_rank, collapse = ", "), "  \n",
         "Exact: ", ifelse(input$bsdb_exact == TRUE, "Yes", "No"), "  \n",
         "Minimum signature size: ", input$bsdb_min, "  \n"

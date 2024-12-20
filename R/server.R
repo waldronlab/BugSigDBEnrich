@@ -99,6 +99,8 @@ server <- function(input, output, session) {
     textBoxExamplesServer(input, session); fileInputExamplesServer(output)
     inputHelp(input)
     
+    dbOptions(input)
+    
     bsdbSigOptionsServer(input, session)
     bsdbSigOptionsHelp(input)
 
@@ -257,6 +259,19 @@ analysisOptionsServer <- function(input, session) {
         #     }
         # })
     )
+}
+
+dbOptions <- function(input) {
+    shiny::observeEvent(input$dbselect_help, {
+        helpModal(
+            "Select database",
+            stringr::str_c(
+                "Options will change depending on the selected database . ",
+                helpPageDiv("More...", "dboptions")
+                # "<a href='?tab=help&anchor=#options' target='_blank'>More...</a>"
+            )
+        )
+    })
 }
 
 # tabs_to_remove <- names(open_tabs())
