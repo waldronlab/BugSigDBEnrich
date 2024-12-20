@@ -29,10 +29,13 @@ createUI <- function() {
                 htmltools::tags$script(htmltools::HTML(JS)),
                 htmltools::tags$style(htmltools::HTML(CSS))
             ),
-            theme = bslib::bs_theme(version = 5, bootswatch = "spacelab"),
+            # theme = bslib::bs_theme(version = 5, bootswatch = "slate"),
+            # theme = bslib::bs_theme(version = 5, bootswatch = "sandstone"),
+            theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
             analysisPanel(),
-            helpPanel(),
             aboutPanel(),
+            helpPanel(),
+            installLocallyPanel(),
             bugReportPanel()
         )
     )
@@ -55,9 +58,8 @@ analysisPanel <- function() {
             "### Getting Started  \n\n",
             "Follow these steps to try the app:  \n\n",
             "1. **Load an example**: Click the \"ncbi\" link below the text box to load a <a href=\"https://bugsigdb.org/Study_454/Experiment_1/Signature_1\" target=\"_blanck\">sample list of bacteria</a>.  \n",
-            "2. **Set the ID type**: Ensure \"ncbi\" is selected as the ID type in the *Database Options*.  \n",
-            "3. **Use default settings**: Leave all other options at their default values.  \n",
-            "4. **Run the analysis**: Click the \"Analyze\" button in the *Actions* section.",
+            "2. **Use default settings**: Leave all options at their default values.  \n",
+            "3. **Run the analysis**: Click the \"Analyze\" button in the *Actions* section.",
             "  \n\n",
             "For more details, check the <a href=\"https://github.com/waldronlab/BugSigDBEnrich/blob/devel/inst/www/help.md\" target=\"_blank\">help documentation</a>."
         )),
@@ -125,6 +127,16 @@ bugReportPanel <- function() {
             system.file("www", "bug.md", package = "BugSigDBEnrich")
         ) 
     )
+}
+
+installLocallyPanel <- function() {
+    shiny::tabPanel(
+        title = "Run locally",
+        shiny::includeMarkdown(
+            system.file("www", "install_locally.md", package = "BugSigDBEnrich")
+        ) 
+    )
+    
 }
 
 aboutPanel <- function() {

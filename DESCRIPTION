@@ -1,7 +1,7 @@
 Package: BugSigDBEnrich
 Type: Package
 Title: A shiny app for BugSigDB
-Version: 0.99.25
+Version: 0.99.26
 Authors@R:
     c(
         person(
@@ -46,7 +46,6 @@ Imports:
     waiter
 Remotes:
     sdgamboa/cacheTaxonomizr@devel,
-    waldronlab/bugphyzz@devel,
     waldronlab/BugSigDBStats@main
 RoxygenNote: 7.3.2
 URL: https://github.com/waldronlab/BugSigDBEnrich

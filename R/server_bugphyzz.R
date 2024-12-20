@@ -71,19 +71,20 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
     
     waiter::waiter_show(
         html = htmltools::tagList(
-            waiter::spin_timer(),
+            waiter::spin_clock(),
+            # waiter::spin_timer(),
             htmltools::tags$br(),
             htmltools::tags$br(),
             htmltools::div(
                 class = "h4", "Analyzing...",
-                style = "color: black;"
+                style = "color: white;"
             ),
             htmltools::div(
                 class = "h5", "Please wait...",
-                style = "color: black;"
+                style = "color: white;"
             )
         ),
-        color = "white"
+        color = "#2c3e50"
     )
     df <- simFun(inputSig, sigs, input = input, obo = obo)
     waiter::waiter_hide()
@@ -112,10 +113,13 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         shiny::tabsetPanel(
             id = "main_tabs",
             shiny::tabPanel(
-                title = "Table",
-                htmltools::div(
-                    id = "table-container",
-                    DT::DTOutput("result_table")
+                title = "Results table",
+                list(
+                    htmltools::tags$br(),
+                    htmltools::div(
+                        id = "table-container",
+                        DT::DTOutput("result_table")
+                    )
                 )
             )
         )
@@ -132,7 +136,7 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
                 shiny::icon(
                     "exclamation-triangle", class = "text-warning"
                 ),
-                stringr::str_c("Taxa with mismatching ranks: ", wrongRanks)
+                stringr::str_c("Taxa with mismatching ranks in your input: ", wrongRanks)
             ) 
         })
     } 
@@ -175,24 +179,6 @@ bugphyzzResult <- function(input, output, inputSigFun, b, dat, sigs_rval, obo) {
         ")
             )
         )
-        # dt <- DT::datatable(
-        #     dfDisplay,
-        #     rownames = FALSE,
-        #     escape = FALSE,
-        #     selection = "none",
-        #     container = htmltools::withTags(
-        #         htmltools::tags$table(
-        #             class = 'display',
-        #             htmltools::tags$thead(htmltools::tags$tr(tag_list))
-        #         )
-        #     ),
-        #     options = list(
-        #         headerCallback = DT::JS("function(thead, data, start, end, display) {
-        #         $(thead).find('th').css('text-align', 'center');
-        #     }")
-        #     )
-        # )
-        # dt$dependencies <- appendDTDeps(dt)
         dt$dependencies <- c(dt$dependencies, appendDTDeps())
         dt
     })

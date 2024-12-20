@@ -2,8 +2,6 @@ semSim <- function(inputSig, sigs, obo) {
     if (is.null(obo())) {
         obo(BugSigDBStats::getNcbiTaxonomyObo())
     }
-    # obo <- BugSigDBStats::getNcbiTaxonomyObo()
-    
     inSig <- purrr::map(inputSig, ~ paste0("NCBITaxon:", .x))
     dbSigs <- purrr::map(sigs, ~ paste0("NCBITaxon:", .x))
     

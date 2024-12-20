@@ -179,7 +179,7 @@ checkRanks <- function(input, inputSig, db, inputType) {
         shiny::showNotification(
             stringr::str_c(
                 "⚠ Mismatching ranks. ",
-                sum(!lgl_vct),  " taxa have a rank mismatching the selected options.",
+                sum(!lgl_vct),  " taxa in your input have a rank mismatching the selected options.",
                 " Check which taxa they are in the results header."
             ),
             duration = 10,

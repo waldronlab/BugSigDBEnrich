@@ -55,19 +55,20 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
     
     waiter::waiter_show(
         html = htmltools::tagList(
-            waiter::spin_timer(),
+            # waiter::spin_timer(),
+            waiter::spin_clock(),
             htmltools::tags$br(),
             htmltools::tags$br(),
             htmltools::div(
                 class = "h4", "Analyzing...",
-                style = "color: black;"
+                style = "color: white;"
             ),
             htmltools::div(
                 class = "h5", "Please wait...",
-                style = "color: black;"
+                style = "color: white;"
             )
         ),
-        color = "white"
+        color = "#2c3e50"
     )
     df <- simFun(inputSig, sigs, opt = "bsdb", input, obo) |> 
         dplyr::left_join(bsdbSub, by = c("bsdb_id" = "BSDB ID")) |>
@@ -95,10 +96,13 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         shiny::tabsetPanel(
             id = "main_tabs",
             shiny::tabPanel(
-                title = "Table",
-                htmltools::div(
-                    id = "table-container",
-                    DT::DTOutput("result_table")
+                title = "Results table",
+                list(
+                    htmltools::tags$br(),
+                    htmltools::div(
+                        id = "table-container",
+                        DT::DTOutput("result_table")
+                    )
                 )
             )
         )
@@ -115,7 +119,7 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
                 shiny::icon(
                     "exclamation-triangle", class = "text-warning"
                 ),
-                stringr::str_c("Taxa with mismatching ranks: ", wrongRanks)
+                stringr::str_c("Taxa with mismatching ranks in your input: ", wrongRanks)
             ) 
         })
     } 
@@ -180,37 +184,6 @@ bsdbResult <- function(input, output, inputSigFun, bsdb, dat, sigs_rval, obo) {
         # Append dependencies
         dt$dependencies <- c(dt$dependencies, appendDTDeps())
         dt
-        # dt <- DT::datatable(
-        #     dfDisplay,
-        #     rownames = FALSE,
-        #     escape = FALSE,
-        #     selection = "none",
-        #     container = htmltools::withTags(
-        #         htmltools::tags$table(
-        #             class = 'display',
-        #             htmltools::tags$thead(htmltools::tags$tr(tag_list))
-        #         )
-        #     ),
-        #     options = list(
-        #         headerCallback = DT::JS("
-        #     function(thead, data, start, end, display) {
-        #         $(thead).find('th').css('text-align', 'center');
-        #     }
-        # "),
-        #         initComplete = DT::JS("
-        #     function(settings, json) {
-        #         setTimeout(() => {
-        #             const tooltipTriggerList = document.querySelectorAll('#table-container th[title]');
-        #             tooltipTriggerList.forEach(element => {
-        #                 new bootstrap.Tooltip(element, { html: true });
-        #             });
-        #         }, 100);
-        #     }
-        # ")
-        #     )
-        # )
-        # dt$dependencies <- c(dt$dependencies, appendDTDeps())
-        # dt
     })
     
     output$downloadData <- shiny::downloadHandler(

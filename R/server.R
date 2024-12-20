@@ -10,28 +10,28 @@
 #' @return A shinyApp
 #'
 server <- function(input, output, session) {
-    waiter::waiter_show(
-        html = htmltools::tagList(
-            waiter::spin_pulsar(),
-            htmltools::tags$br(),
-            htmltools::tags$br(),
-            htmltools::div(
-                class = "h4", "Loading...",
-                style = "color: black;"
-            )
-            # htmltools::div(
-            #     class = "h5", "Please wait...",
-            #     style = "color: black;"
-            # )
-        ),
-        color = "white"
-    )
+    # waiter::waiter_show(
+    #     html = htmltools::tagList(
+    #         waiter::spin_pulsar(),
+    #         htmltools::tags$br(),
+    #         htmltools::tags$br(),
+    #         htmltools::div(
+    #             class = "h4", "Loading...",
+    #             style = "color: black;"
+    #         )
+    #         # htmltools::div(
+    #         #     class = "h5", "Please wait...",
+    #         #     style = "color: black;"
+    #         # )
+    #     ),
+    #     color = "white"
+    # )
     # bsdb <- bugsigdbr::importBugSigDB()
     # b <- bugphyzz::importBugphyzz()
     bsdb <- shiny::reactiveVal(NULL)
     b <- shiny::reactiveVal(NULL)
     obo <- shiny::reactiveVal(NULL)
-    waiter::waiter_hide()
+    # waiter::waiter_hide()
     
     # urlHandlerServer(session)
     
@@ -39,15 +39,16 @@ server <- function(input, output, session) {
         if (input$dbselect == "bugphyzz_panel") {
             waiter::waiter_show(
                 html = htmltools::tagList(
-                    waiter::spin_atebits(),
+                    # waiter::spin_atebits(),
+                    waiter::spin_4(),
                     htmltools::tags$br(),
                     htmltools::tags$br(),
                     htmltools::div(
-                        class = "h4", "Preparing Bugphyzz data...",
-                        style = "color: black;"
+                        class = "h4", "Loading Bugphyzz ...",
+                        style = "color: white;"
                     )
                 ),
-                color = "white"
+                color = "#2c3e50"
             )
             if (is.null(b())) {
                 b(bugphyzz::importBugphyzz())
@@ -56,19 +57,20 @@ server <- function(input, output, session) {
         } else if (input$dbselect == "bugsigdb_panel") {
             waiter::waiter_show(
                 html = htmltools::tagList(
-                    waiter::spin_atebits(),
+                    # waiter::spin_atebits(),
+                    waiter::spin_4(),
                     htmltools::tags$br(),
                     htmltools::tags$br(),
                     htmltools::div(
-                        class = "h4", "Preparing BugSigDB data...",
-                        style = "color: black;"
+                        class = "h4", "Loading BugSigDB...",
+                        style = "color: white;"
                     )
                     # htmltools::div(
                     #     class = "h5", "Please wait...",
                     #     style = "color: black;"
                     # )
                 ),
-                color = "white"
+                color = "#2c3e50"
             )
             if (is.null(bsdb())) {
                 bsdb(bugsigdbr::importBugSigDB())
@@ -158,19 +160,20 @@ server <- function(input, output, session) {
         if (!(tab_title %in% names(current_tabs))) {
             waiter::waiter_show(
                 html = htmltools::tagList(
-                    waiter::spin_timer(),
+                    # waiter::spin_timer(),
+                    waiter::spin_clock(),
                     htmltools::tags$br(),
                     htmltools::tags$br(),
                     htmltools::div(
                         class = "h4", "Getting taxonomy information...",
-                        style = "color: black;"
+                        style = "color: white;"
                     ),
                     htmltools::div(
                         class = "h5", "Please wait...",
-                        style = "color: black;"
+                        style = "color: white;"
                     )
                 ),
-                color = "white"
+                color = "#2c3e50"
             )
             
             sigsTable <- sets2Df(inputSigFun, sigs_rval()[[dat()$Signature[row_id]]], input)
