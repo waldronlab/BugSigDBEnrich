@@ -14,3 +14,7 @@ BiocManager::install("waldronlab/BugSigDBEnrich", dependencies = TRUE)
 ```r
 BugSigDBEnrich::BugSigDBEnrich()
 ```
+
+**Note:** For now, you might need to keep and eye on the console when
+launching the app, confirmation for caching the BugSigDB data will be
+required.
