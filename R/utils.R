@@ -224,6 +224,11 @@ getColNameTags <- function(dat) {
             helpPageDiv("More...", hash = "restable")
             # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
         ),
+        BM25 = stringr::str_c(
+            "BM25 ranking. ",
+            helpPageDiv("More...", hash = "restable")
+            # "<a href='?tab=help&anchor=#results' target='_blank'> More...</a>"
+        ),
         JI = stringr::str_c(
             "The Jaccard index (JI) shows how similar two signatures are by",
             " comparing shared elements to total elements. ",

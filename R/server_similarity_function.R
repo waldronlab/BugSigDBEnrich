@@ -16,14 +16,25 @@ simFun <- function(sig, sigL, opt = NULL, input, obo) {
         round(.overlap_coefficient(.x, sig), 2)
     })
     
+    ## Var names corpus and doc are from the bm_25 func args
+    corpus <- sigL |> 
+        purrr::map(~ paste0(.x, collapse = " ")) |> 
+        purrr::flatten_chr()
+    names(corpus) <- names(sigL)
+    doc <- paste0(sig, collapse = " ")
+    bm25 <- superml::bm_25(doc, corpus, top_n = length(corpus))
+    bm25 <- bm25[match(corpus, names(bm25))]
+    bm25 <- round(bm25, 2)
+    
     df <- data.frame(
         Signature = names(ji),
+        BM25 = bm25,
         JI = unname(ji),
         OC = unname(oc),
         OCPer = get_per(oc),
         Size = purrr::map_int(sigL, length)
     ) |>
-        dplyr::arrange(-.data[["OC"]], -.data[["JI"]])
+        dplyr::arrange(-.data[["BM25"]], -.data[["OC"]], -.data[["JI"]])
     
     if (!is.null(opt)) {
         if (opt == "bsdb") {
